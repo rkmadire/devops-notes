@@ -102,10 +102,10 @@ note: thet node port shoud be 30000 to 32767 only
 -->so here we give 
 -------------------------------------------------------------------------------------------------
 on pod-definition1.yml			service1.yml
----------------------------------- 			----------------------
-selector:					selector:
-  type: proxy				  type: proxy
-  author: intelliqit				  author: intelliqit
+------------------------			----------------------
+selector:				             selector:
+  type: proxy				          type: proxy
+  author: intelliqit				author: intelliqit
 --------------------------------------------------------------------------------------------------------
 -->from above 2 file we provide in the labels selector same information
 -->based on selector information it will match and access through service 
