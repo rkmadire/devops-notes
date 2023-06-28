@@ -1,0 +1,24 @@
+Docker 10th Session
+-----------------------
+-->defaults process triggers internally
+-->in every container have default commad 
+-->ubuntu like os defaults command is bash
+-->some tomee container by defaults like catalina.sh 
+-->if default process gets existed then container will exited
+-->for ubuntu bash shell
+-->for tomee catalina.sh 
+-----------------------------------
+FROM ubuntu
+MAINTAINER intelliqit
+RUN apt-get update
+RUN apt-get install -y openjdk-11-jdk
+
+ADD http://get.jenkins.io/war-sable/2.375.3/jenkins.war /
+
+ENTRYPOINT  ["java", "-jar", "jenkins.war"]
+
+-------------------------------
+#docker build -t myubuntu .
+
+
+	 

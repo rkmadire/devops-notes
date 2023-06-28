@@ -1,0 +1,82 @@
+Docker Session 4th 
+---------------------
+Multicontainer Architecthure
+------------------------
+to establish multicontainer architecture there are different ways 
+1. --link option (depricated (outdated))
+2. docker compose
+3. docker networks
+  --upto here direcly components of docker
+4. ansible playbooks
+5. python script 
+ 
+-->here i want to create development environment or testing environment
+-->imagine in a organisation development team using java
+-->for databse  there are using oracle database
+-->application team there are using tomcat
+-->above complete java team and oracle team and application team is called this can be development environment 
+note:developer develop code and that code convert into artifact deployed into tomcat and data will be stored on database 
+-->these are indivudual containers to communicate this containers to each other need to make a link between them 
+----
+some scenario 
+-----
+===========================
+--> suppose there is bank customer has an account to access his accout he need enter into bank web page and enter details like username and password after it enters into database
+-->that scenario to establish at the level of docker we need apache for webpage and mysql for database
+-->Download those images using docker commands from docker official webpage 
+
+ #docker run -d --name database -e MYSQL_ROOT_PASSWORD=intelliqit mysql
+	-->above command will download mysql image and run as container
+ #docker run -d --name webserver -p 8888:80 --link database:mydata  httpd
+	-->above command will download httpd image and run as a container and make link between database 
+
+note: to check connection 
+        #ping imagename
+============================================
+another scenario
+--------------------
+1. setup wordpress and mysql on top of docker engine 
+-----------
+step1:
+------
+#docker run --name mydb -d -e MYSQL_ROOT_PASSWORD=intelliqit mysql 
+	-->above command will download mysql image and run as container in the docker engine  
+--------
+step2:
+------------
+#docker run --name mywordpress -d -p 8088:80 --link mydb:mysql wordpress 
+	-->above command will download image and run as container and make link between mydb and mywoprdpress now they both communicate each other and work together 
+--> --link to make link 
+--> mydb is a container name 
+--> mysql is a alias name can be anything to identify 
+
+
+
+------
+note:to launch shell in a container 
+ #docker exec -it database bash 
+-------
+=================================================================
+another scenario
+-----------------
+1. this time postgress database 
+-->genarlly connecting to database they use client software every databse will have a client software 
+-->client software help to connect databse via the GUI 
+-->for postgress client is adminer 
+-->adminer client not only for postgress it wiil work so many databases 
+-->here i want to create container postgress and link with the adminer 
+-->by using adminer client we use to connect through graphical interface 
+-->postgress also required environment variables 
+	#docker run --name mydb1 -d -e POSTGRES_PASSWORD=intelliqit -e POSTGRES_USER=myuser -e POSTGRES_DB=mydb postgres 
+--------------
+-->next adminer
+-->goto docker hub search adminer 
+ #docker run --name myadminer -d -p 9090:8080 --link mydb1:postgres adminer 
+-------------------
+to check 
+-->take public ip
+-->paste in browser 
+ public_ip:hostport 
+------------------------
+===========================================
+ 

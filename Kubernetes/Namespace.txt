@@ -1,0 +1,84 @@
+Namespace: 12:00 min to 20:00 min kubernetes 23rd session
+-----------
+content:
+1.create namespace definition file
+2.creating pod out of ghospt applications
+-------------------
+-->it is logical partition within the kubernetes cluster 
+-->by default 4 namespace available at the time of kubernetes installation       
+1.default
+2.kube-node-lease
+3.kube-public
+4.kube-system
+----------------------
+-->when you run pod that pod will gointo default namespace section 
+ex:
+$ kubectl run --image nginx webserver1
+-->that webserver1 pod will gointo default namespace if you dont specify the namespace
+------------------
+-->out of default namespace remaing three other namespace will containe cluster components like 
+
+on master machine			 slave machine
+------------------			----------------
+1.container runtime			1.container runtime
+2.kube apiserver			2.kubelet
+3.kube scheduler			3.kubeproxy
+4.controller			
+5.etcd		
+
+-->above those application running in the cluster backround in the form pods 
+-->those pods will running in the remaing three namespace which is
+kube-node-lease
+kube-public
+kube-system 		
+-------------------
+-->if you want create pods in some other customised namespace 
+-->first create a new namespace
+$ vim pod-namespace.yml
+============================
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test-ns
+...
+=====================================
+$ kubectl apply -f namespace.yml
+	-->from above command a new namespace will created 
+$ kubectl get namespace
+	-->to display all namespace in the cluster 
+--------------------
+-->now create pod inside that namespace 
+$ vim pod-definition5.yml       
+====================================================
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ghost-pod
+  namespace: test-ns
+  labels:
+    author: intelliqit
+    type: cms
+spec:
+  containers:
+    - name: ghost-app
+      image: ghost
+      env:
+        - name: NODE_ENV
+          value: development
+...
+==================================
+Note: ghost image it is content management system for designing the blogs and websites 
+---
+Note:ghost image containe envoronment variables
+---
+$ kubectl apply -f pod-definition5.yml
+	-->to create pods from above file
+$ kubectl get pods 
+	-->above command will search default namespace pods only
+-->to see customised namespace pods below command
+$ vim kubectl get pods -n test-ns
+-->test-ns (we mention in the file namespace: test-ns)
+$ kubectl delete -f namespace.yml
+	-->to delete namespace 

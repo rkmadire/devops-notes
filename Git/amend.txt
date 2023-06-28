@@ -1,0 +1,8 @@
+amend Git Session 4th time 44:00 
+--------------------------------------------
+1.here soft reset do one step back 
+	commited to stagging area
+2.here mixed reset do two step back 
+	commited to stagging to untracked area 
+3.those two activities can be triggred via amend command 
+	$ git commit --amend -m "f" ----- m for modify 

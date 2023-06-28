@@ -1,0 +1,58 @@
+uri module
+---------------------
+The uri module in Ansible is used to send HTTP or HTTPS requests to a remote server and handle the response. It allows you to perform various actions such as sending GET, POST, PUT or DELETE requests, as well as handling redirects, cookies, and SSL/TLS certificate validation.
+--------------------------------- 
+syntax:
+---------------------------------
+- name: <task name>
+  uri:
+    url: <URL>
+    method: <GET|POST|PUT|DELETE>
+    body: <request body>
+    status_code: <expected HTTP status code>
+-----------------------------------------
+For example, to send a GET request to a specific URL:
+--------------------------------------------
+- name: send GET request
+  uri:
+    url: http://example.com
+    method: GET
+---------------------------------------------------
+To send a POST request with a JSON body:
+-------------------------------------------------------
+- name: send POST request
+  uri:
+    url: http://example.com/api/v1/create
+    method: POST
+    body: '{"name":"value"}'
+    headers:
+      Content-Type: application/json
+----------------------------------------------------------
+You can also provide a status_code to validate the response status code, if the status code is not matched it will raise an error:
+--------------------------------
+- name: send GET request
+  uri:
+    url: http://example.com
+    method: GET
+    status_code: 200
+-----------------------------------
+You can also use the return_content option to return the response content in a variable, which can be used later in the playbook:
+---------------------------------------
+- name: send GET request
+  uri:
+    url: http://example.com
+    method: GET
+  register: response
+-------------------------------------------------
+Additionally, you can use the validate_certs option to validate SSL/TLS certificates, for example:
+-------------------------------------------------
+- name: send GET request
+  uri:
+    url: https://example.com
+    method: GET
+    validate_certs: no
+-----------------------------------------------
+You can also use the timeout option to set a timeout for the request.
+
+It's worth noting that the uri module can also be used to interact with RESTful APIs, or to automate web scraping tasks.
+---------------------------------------------------

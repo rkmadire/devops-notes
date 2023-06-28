@@ -1,0 +1,18 @@
+vault ansible 8th session 38 min
+-----------------------------------
+1.Ansible Vault is a feature in Ansible that allows you to securely store sensitive data, such as passwords or private keys, as encrypted files within your Ansible project. This encrypted data can be used in playbooks and tasks, and is decrypted at runtime with a password that you provide. Vault helps ensure that sensitive data remains secure and protected, even if your playbook or role is shared or published.
+2.it will encrypt our data
+-------------------------------------
+1.to create vault playbook 
+	$ansible-vault playbookname.yml
+2.to view the vault playboooks
+	$ansible-vault view playbookname.yml
+3.to edit the vault playbook
+	$ansible-vault edit playbookname.yml
+4.To convert a normal playbook a vault playbook
+	$ansible-vault encrypt playbookname.yml
+5.To convert a vault playbook into a normal playbook 
+	$ansible-vault decrypt playbookname.yml
+6.To change password for a vault playbook 
+	$ansible-vault rekey playbookname.yml 
+========================================

@@ -1,0 +1,34 @@
+Ansible integration with Jenkins 40 min 12th session
+---------------------------------------------------------  
+--> to run playbooks at perticular time 
+--> we use jenkins tool to run playbooks at perticular time 
+-----------------------------------------
+step1:launch ansible controller with 2 nodes and launch jenkins with all configuration
+step2:Establish ssh connection from controller to nodes and from jenkins user to Ansible controller 
+step3: enter into jenkins webpage by using jenkins_public_ip:8080 paste in browser enter in to jenkins webpage
+step4: create a project (freestyle or pipeline )
+-----------
+if select freestyle project-1-->click on build steps-->add build-->excute shell-->give ssh command in the box
+--> sh 'ssh ubuntu@controller_private_ip ansible-playbook /home/ubuntu/playbooks/playbook1.yml -b'
+------------
+if pipeline create pipeline-project-1
+-->go to pipeline
+enter code
+----------
+pipeline{
+	agent any
+	stages{
+	     stage('Run ansible playbook'){
+		steps{
+			sh 'ssh ubuntu@172.168.32.8 ansible-playbook /home/ubuntu/playbooks/playbook1.yml -b'
+		}
+	     }
+	}
+     }
+------------------------------------
+for periodically build in jenkins
+------------------------------------------------------
+-->sheduling playbook for periodically run at perticular time
+-->gointo build triggers-->build periodically --> give time and date in the box
+--------------------------------
+================================================================================================

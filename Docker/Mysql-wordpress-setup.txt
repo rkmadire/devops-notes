@@ -1,0 +1,21 @@
+create mysql container and create wordpress link with mysql session docker 6th 10:00min
+-----------------------------------------------------------------------------------------------------------
+# vim docker-compose.yml
+=============================
+---
+version: '3.8'
+services:
+  mydb:
+    image: mysql:5
+    environment:
+       MYSQL_ROOT_PASSWORD: intelliqit
+  mywordpress:
+    image: wordpress
+    ports:
+      - 8888:80
+    links:
+      - mydb:mysql
+...
+======================================
+
+

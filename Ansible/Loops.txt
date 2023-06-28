@@ -1,0 +1,156 @@
+ansible 6th session loops
+-------------------------------------------------------
+loops: time 1 min
+-----------
+-->when you want to run a module inside a playbook n number of times you can go with loops concept
+---------------------
+========================
+---
+ - name: implementing loops
+   hosts: all
+   tasks: 
+      - name: install tree
+        apt:
+	  name: tree
+	  state: present
+	  update_cache: yes
+
+      - name: install git
+        apt:
+	  name: git
+	  state: present
+	  update_cache: yes
+
+      - name: install maven
+        apt:
+	  name: maven
+	  state: present
+	  update_cache: yes
+=======================================
+--> when you observe the playbook we are using apt module three times to reduce these types of steps
+-->we use concept call loops
+-->loops are implemented mainly in two different ways
+1.with_items
+2.with_sequence
+===========================================
+---
+- name: Implementing Loops
+  hosts: all
+  tasks:
+    - name: Install s/w's
+      apt:
+        name: "{{item}}"
+        state: present
+        update_cache: yes
+      with_items:
+        - tree
+        - git
+        - maven
+...
+===============================================
+$ ansible-playbook playbook10.yml -b
+	-->it will run playbook
+------------------------------------------------------
+-->some other different type scenario 
+===================================================
+---
+- name: Implementing Loops
+  hosts: all
+  tasks:
+    - name: Install s/w's
+      apt:
+        name: "{{item.a}}"
+        state: "{{item.b}}"
+        update_cache: "{{item.c}}"
+      with_items:
+        - {a: tree,b: present,c: no}
+        - {a: git,b: absent,c: no}
+        - {a: maven,b: latest,c: yes}
+
+...
+====================================================
+note: above playbook item is predefined keyword cant change but a is variable
+$ansible-playbook playbook11.yml -b 
+------------------------------------------
+-->one more different scenario
+-->i want to create multiple users assigned home directory to the users into home directory of users i want to copy certain files 
+
+==================================================================
+---
+- name: Create users and copy files into users home dir
+  hosts: all
+  tasks:
+    - name: Create multiple users
+      user:
+        name: "{{item.a}}"
+        password: "{{item.b}}"
+        home: "{{item.c}}"
+      with_items:
+        - {a: Ramesh,b: intelliqit,c: /home/Ramesh}
+        - {a: Rajesh,b: intelliqit,c: /tmp/Rajesh}
+    - name: Copy files into users home dir
+      copy:
+        src: "{{item.a}}"
+        dest: "{{item.b}}"
+      with_items:
+        - {a: /etc/passwd,b: /home/Ramesh}
+        - {a: /etc/group,b: /tmp/Rajesh}
+...
+=============================================================================================
+-->above playbook user module run two times
+$ansible-playbook playbook12.yml -b 
+-----------------------------------------------------------------------------------------
+-->Now configuring tomcat playbook
+
+========================================================================
+---
+- name: Configuring tomcat
+  hosts: all
+  tasks:
+    - name: Install tomcat9 and tomcat9-admin
+      apt:
+        name: "{{item.a}}"
+        state: "{{item.b}}"
+        update_cache: "{{item.c}}"
+      with_items:
+        - {a: tomcat9,b: present,c: yes}
+        - {a: tomcat9-admin,b: present,c: no}
+    - name: Copy tomcat-users.xml file
+      copy:
+        src: tomcat-users.xml
+        dest: /etc/tomcat9
+    - name: Change port of tomcat from 8080 to 9090
+      replace:
+        regexp: 8080
+        replace: 9090
+        path: /etc/tomcat9/server.xml
+    - name: Restart tomcat
+      service:
+        name: tomcat9
+        state: restarted
+    - name: Pause for 1 min
+      pause:
+        minutes: 1
+    - name: Check tomcat on all managed nodes
+      uri:
+        url: "{{item}}"
+        status_code: 200
+      with_items:
+        - http://172.31.59.208:9090
+        - http://172.31.57.12:9090
+...
+
+
+=======================================================================================================================================================================
+$ansible-playbook playbook13.yml
+ -->it will run the playbook
+----------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+ 

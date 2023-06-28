@@ -1,0 +1,69 @@
+Docker swarm commands 
+--------------------------------------
+Usage:  docker service COMMAND
+
+Manage Swarm services
+
+Commands:
+  create      Create a new service
+  inspect     Display detailed information on one or more services
+  logs        Fetch the logs of a service or task
+  ls          List services
+  ps          List the tasks of one or more services
+  rm          Remove one or more services
+  rollback    Revert changes to a service's configuration
+  scale       Scale one or multiple replicated services
+  update      Update a service
+=========================================================================
+Usage:  docker node COMMAND
+
+Manage Swarm nodes
+
+Commands:
+  demote      Demote one or more nodes from manager in the swarm
+  inspect     Display detailed information on one or more nodes
+  ls          List nodes in the swarm
+  promote     Promote one or more nodes to manager in the swarm
+  ps          List tasks running on one or more nodes, defaults to current node
+  rm          Remove one or more nodes from the swarm
+  update      Update a node
+================================================================================
+Usage:  docker swarm COMMAND
+
+Manage Swarm
+
+Commands:
+  ca          Display and rotate the root CA
+  init        Initialize a swarm
+  join        Join a swarm as a node and/or manager
+  join-token  Manage join tokens
+  leave       Leave the swarm
+  unlock      Unlock swarm
+  unlock-key  Manage the unlock key
+  update      Update the swarm
+=============================================================
+#docker swarm init
+#docker service create --name webserver -p 8888:80 --replicas 5 nginx
+#docker service ls
+#docker service ps webserver
+#docker service ps mydb
+#docker service rm mydb 
+#docker service --name websever -p 8080:80 --replicas 4 httpd
+#docker service scale webserver=8
+#docker service scale webserver=2
+#docker service create --name myredis --replicas 4 redis:3
+#docker service update --image redis:4 myredis
+#docker service update --rollback myredis
+#docker node update --availability drain worker1
+#docker node update --availability active worker1
+#docker node rm worker2
+#docker swarm join-token worker  
+#docker swarm join-token manager
+#docker node promote worker1
+#docker node demote worker1
+#docker swarm leave --force
+
+================================================================
+
+
+

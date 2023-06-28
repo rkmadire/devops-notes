@@ -1,0 +1,49 @@
+replace module
+-----------------------
+The replace module in Ansible is used to perform search-and-replace operations on text files. It allows you to specify the file or files to be modified, the search pattern, and the replacement text.
+-----------------------
+basic syntax
+-------------------
+- name: <task name>
+  replace:
+    path: <file path>
+    regexp: <search pattern>
+    replace: <replacement text>
+---------------------------
+For example, to replace all occurrences of the word "old" with "new" in a file:
+----------------------------
+- name: replace text
+  replace:
+    path: /etc/config.cfg
+    regexp: 'old'
+    replace: 'new'
+------------------------------------
+You can also use the backup option to create a backup of the file before making any changes:
+-----------------------------------
+- name: replace text
+  replace:
+    path: /etc/config.cfg
+    regexp: 'old'
+    replace: 'new'
+    backup: yes
+----------------------------------------
+You can also use the recursive option to perform the search-and-replace operation on all files in a directory and its subdirectories.
+------------------------------------------
+- name: replace text
+  replace:
+    path: /etc/
+    regexp: 'old'
+    replace: 'new'
+    recursive: yes
+-------------------------------------------
+You can also use the ignore_missing option to not raise an error if the file specified in the path option does not exist.
+----------------------------------------------
+- name: replace text
+  replace:
+    path: /etc/config.cfg
+    regexp: 'old'
+    replace: 'new'
+    ignore_missing: yes
+--------------------------------------------------
+It's worth noting that the replace module can be useful for automating tasks such as editing configuration files, replacing IP addresses, hostnames, or other variables in scripts, or for any other task that requires editing text files.
+--------------------------------------

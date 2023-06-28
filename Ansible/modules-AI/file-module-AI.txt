@@ -1,0 +1,59 @@
+The file module in Ansible is used to manage files and directories on the remote servers. It allows you to create, modify, and delete files and directories, and set their permissions and ownership.
+--------------------------------------
+add-hoc commands 
+------------------------
+$asible all -m file -a 'name=/tmp/filename state=touch' -->create a file 
+$asible all -m file -a 'name=/tmp/dir1 state=directory'  -->create a directory
+$asible all -m file -a 'name=/tmp/filename state=absent'  -->delete a directory or file
+$asible all -m file -a 'name=/tmp/filename state=touch owner=sai group=anu mode=770' -b -->changin permissions for file
+============================================================================================================
+
+yml
+--------------------------
+Creating a file:
+------------------
+- name: Create a file
+  ansible.builtin.file:
+    path: /path/to/file
+    state: touch
+===============================
+Copying a file:
+-----------------------
+- name: Copy a file
+  ansible.builtin.file:
+    src: /path/to/src/file
+    dest: /path/to/dest/file
+    state: copy
+====================================
+Changing permissions and ownership of a file:
+-----------------------------------------------
+- name: Change file permissions
+  ansible.builtin.file:
+    path: /path/to/file
+    owner: user
+    group: group
+    mode: 0644
+===========================================
+Creating a directory:
+---------------------------
+- name: Create a directory
+  ansible.builtin.file:
+    path: /path/to/directory
+    state: directory
+==============================================
+Deleting a file or directory:
+--------------------------------------
+- name: Delete a file
+  ansible.builtin.file:
+    path: /path/to/file
+    state: absent
+==================================
+The file module is an important tool for managing remote servers, and it can be used in conjunction with other Ansible modules to automate tasks such as deploying software, configuring services, and maintaining system integrity.
+
+It's worth noting that ansible.builtin.file is the legacy way to call the file module, the recommended way is to call the file module directly.
+--------------------------
+- name: Create a file
+  file:
+    path: /path/to/file
+    state: touch
+============================================

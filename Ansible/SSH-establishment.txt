@@ -1,0 +1,60 @@
+ansible 1st-session SSH Establishment from controller to workers
+------------------------
+Ansible is an open-source IT automation tool that can be used to automate tasks such as software installation, configuration management, and application deployment. It uses a simple YAML syntax to describe automation jobs, and can be used to manage a wide range of systems, including Linux, Windows, and network devices. Ansible works by connecting to managed hosts and sending commands to them over SSH or PowerShell. It does not require an agent to be installed on the managed hosts, which makes it lightweight and easy to use. Additionally, Ansible provides a number of built-in modules that can be used to perform common tasks, and also supports custom modules to perform more complex tasks.
+------------------------------------------------------------
+1.first launch 3 instance give name 
+	1.controller
+	2.server-1
+	3.server-2
+2.establish ssh connection from controller to server1 and server2
+  server-1
+----------------
+sudo passwd ubuntu
+	****
+	****
+-->modify sshd_config file
+	PasswordAuthentication  no
+				yes
+-->restart the ssh service 
+------------------------------------
+server-2
+---------------------
+sudo passwd ubuntu
+	****
+	****
+-->modify sshd_config file
+	PasswordAuthentication  no
+				yes
+-->restart the ssh service 
+--------------------------------------------
+-->connect to controller
+-->install ansible
+-->ssh-keygen
+-->ssh-copy-id username@server-1_private_ip
+-->ssh-copy-id username@server-2_private_ip
+-->goto /etc/ansible/hosts -->hosts is a inventory file
+-->sudo vim /etc/ansible/hosts
+	give server-1 private ip
+	     server-2 private ip
+-->now controller able to access thos server through ssh
+-->ansible works based on agentless connection
+-->ansible like push mechanism
+-----------------------------------------------
+ansible advantages 
+-------------------------------------------------
+1.Easy to learn and use: Ansible uses a simple, human-readable language (YAML) and does not require extensive programming knowledge. This makes it easy to get started with and use, even for those without a background in programming.
+
+2.Agentless architecture: Ansible does not require any agents or software to be installed on the target systems, which simplifies the deployment and maintenance process.
+
+3.Idempotent: Tasks can be run multiple times without causing any unintended changes.
+
+4.Multi-platform compatibility: Ansible can be used to manage a wide variety of operating systems, including Windows, Linux, and macOS.
+
+5.Large community and ecosystem: Ansible has a large and active community, which has developed a wide range of modules, plugins, and roles that can be used to automate a variety of tasks.
+
+6.Flexibility and scalability: Ansible can be used for a wide range of automation tasks, from simple command execution to complex, multi-tier deployments. It can also be used to manage large and complex infrastructures with many different systems.
+
+7.Secure: Ansible uses secure communication protocols such as SSH and WinRM to communicate with target systems, which helps to ensure that sensitive data is transmitted securely.
+
+8.Integrations: Ansible can be integrated with other tools and services, such as cloud platforms, container orchestration systems, and more, which makes it a versatile tool for automating various IT operations.
+========================================================================================================================================

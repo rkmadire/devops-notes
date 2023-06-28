@@ -1,0 +1,165 @@
+ansible 8th session 
+------------------------
+-->in this session setup jenkins and QA-server and Prod-server     
+--> first launch 4 machines on aws
+	1.ansible controller
+	2.jenkins
+	3.QA-server
+	4.Prod-server
+-->establish SSH connection from controller to Jenkins,QA-server, Prod-Server
+-->create a playbook for jenkins setup and QA-server and Prod-server in a single playbook
+-->take private ip of all servers and paste in inventory file in order wise 
+-----------------------------
+======================================
+[jenkinsserver]
+paste_here_jenkins_private_ip
+[servers]
+paste_here_QA-server_private_ip
+paste_here_Prod-server_private_ip
+========================================
+-->above information in the inventory file 
+========================================
+
+---
+- name: Setup of jenkins and required s/w's
+  hosts: jenkinsserver
+  tasks:
+    - name: Install required s/w's
+      apt:
+        name: "{{item.a}}"
+        state: present
+        update_cache: "{{item.b}}"
+      with_items:
+        - {a: openjdk-11-jdk,b: yes}
+        - {a: git,b: no}
+        - {a: maven,b: no}
+    - name: Download jenkins.war
+      get_url:
+        url: https://get.jenkins.io/war-stable/2.375.2/jenkins.war
+        dest: /home/ubuntu
+- name: Configure tomcat
+  hosts: servers
+  tasks:
+    - name: Install tomcat9 and tomcat9-admin
+      apt:
+        name: "{{item.a}}"
+        state: present
+        update_cache: "{{item.b}}"
+      with_items:
+        - {a: tomcat9,b: yes}
+        - {a: tomcat9-admin,b: no}
+    - name: Copy tomcat-users.xml file
+      copy:
+        src: tomcat-users.xml
+        dest: /etc/tomcat9
+      notify: Restart tomcat
+  handlers:
+    - name: Restart tomcat
+      service:
+        name: tomcat9
+        state: restarted
+...
+==============================================
+-->when you run this playbook on ansible controller automaticall jenkins and qa server and prod server will be setup automatically 
+-------------
+====================================================================
+ansible 9th session CICD environment setup
+----------------------
+-->performing cicd in the playbook
+-->create 4 instance install all required applications for jenkins and QA-server and Prod-Server confirm them and and perform CI&CD in a single playbook 
+-----------------------------------------------
+---
+- name: Setup of jenkins and required s/w's
+  hosts: jenkinsserver
+  tasks:
+    - name: Install required s/w's
+      apt:
+        name: "{{item.a}}"
+        state: present
+        update_cache: "{{item.b}}"
+      with_items:
+        - {a: openjdk-11-jdk,b: yes}
+        - {a: git,b: no}
+        - {a: maven,b: no}
+    - name: Download jenkins.war
+      get_url:
+        url: https://get.jenkins.io/war-stable/2.375.2/jenkins.war
+        dest: /home/ubuntu
+- name: Configure tomcat
+  hosts: servers
+  tasks:
+    - name: Install tomcat9 and tomcat9-admin
+      apt:
+        name: "{{item.a}}"
+        state: present
+        update_cache: "{{item.b}}"
+      with_items:
+        - {a: tomcat9,b: yes}
+        - {a: tomcat9-admin,b: no}
+    - name: Copy tomcat-users.xml file
+      copy:
+        src: tomcat-users.xml
+        dest: /etc/tomcat9/
+      notify: Restart tomcat
+  handlers:
+    - name: Restart tomcat
+      service:
+        name: tomcat9
+        state: restarted
+...
+
+
+===================================================================
+--> above playbook install reqired applications on all remote machine and perform cicd 
+
+
+========================================
+---
+- name: Install required s/w's fir ci-cd
+  hosts: all
+  tasks:
+    - name: Install required s/w's
+      apt:
+        name: "{{item.a}}"
+        state: present
+        update_cache: "{{item.b}}"
+      with_items:
+        - {a: openjdk-11-jdk,b: yes}
+        - {a: git,b: no}
+        - {a: maven,b: no}
+        - {a: tomcat9,b: no}
+        - {a: tomcat9-admin,b: no}
+- name: Continuous Download and Continuous Build
+  hosts: devserver
+  tasks:
+    - name: Download dev code from github
+      git:
+        repo: https://github.com/intelliqittrainings/maven.git
+        dest: dev-git
+    - name: Build an artifact from the downloaded code
+      shell: cd dev-git;mvn package
+    - name: Fetch artifact from dev server to controller
+      fetch:
+        src: dev-git/webapp/target/webapp.war
+        dest: /tmp
+- name: Continuous Deployment and Continuous Testing
+  hosts: qaserver
+  tasks:
+    - name: Deploy artifact into tomcat on qaserver
+      copy:
+        src: /tmp/172.31.48.111/dev-git/webapp/target/webapp.war
+        dest: /var/lib/tomcat9/webapps/testapp.war
+    - name: Download selenium scripts
+      git:
+        repo: https://github.com/intelliqittrainings/FunctionalTesting.git
+        dest: test-git
+    - name: Execute selenium scripts
+      shell: java -jar test-git/testing.jar
+- name: Continuous Delivery
+  hosts: prodserver
+  tasks:
+    - name: Deploy artifact into tomcat on the prodservers
+      copy:
+        src: /tmp/172.31.48.111/dev-git/webapp/target/webapp.war
+        dest: /var/lib/tomcat9/webapps/prodapp.war
+==================================================

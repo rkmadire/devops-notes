@@ -1,0 +1,38 @@
+copy module
+==================
+The copy module in Ansible is used to copy files from the local machine to remote hosts. It allows you to copy a single file or multiple files using patterns.
+------------------------------------------------------
+add hoc command syntax
+--------------------------
+$ansible all -m copy -a 'src=file2 dest=/tmp' -->this will copy file2 to all managed nodes 
+-->copy module also modified the content 
+$asible all -m copy -a 'content="welcome" dest=/tmp/file2'
+	-->above file2 will be modified.
+	-->copy module not also modified file its also change permissions based on their permission on their user 
+$asible all -m copy -a 'src=file2 dest=/tmp owner=root group=sai mode=740' -b
+---------------------------------------------
+basic syntax: yaml file
+--------------------------------------------
+- name: copy a file
+  copy:
+    src: <local file or directory>
+    dest: <remote file or directory>
+------------------------------
+-->You can also use patterns to copy multiple files. For example, to copy all files in the local directory "files" with the extension ".conf" to the remote host's "/etc" directory:
+------------------
+- name: copy all .conf files to remote host
+  copy:
+    src: files/*.conf
+    dest: /etc
+------------------------
+-->Additionally, you can use the remote_src option to copy files from one remote host to another:
+-------------------
+- name: copy file from remote host to remote host
+  copy:
+    remote_src: true
+    src: /path/to/file
+    dest: /path/on/remote/host
+----------------------------------------
+-->You also can use the mode, owner, group and backup options to set file permissions and make a backup of the file before overwriting it.
+-->It's worth noting that the copy module is different from the fetch module, which is used to copy files from remote hosts to the local machine.
+----------------------------------------------------

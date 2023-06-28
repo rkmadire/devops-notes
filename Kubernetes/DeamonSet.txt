@@ -1,0 +1,32 @@
+DeamonSet: 21:00 min 30:00 min docker kubernetes 25th session  
+----------------------------------
+-->deamonset it is an object it ensure that each one copy available on each and every slave in the cluster 
+-->this is used for mainly for logs collector
+$vim daemonset.yml
+=================================
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-daemonset
+  labels:
+    type: proxy
+spec:
+  selector:
+    matchLabeels:
+      type: proxy
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        type: proxy
+    spec:
+      containers:
+        - name: mynginx
+          image: nginx        
+
+...
+======================
+-->from above file daemonset definition file it will ensure all slave machine containe on set of nginx pod must be availabel at any time 
+-->even increasing and decreasing slaves also it will take care of everything nginx service must be present on each slave
+==================================

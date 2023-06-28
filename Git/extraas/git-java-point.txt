@@ -1,0 +1,42 @@
+GIT
+---------------------------------------
+1.git is a widely used open source distributed version control system tool
+2.it is designed to handle major and minor projects with high speed and efficiency
+3.the version control system allow us to moniter and work together with our
+  team members at the same workspace
+4.git is a foundation of many services like github and gitlab. but we can use git without 
+  any git services
+5.git was created by linus torvalds in 2005 to develop linux kernal
+6.it is also used important distributed version control tool for devops
+--------------------------------------
+features-git
+--------------------------------------
+1.open source 
+2.scalability
+3.security
+4.speed
+5.distributed
+6.support non-linear development
+7.braching and merging
+8.data assurance
+9.staging area
+10.maintain the clean history  
+----------------------------------------
+opensource: git is a open source tool it is released under GPL (general public license)
+-------------------------------------------------------------------------------------
+scalability: git is scalable, which means when the number of usersincreases, the git can
+	     easily handle such situations
+------------------------------------------------------------------------------------
+Distributed: Distributed means instead of switching the project to another machine,
+	     we can create a "clone" of the entire repository. also instead of just having 
+	     one central repository that you send changes to, every user has their own repository
+	     that contain the entire commit history of the project.
+	----we do not need to connect remote repository, the change is just stored on our local repository
+	     if necessary, we can push these changes to a remote repository
+--------------------------------------------------------------------------
+security: git is secure. it uses the SHA1 (Secure Hash Function)
+----------------------------------------------------------------------------
+speed: git is very fast, so it can complete all tasks in a while. 
+       most of the git operation in local repository, so it provide a huge speed 
+       also , a centraolized versio control system continuosly communicates with a server 
+-----------------------------------------------------------------------------------------		

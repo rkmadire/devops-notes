@@ -1,0 +1,100 @@
+ansible 7th session handler
+----------------------------
+--> what is handler time 2 min to 20 min 
+---------------------
+A handler in Ansible is a special type of task that can be used to trigger other tasks in an Ansible playbook, based on the result of a previous task. Handlers are defined using the "handler" keyword and are typically notified using the "notify" keyword in other tasks. When notified, handlers will only run if their associated tasks have changed their state. This allows handlers to perform specific actions, such as restarting services or reloading configurations, when needed. Handlers are run only once, at the end of a play, if notified. 
+---------------------
+-->handlers are modules which are excuted if parent module is successfull 
+and has made some changes then next module is excuted that is called as the handlers
+--------------------------
+1.handlers are modules that are excutes if the module in the task section with specified keyword "notify" keyword is successfull and it has also made some changes
+2.handlers are excuted only after al the modules in the task section are excuted 
+3.handlers are excuted in the order only that they are mention in the handler section not in the order that they are called in tasks section 
+4.even if handler is called multiple times in the tasks it will excute only once  
+------------------------------------------
+--> refer playbook Link: https://drive.google.com/file/d/1MJYJ5nNb95S258_mrbU8ATVfIVENTSBM/view?usp=share_link
+------------------------------------------------------
+=================================================
+---
+- name: Configure apache2
+  hosts: all
+  tasks:
+    - name: Install apache2
+      apt:
+        name: apache2
+        state: present
+
+        update_cache: yes
+      notify: Check url response
+    - name: Edit the index.html file
+      copy:
+        content: "Welcome to My IntelliQIT"
+        dest: /var/www/html/index.html
+      notify: Restart apache
+  handlers:
+    - name: Restart apache
+      service:
+        name: apache2
+        state: restarted
+    - name: Check url response
+      uri:
+        url: "{{item}}"
+        status_code: 200
+      with_items:
+        - http://172.31.57.12
+        - http://172.31.59.208
+...
+
+=======================================================
+$ansible-playbook playbook15.yml -b
+	-->it will excute playbbok
+note:observe above playbook when you run playbook apache will install and edit the index.html and restart apche and check url connection
+-->if you excute second time same playbook it will stop at index.html
+   if edit the gets second time excuting it will display green so there is no changes apply in the index.html then handler will not restart apache 
+-->simple terms Handlers are madules which are Excuted if the parent module successfull and it made some changes then next module is excuted that is modules  
+-------------------------------------
+ubuntu@Controller:~$ ansible-playbook test1.yml -b  -- when i excute this command it will display like this -->first time excute
+
+PLAY [Configure apache2] *******************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [172.31.0.162]
+
+TASK [Install apache2] *********************************************************
+ok: [172.31.0.162]
+
+TASK [Edit the index.html file] ************************************************
+changed: [172.31.0.162]
+
+RUNNING HANDLER [Restart apache]  -->here above task edit the index.html running first time so handler excuted  ***********************************************
+changed: [172.31.0.162]
+
+PLAY RECAP *********************************************************************
+172.31.0.162               : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+------------------------------------------------------
+
+ubuntu@Controller:~$ansible-playbook test1.yml -b  --> when i excuted this second time same command i will get this like 
+
+PLAY [Configure apache2] ****************************************************************************
+
+TASK [Gathering Facts] ******************************************************************************
+ok: [172.31.0.162]
+
+TASK [Install apache2] ******************************************************************************
+ok: [172.31.0.162]
+
+TASK [Edit the index.html file]   -->here this file excuted without modified so there is no changes apply here then it already ecutes first time now it will not excutes handler section second time  *********************************************************************
+ok: [172.31.0.162]
+
+PLAY RECAP ******************************************************************************************
+172.31.0.162               : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+----------------------------------------------------------------------------------------------------------------------------------------------
+observer both output above 
+=================================
+note:after all reading about handler my simple explanation for understanding 
+-->notify is a keyword regarding to handler 
+-->handler can be excute only once in a playbook, how many times you specify still it excutes only once
+-->to excute handler section next time handler parent module must be modified and excute then only it will excutes
+-------------------
+===========================================================
+ 

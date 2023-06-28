@@ -1,0 +1,175 @@
+ansible 5th Session min 1:00 min to 25 min
+------------------
+1.Global scope Variables
+2.Play scope Variables
+3.Host scope Variables
+------------------------
+Global scope Variables:
+-------------------
+
+- name: Install/uninstall s/w apps
+  hosts: all
+  tasks:
+    - name: Install/Uninstall
+      apt:
+        name: tomcat9
+        state: present
+        update_cache: yes
+--------------------------------
+note: above ansible playbook is replaced with below playbook for better reuseability playbooks here vars added
+----------------------------------------------------------
+- name: Install/uninstall s/w apps
+  hosts: all
+  tasks:
+    - name: Install/Uninstall
+      apt:
+        name: "{{a}}"
+        state: "{{b}}"
+        update_cache: "{{c}}"
+-----------------------------------
+name: "{{a}}" --> variable
+state: "{{b}}" -->variable
+update_cache: "{{c}}" -->variable  
+---------------------------------
+$ansible-playbook playbook1.yml --extra-vars "a=tree b=present c=yes" -b
+note: above command work based on playbook1.yml
+      only one play book is enough in this scenario to download
+     multiple packages using variables
+--> one playbook is enough to install multiple applications
+------------------------------------------------------------------
+--> one more different scenario
+
+---
+- name: Create users and create files/dirs in users home dir
+  hosts: all
+  tasks:
+    - name: Create users
+      user:
+        name: "{{a}}"
+        password: "{{b}}"
+        home: "{{c}}"
+    - name: Create files/dirs in users home dir
+      file:
+        name: "{{d}}"
+        state: "{{e}}"
+...
+------------------------------------------------------------------
+$ansible-playbook playbook2.yml --extra-vars "a=raju b=intelliqit c=/home/raju d=/home/raju/file1 e=touch" -b 
+-----------------------------------------------------------------
+-->again suppose another day i wnat to create ramu user and password that user provide home and create a new file2
+-->so here use same playbook2.yml again
+$asible-playbook playbook2.yml --extra-vars "a=ramu b=ramu1234 c=/home/ramu d=/home/ramu/file2 e=touch" -b
+-----------------------------------------------------------------
+note: main usage of this reuse the playbook again 
+      reuseability 
+--------------------------------------------------------------------
+paly scope variables: 
+----------------------------
+	
+- name: Install/Unstall s/w apps
+  hosts: all
+  vars:
+    - a: tomcat9
+    - b: present
+    - c: yes
+  tasks:
+    - name: Install/Unstall 
+      apt:
+        name: "{{a}}"
+        state: "{{b}}"
+        update_cache: "{{c}}"
+-------------------------------------------
+note: here see the difference between global scope variables and 
+      play scope variables
+
+--> vars:
+    - a: tomcat9
+    - b: present
+    - c: yes
+--> these vars section added here
+--> main thing is here suppose our organisation 
+    have db-server 10 servers available and --> think this is one group
+         web-server 10 servers available --> think this is one set of group
+-->we dont need same application on the all servers i want to install 10 servers which is db-servers need mysql
+-->install apache2 on web-servers on the 10 servrers 
+-->when you run that playbook it will install tomcat9 into all servers
+--> $ansible-playbook playbook3.yml --extra-vars "a=git" -b 
+	--> the above command simply takes git to install it will replace tomcat9 when use this command 
+-->global scope variables bypass the play scope variables 
+-->play scope variable are templates i can use them freqqently 
+-->some cases i dont need them so i put --exra-vars which is global scope variable it will bypass the playscope variables
+------------------------------------------------------------------------------------
+Host scope variables: it is desined to work on group of machines in their are two categories       
+
+	a)variables that are designed to work on a group of hosts
+
+	b) variables that are desined to work on a sigle host
+ 
+--------------------------------------
+-->first create a directory where all playbooks available
+--> $mkdir group_vars
+    $ cd group_vars -->enter in to directory
+-->create a file here with same groupnaname available in the (/etc/ansible/hosts)  inventory file 
+	suppose:
+	--------
+	vim db-server -->filename 
+	=========================
+	---
+	a: firewalld
+	b: present
+	c: yes
+	...
+	=====================
+-----------------------------------------------
+-->filename playbook4.yml
+---------------------------------------------------------
+- name: Install firewall using host scope variables
+  hosts: db-servers 
+  tasks:
+    - name: Install firewall
+      apt:
+        name: "{{a}}"
+        state: "{{b}}"
+        update_cache: "{{c}}"
+--------------------------------------------------------------------------------------------------------------
+--> $ansible-playbook playbook4.yml -b
+	-->when you performing above command it will check file name which db-servers and install that package in all the db-servers group
+-----------------------------------------------------------
+b) variables that are desined to work on a sigle host:
+		--> now create a directory with host_vars	
+		--> enter in to directory create a file with system ip_private_address which available in inventory file    
+===================================
+	$vim 172.31.61.227 -->this filename available in the inventory file also 
+	============================================================
+	---
+	a: Radha
+	b: intelliqit
+	c: /home/Radha
+	d: 8888
+	e: /bin/bash
+	f: "a regular user"
+	...
+	=============================================================
+--> now create a playbook 
+	vim playbook5.yml
+	======================================================		
+
+- name: User creation uisng host scope varibales
+  hosts: 172.31.61.227
+  tasks:
+    - name: Create user
+      user:
+        name: "{{a}}"
+        password: "{{b}}"
+        home: "{{c}}"
+        uid: "{{d}}"
+        shell: "{{e}}"
+        comment: "{{f}}" 
+
+=======================================================================
+
+ -->$ansible-playbook playbook6.yml -b
+		-->run this command for single host 
+-----------------------------------------------------------------------------
+
+ 

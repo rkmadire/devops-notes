@@ -1,0 +1,14 @@
+1.what is cache busting
+-------------------------
+-->it will prevent to run docker cache memory at the time of biuld the image from dockerfile in the 2nd time
+ex:
+---
+-->docker file containe multiple instructions to build an image 
+cahe memory will store all instructions at the time of build the image from first time
+-->now i want to run same dockerfile with latest version of software so i am use cache-busting concept to prevent older version software to download
+==========================
+2.docker compose file
+----------------------
+-->docker compose file used to setup multicontainer architecture or microservices
+-->docker compose file used to work on yaml scriptig language
+======================

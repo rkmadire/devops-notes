@@ -1,0 +1,235 @@
+Docker-kubernetes 24rd session
+-------------------------------------------
+Service Objects 2:00 min to 
+----------------------
+1.NodePort
+2.LoadBalancer
+3.Cluster IP
+     ---   Headless
+---------------------------
+-->service object one of the high level object in kubernetes it is maintain ip of the pods
+-->service object containe three types of sub objects 
+1.NodePort
+2.Loadbalancer
+3.ClusterIP 
+4.Headless (this is clssification of cluster ip )
+-->remember there are only three sub objects in sservice object
+----------------------
+NodePort:
+-------------
+In Kubernetes, a NodePort is a type of service that exposes a Kubernetes service on each node's IP address at a static port. This means that the same port number on every node in the cluster will forward traffic to the same service.
+
+When you create a NodePort service, Kubernetes will allocate a port number in the range of 30000-32767. You can also specify a specific port number if you want to, but it must be within this range. Once the NodePort service is created, Kubernetes will allocate a random port number from the specified range to forward traffic to the service.
+
+NodePort services are typically used to allow external traffic to access a Kubernetes service. When you create a NodePort service, Kubernetes will create a mapping between the specified port number and the service. You can then use the node's IP address and the specified port number to access the service from outside the cluster.
+------------------
+example:
+-------------
+$vim pod-definition3.yml
+============================
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jenkins-pod
+  labels:
+    type: ci-cd
+    author: intelliqit
+spec:
+  containers:
+    - name: myjenkins
+      image: jenkins/jenkins
+      ports:
+        - containerPort: 8080
+          hostPort: 8080
+...
+==============================
+-->from above file we have jenkins service to access jenkins i provide hostPort:8080 
+-->execute command to run pod 
+$ vim kubectl apply -f pod-definition3.yml
+$ kubectl get all
+-->observe jenkins pod created in the cluster one of the machine 
+-->to access jenkins take public ip of server where jenkins placed in cluster then only it will access 
+-->but i want to access jenkins from at the level of cluster (cluster means combination of multiple machines)
+-->so we need to establish network load balancer 
+-->actually in kubernetes network load balancer not perform directly
+-->to perform network load balancer we use NodePort object via this service it will work
+-->in simple create NodePort service object it will help to perform Network load balancing 
+-->create a nginx service with no ports
+$ vim pod-definition1.yml
+===================================
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    type: proxy
+    author: intelliqit
+spec:
+  containers:
+    - name: mynginx
+      image: nginx
+...
+================================================
+$ kubectl apply -f pod-definition1.yml
+-->from above file nginx service created with no ports
+-->now i will create service definition file to access nginx service from at the level cluster level
+$ vim service1.yml
+=================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: niginx-service
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 30008
+  selector:
+    type: proxy
+    author: intelliqit
+    
+=================================================================================
+targetport -->it means container port
+port --> it means service port
+nodeport -->it means host port
+note: thet node port shoud be 30000 to 32767 only 
+-->now from above pod-definition1.yml  (containe nginx service without ports) 
+-->above service1.yml file containe ports which is related to access nginx service
+-->so here we give 
+-------------------------------------------------------------------------------------------------
+on pod-definition1.yml			service1.yml
+---------------------------------- 			----------------------
+selector:					selector:
+  type: proxy				  type: proxy
+  author: intelliqit				  author: intelliqit
+--------------------------------------------------------------------------------------------------------
+-->from above 2 file we provide in the labels selector same information
+-->based on selector information it will match and access through service 
+Q:how do you link a service with pod
+ans:using selector we give labelsthose labels matching with the labels you give in the pod-definition file like that it will work
+---------------------------------------------------------------------------------------------
+-->Nodeport capability to perform Network loadbalncing 
+-----------------------------------------------------------------------------------------------------------------
+$ kubectl get all
+-->ow observe nginx service containe 30008 port to accsess service from cluster level 
+================================================================================
+Loadbalacing 26:00 min
+----------------------------------
+ -->load balcing perform increasing and decreasing slaves in the cluster based on bussiness requirements 
+ -->loadbalancer generate new external ip that is linked with all slaves in the cluster related to that httpd service
+$ vim pod-definition4.yml
+=================================
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd-pod
+  labels:
+    author: intelliqit
+spec:
+  containers:
+    - name: myhttpd
+      image: httpd
+...
+===================================
+$ vim kubectl apply -f pod-definition4.yml
+$ kubectl get all
+-->from above file containe httpd pod 
+
+$ vim service2.yml
+======================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-service
+spec:
+  type: LoadBalancer
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 30009
+  selector:
+    author: intelliqit
+====================================
+$ kubectl apply -f service2.yml
+--> from above file it will create loadbalancer and attach with  previously created httpd  service using pod-definitio file based on selctor
+============================================
+ ClusterIP 35:00 min
+----------------------------------
+-->create pod which is not use for external world it will only use for within the cluter which means (private subnet) inside cluster 
+============================
+ClusterIp: 4:00 min to 12:00 min docker-kubernetes 25th session  
+-->cluster ip means it is private subnet in the kubernetes clusterip object only provide private address to pods in kubernetes
+ex:
+----
+-->create a pod which is not use external world ot will only works other pods i the cluster which means (private subnet) inside cluster 
+-->cluster ip mainly used for when you want to use pods inside cluster the cluster not used for external world 
+Note: cluster ip is default service object
+--------------------
+$vim pod-definitionfile2.yml
+================================
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-pod
+  labels:
+    type: db
+    author: intelliqit
+spec:	
+  containers:
+    - name: mydb
+      image: postgres
+      env:
+        - name: POSTGRES_PASSWORD
+          value: intelliqit
+        - name: POSTGRES_USER
+          value: myuser
+        - name: POSTGRES_DB
+          value: mydb
+==============================
+-->from baove file containe postgres database it will link with service by using cluster ip
+-->postgres is database so i put postgres database in cluster ip for used for internally
+-->cluster ip will give olny on private address to the postgres pod
+-->now i create clusterip service object and link with it by selector
+$ vim service2.yml
+============================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+spec:
+  ports:
+    - targetPort: 5432
+      port: 5432
+  selector:
+    type: db
+    author: intelliqit
+...
+==========================
+-->from above file spec section there is no type key becuase cluster ip is default if do not specify there it will take cluster ip only
+
+-----------------------------------
+Recap in docker-kubernetes 25th class 1:00min to 4:00 min
+Nodeport:
+-->NodePort is one type of service in the kubernetes service object it perfom network loadbalancing in the kubernetes cluster
+Ex:
+-->suppose we have 10 slaves in the cluster. Now i created one httpd pod that pod will be placed on one slave in the cluster
+-->Now i want to access the httpd for that need to idetify the slave where httpd pod have been placed take that slave public ip paste on browser with port, and remaining slaves ip we cant access
+--> to overcome this problem we use NodePort it will balance the network where ever httpd pod placed we able to access the httpd pod 
+-->suppose take any  slave public ip with port number now we can able to access the httpd pod 
+-------------
+LoadBalncer:
+-->loadbalncer means increasing and decreasing slaves inside cluster based on bussiness requirements so service lodabalancer provide one uniq public ip it will assigned for entire cluster
+ex:
+-->some scenario slaves or increasing ad decreasing based on bussiness requirements 
+-->if slaves increasing automatically new ip need to take care by dns same like decreasing time also 
+-->to overcome this kubernets provide service loadbalancer it will provide single uniq public ip for entire cluster
+Note: load balancer works only managed kubernetes
+-----------------

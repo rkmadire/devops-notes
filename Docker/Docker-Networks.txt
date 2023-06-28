@@ -1,0 +1,54 @@
+Docker 11 Session Docker Networks 40:min
+-----------------------------------
+Docker Networks
+-----------------
+1.bridge
+2.host
+3.null
+4.overlay
+-----------------------
+-->by default docker runs on bridge network
+-->create multicontainer architecture setup in a single network on each network
+#docker network create network-1
+#docker network create network-2
+
+#docker run --name c1 -it  --network network-1 busybox
+	-->above command will create busybox within network-1
+#docker run --name c2 -it --network-1 busybox	
+	-->above command will create busybox in network-1
+-->now both c1 and c2 in the will communicate with one and another 
+#docker run --name c3 -it  --network network-2 busybox
+	-->above command will create busybox container within network-2 so now it will communicate with c1 and c2
+-->here container can be available multiple networks
+#docker network connect network-2 c2
+	-->now c2 is available both network and c2 communicate with respectively from networks
+-------------------------------
+Bridge:
+---------
+A Docker bridge network is a virtual network that allows communication between Docker containers running on the same Docker host or on different hosts, using a shared network interface called a bridge. By default, Docker creates a bridge network named bridge when it is installed.
+
+When a container is created, it is connected to the default bridge network by default. This allows the container to communicate with other containers on the same network. Containers can be connected to other bridge networks or to other types of networks, such as host networks or overlay networks.
+
+Bridge networks provide a secure and isolated environment for containers to communicate with each other without interfering with the host network. They also allow containers to share resources and services with each other, such as databases or web servers.
+
+You can create a new bridge network using the docker network create command and specifying the driver type. You can also specify additional options, such as the IP address range and subnet mask.
+
+Overall, bridge networks are a powerful tool for managing communication between containers and enabling microservices architectures.
+-------------------------
+Docker Networks are virtual networks that allow communication between Docker containers and with the external network. Docker provides several types of networks that can be used depending on the use case and requirements of the application.
+
+Here are some common types of Docker networks:
+
+Bridge Network: This is the default network type in Docker and allows communication between containers on the same host. Each container connected to the bridge network is assigned an IP address from a private range.
+
+Host Network: This allows containers to share the network stack with the Docker host, meaning that containers will use the host's network interface directly. This can provide better network performance but may also introduce security risks.
+
+Overlay Network: This network type allows communication between containers running on different Docker hosts. It is useful for deploying applications in a distributed environment.
+
+MACVLAN Network: This allows you to assign a MAC address to each container, making it appear as if the container is directly connected to the physical network. This can be useful for certain types of networking requirements.
+
+None Network: This network type isolates the container from the network entirely. It can be useful for testing or debugging purposes.
+
+You can create and manage Docker networks using Docker CLI commands or through Docker Compose, which is a tool for defining and running multi-container Docker applications.
+
+Overall, Docker Networks provide a flexible and powerful way to manage network communication between containers and external systems, enabling complex and distributed applications to be deployed with ease.

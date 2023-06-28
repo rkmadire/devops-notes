@@ -1,0 +1,6 @@
+dryrun: ansible 12th session 38:00 min
+-----------
+syntax: $ansible-playbook1.yml -b --check 
+	-->above command check playbook running perfectly or not
+note: To run playbook periodically first check the playbook so by dryrun command we used to check playbooks excution is ok or not  
+---------------------------

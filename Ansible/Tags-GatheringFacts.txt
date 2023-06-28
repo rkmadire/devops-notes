@@ -1,0 +1,65 @@
+ansible 6th session 
+-----------------------
+tags time 26 min
+------------
+-->tags is nothing but it is a aliases which are given to module name in your playbook
+-->once you give tags you have more control over modular control on the excution of ansible playbooks
+-->currently when we are running playbooks entire playbook is running 
+-->i dont want to run entire playbook everytime in that scenario we use tags concept 
+-->when you creating playbooks and entering modules under the module give tags it will help to excutes select which one to be excute
+Link:  https://drive.google.com/file/d/1YcXqRa_Hm7gAIYIp9mXaV1XMwIQuPI7z/view?usp=share_link
+----------------------------------------
+---
+- name: Implementing tags
+  hosts: all
+  gather_facts: false
+  become: yes
+  tasks:
+    - name: Install tree
+      apt:
+       name: tree
+       state: present
+       update_cache: yes
+      tags: tree_installtion
+    - name: Create user
+      user:
+        name: anu
+        password: intelliqit
+      tags: user_create
+    - name: Copy passwd file
+      copy:
+        src: /etc/passwd
+        dest: /tmp
+...
+==========================================================
+$ansible-playbook playbook14.yml -b
+	-->it will excute entire playbook
+$ansible-playbook playbook14.yml --tags="tagged" -b
+	-->it will excute only tags modules only
+$ansible-playbook playbook14.yml --tags="untagged" -b
+	-->it will only excute untagged modules
+$ansible-playbook playbook14.yml --tags="user_create" -b 
+	--> it will only excutes user modules
+
+--->using tags we have more control over ansible playbooks
+===============================================================
+gathering facts:
+---------------------
+-->you can see everytime running a playbook at first time dispalying "Gathering facts" 
+--->gathering facts it is a module it capture the system information of the remote server 
+--->if you want to prevent this and you can give
+------------------------------------- 
+- name: Implementing tags
+  hosts: all
+  gather_facts: false
+  tasks:  
+-----------------------------------------
+
+-->And also if you dont want give " -b " everytime in the command mode give  like this in the playbooks
+-------------------------------------------------------------------------------------------------------------------------------
+- name: Implementing tags
+  hosts: all
+  gather_facts: false
+  become: yes
+  tasks:
+-----------------------------------------------------------------------------------------------------------------------------------------------------	

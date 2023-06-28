@@ -1,0 +1,64 @@
+Container orchestration Docker 14th session
+-------------------------
+Container orchestration it means load balancing huge amount of data sittig in my application i should able to increase no. of containers and i should able to handle that and scaling depending  bussines requirements need to be do scale up and down without customer facing down time 
+--------------
+rolling update
+------------------
+rolling update means software update from one version to another version 
+-------------------
+High availability
+-----------------
+High availability means even if container crashes the desired state is always maintained 
+------------------
+-->this is called container orchestration 
+-------------------------
+-->to perform Container orchestration there are different tools 
+1.Docker swarm
+2.kubernets
+3.open shift
+4.AWS ECS
+5.Apache Mesos
+------------------------------
+-->Docker will be setup on one machine that machine called manager remaining machines which going to take workload these machines called workers
+-->we are excuting commands from manager machines
+-->manager and workers setup called as docker swarm cluster it is a combination of manager machine and cluste machine  
+-------------------------------------------------------
+step1: first launch 3 instances in aws 
+step2: connect each machines download docker in that machines 
+	$sudo su - root
+	#curl -fsSL http://get.docker.com -o get-docker.sh
+	#sh get get-docker.sh
+step3: connect to manager machine 
+	#sudo su - root
+	#docker swarm init
+-->from above command current machine convert to manager 
+-->and that command display a token for worker machines conect worker machines and paste token over there then those machine work like workers of manager machine
+	#docker node ls
+	-->display managers and nodes
+-->manager status is leader (or) Reachability
+	#docker service create nginx 
+	-->above command to create contaier
+-----------
+Quoram:
+---------
+Quoram it is an application it checks the hardware availability of machines (how many machines and their hardware details cpu ram memory) it checks based on that quoram uses an algorithm which called as RAFT algorithm the quoram desides which container run on which machines 
+-----------------------------
+#docker service create --name webserver -p 8888:80 --replicas 5 nginx
+-->here from above command creating 5 containers from single nginx software and all 5 containers only have one nginx image software running 
+#docker service ls
+	-->to display services
+#docker service ps webserver
+	-->to see webserver running 
+#docker service create --name mydb -e MYSQL_ROOT_PASSWORD=intelliqit --replicas 3 mysql
+#docker service ls
+#docker service ps mydb
+#docker service rm mydb 
+	-->to delete services 
+---------------------------------------------------------
+#docker swarm init
+#docker service create --name webserver -p 8888:80 --replicas 5 nginx
+#docker service ls
+#docker service ps webserver
+#docker service ls
+#docker service ps mydb
+#docker service rm mydb webserver

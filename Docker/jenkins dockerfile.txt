@@ -1,0 +1,17 @@
+jenkins dockerfile create docker 10th session
+---------------------------------
+#docker run --name j1 -d -P jenkins/jenkins
+	-->from above command jenkins container will start with j1 name 
+-->here to istall packages there are no chioce because jenkins is a normal jenkins is a user 
+-->to do install packages at the level of dockerfile
+#vim dockerfile
+----------------------------
+FROM jenkins/jenkins
+MAINTAINER thej
+USER root
+RUN apt-get update 
+RUN apt-get install openjdk-11-jdk -y
+RUN apt-get install maven git -y
+
+--------------------------
+-->from above dockerfile jenkins user first convert to root user and then we are installi packages like java,git,maven 

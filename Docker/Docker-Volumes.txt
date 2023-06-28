@@ -1,0 +1,42 @@
+volumes in docker docker 7th session 24:00 min
+-----------------------------------------------------------------
+-->in docker containers are epharmal (temporary) 
+-->if containers will be deleted after the work the data will be stored on volumes
+Volumes are three types
+----------------------------------
+1.simple docker volume
+2.sharable docker volumes
+3.docker container volumes
+----------------------------------------
+1.Simple Docker Volume:
+------------------------------------
+-->even if contaiers gets deleted the data will be available on the host machine is called simple docker volumes 
+ex:
+#docker run --name u1 -it -v /database ubuntu
+	-->from above command will create ubuntu container out of image it will added with volume name called database inside cotainer that dir will be available 
+-->inside the /database directory whatever modification happens that iformation available on host machine even if container deleted 
+-->path on host machine /var/lib/docker/volumes/container-volumeid/_data/
+-----------------------------------------
+2.Sharable Docker volumes: docker 8th session 1:00 min
+----------------------------------------
+-->volumes are preserving data even after container gets delete 
+-->sharable docker volumes are sharing single volume to multiple containers
+ex:
+#docker run --name c1 -it -v /data centos
+	-->from above command centos container running with /data directory volume
+#docker run --name c2 -it --volumes-from c1 centos
+	-->from above centos container running with c2 name volume attached from c1 using sharable volume
+#docker run --name c3 -it --volumes-from c2 centos 
+	-->from above command centos container running with c3 nanme with attched volume from c2 using sharable volume 
+------------------------------------------------------------------
+3.Docker container volumes: docker 8th session 10:00 min
+----------------------------------------
+-->docker container volumes are birectional which means whether you create files on host machine that information will be available on containers and whether you modified data on containers data will be avaialable on host machine 
+-->to do this first create volume
+#docker volume create myvolume
+-->now attach this myvolume to containers 
+#docker run --name -it -v myvolume:/tmp ubuntu
+	-->from above command ubuntu container will create with attched with myvolume to mouted in /tmp 
+-->inside whatever modification happen that data will be reflected on host machine path /var/lib/docker/volume/myvolume
+-----------------------------------------------------------
+

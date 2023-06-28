@@ -1,0 +1,93 @@
+Docker Session 8th session
+----------------------------
+Create customized Docker Images 26:00 min 
+-------------------------------
+there are two ways to create images
+--------------------------------------
+1.To create a docker image from a docker file
+ #docker build -t image_name .
+2.To create an image from customized container 
+ #docker commit container_id/container_name image_name 
+-----------------------------------------
+1.what is purpose to create customized container to convert into image
+-->customised images is nothing but snapshot of our existing machine
+-->if we create image from our os with some specific software 
+-->from next time using that image we simply run as comtainer from that image use with existing software also 
+----------------------------------------------------
+#docker run --name u1 -it ubuntu
+	-->it will run as u1 container ubuntu os 
+install some git, jenkins , java , maven, tomcat9, and tomcat9-admin make some configuration changes related to our specific need 
+-->convert that os into image 
+#docker commit u1 myimage
+	-->above command convert our existing os into image 
+
+-->next time i simply run that image use with my existing software without downloading second time 
+
+==================================================
+Docker File
+-----------
+Keyword used in dockerfile
+-----------------------------
+1 FROM  (represents base image)
+2.MAINTAINER (represents name of the org name of the person)
+3.RUN (represents linux commands)
+4.EXPOSE (represents ports to define)
+5.VOLUME 
+6.COPY 
+7.ADD (add can also copy files from host machine into customised image apart from that add also copy remote server file and copy into image )
+ -->ADD download files from remote server to image files 
+ -->tar file can copied into image and extracted automatically 
+8.USER (set username)
+9.SHELL (to specify shell to enter)
+10.CMD
+11.ENTRYPOINT
+	-->every container triggers one command
+	-->if you specify defaults process using CMD instruction in the docker run command you can bypass it 
+	-->where if you specify defaults process is entrypoint in the docker file we cant modified
+	-->both CMD and ENTRYPOINT use to specify the default process to trigger at the time of creating the container    
+12.LABEL
+-->label is used to store key and values pairs 
+13.STOPSIGNAL
+	-->inorder to stop that container 
+========================================================
+Docker 9th Session
+-------------------
+-->customised image create it means 
+-->first install ubuntu like os install some other usefull softwares on top of os 
+-->from that os we are commiting to image is called customised os
+#docker commit container_name image_name
+-------------------------------------------
+create image from dokcer file  
+#vim dockerfilename
+-----------------------------
+-------------------------------------
+-->from above file we are providing some software to install at the time installation
+#docker build -t myubuntu .
+-->from above command defined it will build an image from above file from the currect directory location 
+-----------------------------------------
+-->docker file consume very less amount of space compare to images  
+-->from using docker file easily run containers after the work over we can delete the containers
+-------------------------------------------------------------------
+=========================================================
+Cache Busting
+-----------------
+-->cahe busting one type of concept to run docker file from fresh 
+-->see the scenario like suppose i create a docker file with some git maven openjdk-11-jdk
+-->i want to add some more software  to my or update the software existig software after 2 moths in the gap of two months maybe in the repo new version oftware maybe available tp download them  
+-->for that i need to make bypass cache store run below command
+#docker build --no-cache -t give_image_name . 
+----------------------------------------------------------------
+VOLUME 41:min docker 9th session
+-----------------------------------
+FROM centos
+MAINATAINER intelliqit
+
+VOLUME /data
+-------------------
+#docker build -t mycentos .
+	-->above command will create mycentos image from docker file
+-->above docker docker come up with volume
+--------------------------------------------------
+-->to build image with different name in the same directory
+#docker build -f dockerfile1 -t image_name .
+--------------------------------------------------

@@ -1,0 +1,147 @@
+Docker 6th Session Docker compose
+--------------------------------------
+-->To set up multicontainer architecture we use --link option to set up multicontainer architecture but this --link is depricated (outdated) for that we use "Docker compose" to set up multiconatiner architecture 
+-->Docker compose use to work based on YML files yml is not programming or scripted language YML is just a representing data 
+-->creating Docker compose file
+#vim docker-compose.yml
+=============================
+---
+version: '3.8'
+services: 
+  mydb:
+    image: mysql:5
+    environment:
+      MYSQL_ROOT_PASSWORD: intelliqit
+  
+  mywordpress:
+    image: wordpress
+    ports:
+      - 8888:80
+    links:
+      - mydb:mysql
+...
+=================================== 
+#docker compose up -d 
+	-->above command to run docker-compose file 
+-->from above docker file we use to set up multicontainer architecture from download images mysql and wordpress to run as container   
+#docker compose stop 
+	--> above command to stop docker compose file 
+#docker compose start 
+	-->above command to start docker compose file 
+#docker compose down 
+	-->above command to stop container and delete the container 
+========================================
+Another use case
+--------------------
+Setup CI-CD environment where jenkins container is linked with two tomcat containers for QA-server and Prod-server 
+----------------------------------------------
+#vim docker-compose.yml
+=======================================
+---
+version: '3.8'
+services:
+  myjenkins:
+    image: jenkins/jenkins
+    ports:
+      - 5050:8080
+
+  qaserver:
+    image: tomee
+    ports:
+      - 6060:8080
+    links:
+      - myjenkins:jenkins
+
+  prodserver:
+    image: tomee
+    ports: 
+      - 7070:8080
+    links:
+      - myjenkins:jenkins
+...
+============================================
+#docker compose up -d 
+	-->to run docker compose file 
+-->from above file we setup jenkins and two tomcat muticontainer architecture 
+-------------------------------------------------------
+==============================================================  
+Docker compose file
+------------------------
+A Docker Compose file is a YAML file that defines how to build and run a multi-container Docker application. It allows you to define all the services that make up your application, their configuration options, and how they are connected together.
+
+The Docker Compose file usually includes the following sections:
+
+Version: specifies the version of the Compose file syntax to use.
+
+Services: defines the services that make up your application, their images, ports, environment variables, and other configuration options.
+
+Networks: defines the networks that connect your services together, their IP address ranges, and other configuration options.
+
+Volumes: defines the volumes that your services use to store persistent data, their paths, and other configuration options.
+
+Environment variables: defines environment variables that can be used by your services.
+
+Here's an example of a simple Docker Compose file that defines two services, a web server and a database:
+===========================================
+version: '3'
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+=================================================
+In this example, the web service uses the nginx:latest image and maps port 80 on the host to port 80 in the container. The db service uses the mysql:latest image and sets the MYSQL_ROOT_PASSWORD environment variable.
+
+You can run this Docker Compose file by navigating to the directory where it is saved and running the following command:
+
+#docker-compose up
+
+This will build and start the containers defined in the Compose file. You can then access the web server by navigating to http://localhost in your web browser.
+
+================================================================
+
+
+Here's an example of a Docker Compose file that defines a multi-container application with several options for volumes and networks:
+-->refer Link: https://drive.google.com/file/d/1Z4l4nD1-Ty9SxYqC1-aN3jiX27mO-HGB/view?usp=share_link
+=================================================================
+version: '3'
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+    networks:
+      - my-network
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - my-network
+
+volumes:
+  db-data:
+
+networks:
+  my-network:
+    driver: bridge
+==============================================
+In this example, the web service uses the nginx:latest image and maps port 80 on the host to port 80 in the container. It also mounts the local directory ./html to the container path /usr/share/nginx/html. This allows you to easily update the web content without needing to rebuild the Docker image.
+
+The db service uses the mysql:latest image and sets the MYSQL_ROOT_PASSWORD environment variable. It also creates a named volume called db-data that the container uses to store persistent data.
+
+Both services are connected to a network called my-network, which is defined at the bottom of the file. The my-network network is a bridge network, which means that each container in the network can communicate with each other using their container names.
+You can run this Docker Compose file by navigating to the directory where it is saved and running the following command:
+#docker-compose up
+This will build and start the containers defined in the Compose file. You can then access the web server by navigating to http://localhost in your web browser. The database container will also be running and storing data in the db-data volume.
+===========================================================

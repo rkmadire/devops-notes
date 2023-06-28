@@ -1,0 +1,36 @@
+error---
+------------
+question regarding not establish connetion between github remote repository
+to local repository --- this solution for linux based system
+-----------------------------------------------------------------------
+git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+-----------------------------------------------
+answer from openAI
+---------------------
+-->This error message is indicating that your ssh key is not properly set up or is not being
+ recognized by the GitHub repository you are trying to access. To resolve this issue, you will
+ need to set up an ssh key on your local machine and add it to your GitHub account. Here are the steps to do this:
+
+1.Check for existing ssh keys: Open a terminal and enter the command ls ~/.ssh to see if you already have an ssh key. 
+If you see a file named id_rsa.pub or id_dsa.pub, then you already have a key set up and you can skip to step 3.
+
+2.Generate a new ssh key: If you don't already have an ssh key, enter the command 
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com" to generate a new key. 
+This will create a new ssh key pair, which consists of a private key (stored in ~/.ssh/id_rsa)
+and a public key (stored in ~/.ssh/id_rsa.pub).
+
+3.Add the ssh key to your GitHub account: Go to your GitHub settings and navigate to the "SSH and GPG keys" section. 
+Click on "New SSH key" and enter a title for your key (e.g., "my-computer"). Then, copy and paste the contents of
+ your public key (~/.ssh/id_rsa.pub) into the "Key" field.
+
+4.Test the connection: Run ssh -T git@github.com to test the connection. 
+If everything is set up correctly, you should see a message like "Hi [username]!
+ You've successfully authenticated, but GitHub does not provide shell access."
+
+5.Clone the repository by ssh protocol instead of https.
+
+If you still face the same issue, check the permissions of the ssh folder, and check for the ssh-agent running or not.

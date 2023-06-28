@@ -1,0 +1,33 @@
+cache busting in docker file 17:00 min docker 9th session 
+-----------------------------
+Cache busting in a Dockerfile is a technique used to ensure that a Docker image is built using the latest version of the source code, instead of relying on a previously cached version. This can help prevent issues caused by using outdated dependencies or configurations.
+
+One way to achieve cache busting in a Dockerfile is to use a unique identifier as a build argument. This identifier can be a timestamp, a git commit hash, or any other unique value that changes whenever the source code changes.
+
+Here's an example of how to use cache busting in a Dockerfile using a timestamp as the build argument:
+-----------------------------------------------------------	
+ARG CACHEBUST=1
+RUN apt-get update && apt-get install -y some-package
+--------------------------------------------------------------
+The ARG instruction sets a build argument called CACHEBUST with a default value of 1. When building the Docker image, you can pass a different value for CACHEBUST to force the Docker build process to download the latest version of dependencies:
+----------------------------------------------------------------
+docker build --build-arg CACHEBUST=$(date +%s) -t my-image .
+-----------------------------------------------------------------
+In this example, we're passing the current timestamp as the value for CACHEBUST, which will change every time the Docker image is built. This ensures that the latest version of dependencies is downloaded and installed during the Docker build process.
+-----------------------------------------------------------------------
+#vim dockerfile
+=========================
+FROM ubutu
+MAINTAINER intelliqit
+
+RUN apt-get update -y
+RUN apt-get install -y tree
+RUN apt-get install -y git
+================================
+
+1.to build docker file 
+#docker biuld -t give_image_name .
+2.to build image from docker file for cache busting
+#docker build --no-cache -t give_image_name . 
+------------------------------------------------------
+

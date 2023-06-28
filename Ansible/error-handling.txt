@@ -1,0 +1,63 @@
+ERROR HANDLING 21:00 min ansible 7th session
+================
+---> it is a processs where the module fails still you want to continue the flow of playbook excution then we use error handling
+-->inventory file adding deiffent type os suppose redhat 
+     link: https://drive.google.com/file/d/1ERM7w4xCcD6oufQfEsFFMj4Ok1-a7lAx/view?usp=share_link
+------------------- 
+Block and Rescue
+================
+block:
+---------
+ --> if code present in the block section failes then the control comes into rescue part
+ --> if code is working properly it will not come onto rescue part
+------------------------- 
+scenario based Question
+------------------------
+Q: in my organisation i have 4 servers 
+	2 servers contain ubuntu os 
+	2 servers contain redhat os 
+they both different flavours so they use different module for installing packages ubuntu for apt and redhat for yum modules
+-->here my question in that scenario how will you install git on all seervers  
+---------------------------------
+1. one solution is able to install git using Grouping concept
+2.another solution for that install git using error handling concept 
+------------------------------------------------
+================================
+---
+- name: Error Handling
+  hosts: all
+  tasks:
+    - block:      --> here we use block 
+       - name: Install git using apt
+         apt:
+           name: git
+           state: present
+           update_cache: yes
+      rescue:       --> here we use rescue 
+        - name: Install git using yum
+          yum:
+            name: git
+            state: present
+            update_cache: yes
+      always:
+        - name: Display success msg
+          debug:
+            msg: "Git installation successfull"
+
+===================================
+-->from above playbook 
+-->in the 2 ubuntu machines installed git using apt module using playbook
+-->after 2 redhat machines in that also git will install using yum module by error handling 
+--------------------------------------------------------------
+--> along with block and rescue there are also a keyword "always"
+-----------------------------------------------------------
+debug: to print customized messages 
+----------------------------------------
+-->always module excutes always 
+    =============================================
+    always
+       - name: Display succes meg
+         debug: 
+         msg: "Git installation Successfull" 
+    ==============================================	
+--------------------------------------------------------

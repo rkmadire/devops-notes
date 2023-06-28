@@ -1,0 +1,86 @@
+Docker 15th Session
+-------------------
+#docker service create 
+	-->above command to create containers from one service
+#docker service create  --name websever -p 8080:80 --replicas 4 httpd
+	-->from above command 4 conatiner will be ceated from one httpd service in all swarm machines
+#docker service ls 
+	-->to check docker services list
+#docker service ps webserver
+	-->to check docker service container
+-----------------
+To increas replicas from 4 to 8
+------------
+#docker service scale webserver=8
+	-->from above command existing 4 container increase to 8 container
+#docker service scale webserver=2
+	-->from above command decrease 8 container to 2 container
+--------------------
+#docker service rm webserver
+	-->from above command to delete a service
+----------------------------
+Rolling updates:
+------------------
+-->to update from one version to another version of service is called rolling updates
+#docker service create --name myredis --replicas 4 redis:3
+	-->from above command create redis service with version 3 with foure replicas
+#docker service update --image redis:4 myredis
+	-->above command existing redis:3 version service update to redis:4 version one by one contaier without down the service 
+-----------------
+Rolling rollback update:
+---------------
+#docker service update --rollback myredis
+	-->from above command existing redis service again go back to redis:3 version
+--------------------------------
+High availability:
+-------------------
+-->any point of time desired state cant be changed suppose we specify a service with desired state 6/6 contaier 
+-->some how a container container crashes docker swarm notice there is mismatch of desired state then automatically a new conatainer will be created within in the cluster 
+Drain:
+------
+drain means remove worker from docker swarm at the level of manager machine 
+#docker node update --availability drain worker1
+	-->from above command worke1 machine down for temporary
+	-->then docker swarm identify worker1 machine not reach then docker swarm create new container in the remaing machines to make sure 6/6 containers available
+#docker node update --availability active worker1
+	-->back to working condition worker1 machine
+-----------------------------------
+#docker node rm worker2
+	->from above command remove worker2 from cluster
+-->worker2 again come back to cluster generate token from level of manager node paste in worker2
+#docker swarm join-token worker
+---------------------------------------
+#docker swarm join-token manager
+	-->from above command for adding multiple managers
+--------------------------------------
+#docker node promote worker1
+	-->convert a normal worker1 to manager machine
+#docker node demote worker1
+	-->backe to worker machine
+--------------------------------------------
+#docker swarm leave --force
+	-->to leave manager machine from cluster at the level manager machine own
+-------------------------------------------
+=================================================================
+Rolling update
+----------------------
+#docker service create --name myredis --replicas 4 redis:3
+#docker service update --image redis:4 myredis
+#docker service update --rollback myredis
+#docker node update --availability drain worker1
+#docker node update --availability active worker1
+#docker swarm leave
+#docker node rm worker2
+#docker swarm join-token
+#docker swarm join-token manager
+#docker node promote worker1
+#docker node demote worker1
+-------------------------------------
+High Availability
+-----------------------
+#docker service create --name webserver -p 8080:80 --replicas 6 httpd
+#docker swarm leave --force
+----------------------------------------
+#dokcer service update --network-add intelliqit1 appserver
+#docker service update --network-rm intelliqit appserver
+#docker service inspect webserver --pretty

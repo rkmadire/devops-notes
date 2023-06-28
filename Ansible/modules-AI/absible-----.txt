@@ -1,0 +1,27 @@
+modules --2nd Session class      
+----------------
+1.command module it is default module in ansible
+2.shell module
+3.user module
+4.copy module
+5.file module
+6.apt module
+7.service module
+------------------------------- 
+--> 3rd Session class
+8.uri module
+9.get_url module
+10.git module
+11.replace module
+12.fetch module
+--------------------------------
+======================================
+1.command:
+	command module is default module in ansible used to run commands 
+	The command module in Ansible allows you to run a command on a remote host and retrieve the results
+========================================================
+2.shell:
+	The shell module in Ansible allows you to run a shell command on a remote host and retrieve the results
+=====================================================
+
+	

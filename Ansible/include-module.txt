@@ -1,0 +1,128 @@
+ansible 9th session             include module min 27:00
+--------------------------------------------------------------------------
+-->purpose of include module call child playbook from the level of the parent playbook
+-->one playbook can call another playbbok
+-->child playbook can be called using parent playbooK using include module
+-->child playbook cannot be excuted directly first called by parent playbook 
+---------------------------
+$vim playbook21.yml 
+===================
+---
+- name: copy passwd file
+  copy:
+    src: /etc/passwd
+    dest: /tmp
+...
+===========================
+-->child playbook cannot run directly it is only having module information it does not know where it can be excute
+-->child playbook run by parent playbook 
+$vim playbook22.yml
+=========================
+---
+- name: call child playbook
+  hosts: all
+  tasks:
+     - name: call child playbook
+       include: playbook21.yml
+...
+==================================
+	$ansible-playbook playbook22.yml -b 
+		-->it is excuted it takes from child playbbok 
+----------------------------------------------
+-->lets see some scenario like using child playbooks
+-->see link: https://drive.google.com/file/d/1gIgIzoFwraTwYfl59HGrmJQ0DvhddLzq/view?usp=share_link
+==================================
+---
+- name: configuration apache2
+  hosts: all
+  tasks:
+     - name: install apache2
+       apt:
+	 name: apache2
+	 state: present
+	 update_cache: yes
+      - name: Edit the index.html file
+	copy:
+	  content: "IntelliQ"
+	  dest: /var/www/html/index.html
+      - name: restart apache2
+        service: 
+	    name: apache2
+	    state: restarted
+      - name:: check apache responce on server-1
+        uri: 
+	  url: http://172.31.57.12
+	  status_code: 200
+      - name: check apache responce on server2
+        uri:
+	  url: http://172.31.59.208
+	  status_code: 200
+...
+======================================================
+-->above playbook configuring apache2 
+-->now we can do from at child playbook
+1.first child playbbok is install.yml
+==============================
+---
+- name: install apache2
+  apt: 
+    name: apache2
+    state: present
+    update_cache: yes
+...
+==================================
+2.second playbook Edit_index.yml
+======================================
+
+---
+- name: Edit the index.html file
+  copy:
+     content: " intelliq"
+     dest: /var/www/html/index.html
+...
+
+============================================
+3. restart.yml
+===================================================
+---
+- name: restart apache2
+  service: 
+      name: apache2
+      state: restarted
+...
+=========================================================
+4.check_url_yml
+=============================
+---
+- name: check url responce
+  uri:
+    url: "{{item}}"
+    status_code: 200
+  with_items:
+     - http://172.31.57.12
+     - http://172.31.57.12
+     - http://172.31.57.12
+...
+============================================
+-->now we can create a parent playbook.yml and excute from the child playbooks
+=============================================
+ $ vim configure_apache.yml
+===================================================
+
+---
+- name: call multiple child playbooks for apache
+  hosts:
+  tasks:
+     - name: call multiple playbooks
+       include: "{{item}}"
+       with_items:
+           - install.yml
+           - edit_index.yml
+           - restart.yml
+           - check_url_respoce.yml
+...
+
+===================================================
+  $ansible-playbook configure_apache.yml -b
+   		--> it is excute command 
+------------------------------------------------------

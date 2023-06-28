@@ -1,0 +1,31 @@
+stat module:  41:00 min ansible 7th session
+----------------
+-->file and directory name shoud not match same in linux 
+   suppose i want create a dirctory in /tmp/thej
+-->but with that name i have already a file name exist /tmp/thej
+-->in that case we use when condition to create file and directory 
+------------------------------------------------------------------------------------------------------------------------------------------------
+Q:I want create a thej file in the /tmp/ first check in that location with same name directory available or not and check then if its not there then i will create a thej file usin stat module
+------------------------ 
+ 
+--> to check a perticular file or directory available on the remote machine we use stat module
+---------------------------------
+===========================================
+---
+- name: Check if a folder f1 is present if not createa file f1
+  hosts: all
+  tasks:
+    - name: Check for folder f1
+      stat:
+        path: /home/ubuntu/f1
+      register: a
+    - name: Display output of the above module
+      debug:
+        var: a
+    - name: Create f1 file if f1 fodler is not present
+      file:
+        name: f1
+        state: touch
+      when: a.stat.exists == false -->this line for if f1 not available on remote machine it will create a f1 file 
+
+==================================================

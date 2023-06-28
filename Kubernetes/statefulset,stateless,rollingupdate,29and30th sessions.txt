@@ -1,0 +1,379 @@
+statefulSet and stateless 1:00 min  docker kuberenetes 29th session
+------------------------------------------------- 
+1.first create persistent volume
+2.create persistent volume claim from persistent volume
+-------------------------------------
+$ vim pv.yml
+=====================
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 10Gi
+  accessmodes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data
+...
+=============================
+-->above file is persistent volume
+$pvc.yml
+$ kubectl get pv 
+	-->above command will display pv 
+$ vim pvc.yml
+======================================
+---
+apiVersion: v1
+kind: PersistentVolumClaim
+metadata:
+  name: task-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+...
+=================================
+-->above file persistentVolumeClaim    
+$kubectl get pvs 
+	-->above command will display pvc  
+$vim volume2.yml
+=============================
+---
+apiversion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    type: proxy
+spec:
+  containers:
+    - name: mynginx
+      image: nginx
+      volumeMounts:
+          - name: new-volume
+            mountPath: /usr/share/nginx/html
+  volumes:
+    - name: new-volume
+      persistentVolumeClaim:
+          claimName: task-pv-claim 
+...
+============================================
+-->above file cotaine nginx pod 
+-->from above all stateless definition file
+-->any time nginx pods gets deleted every time nginx pod gets recreated and the same data will be available 
+========================================================
+StateFulSet: 22:00 min docker-kuberenetes 29th session
+-------------------
+-->here statefulset capable to create multiple pods 
+-->here if you create multiple pods like 4 pods mysql
+-->the very first pods is called master pod this pod number is 0 (zero)
+-->and remaining pods which 1,2,3 pods is called slaves of master
+-->creating pods also in ordered first pods created from master then it will create slave1 ,slave2, slave3 
+-->deleting pods also first delete pods is slave3. slave2, slave1, and master will deleted 
+Note: normally we have stateless applicatios( like webservers) and statefull applications (like database) 
+---------------------------------
+-->deployment does not maintain sticky identity where stateful set maintaine sticky identity 
+===============================================
+$vim statefulSet.yml
+=========================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+     app:  mysql
+spec:
+  clusterIP: None
+   ports:
+     - name: tcp
+        port: 3306
+       protocol: TCP
+  selector:
+    app: mysql
+
+---
+apiVersion: apps/v1
+kind:  StatefulSet
+metadata:
+  name: mysql
+spec:
+  replicas: 2
+  selector: 
+    matchlabels:
+      app: mysql
+  serviceName: mysql
+  template: 
+    metadata: 
+      name: mysql-pod
+      labels:
+        app: mysql
+    spec:
+       containers:
+        - name: mydb
+           image: mysql:5
+           env:
+              - name: MYSQL_ROOT_PASSWORD
+                 value: intelliqit
+           volumeMounts:
+               - name: new-volume
+                 mountPath: /var/lib/mysql
+      volumes:
+         - name: new-volume
+           persistentVolumeClaim:
+               claimName: task-pv-claim
+...
+===============================================
+-->from above the file containe clusterIp is type=None (it means HeadLess network ) by using headless network the mysql pods gets communicate with each other even not assigned or available ip to them 
+-->headless is classification of cluster ip 
+-->to enter into pod
+----------------------------------------------------------------------------
+bash  (docker 30th session) from 1:00 min to 6:00 min
+$ kubectl exec -it mysql-0
+	-->to enter into pod 
+--------------------------------
+#mysql -u root -p 
+>show databases;
+mysql> use mysql; 
+----
+paste here emp and dept tables from internet 
+---
+mysql> select * from emp;
+mysql> select * from dept;
+-------------------------------------------
+
+
+------------------------------------
+
+docker kubernetes 30th session
+
+Note:while using statefulset capable scaling and loadbalancing and rolling updates 
+1.freestrategy 
+2.rolling updates
+3.blue green deployments
+4.cornary deployments
+----------------------------
+-->roling update is default process in statefulset 
+-->by implementing rolling updates 
+-->suppose take a nginx deployment
+------------------------------------------------------------
+$ vim deployment1.yml
+=================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    type: proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: proxy
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        type: proxy
+    spec:
+      containers:
+        - name: mynginx
+          image: nginx:1.22
+          ports:
+            - containerPort: 80
+              hostPort: 8080
+...
+====================================
+$kubectl apply -f deployment1.yml -->it will create nginx container with 1.22 version
+-->above deployment file containe nginx container with 1.22 version
+Note:remember the name of deployment name (nginx-deployment) and container (mynginx) by using those name we can able to do rolling updates in kubernetes 
+------------
+-->executing command at the level of command level
+$ kubectl set image deployment/nginx-deployment mynginx=nginx:1.23
+	-->from above command a new version which is nginx:1.22 to nginx:1.23 will be updated 
+-------------
+-->now check if updated or not 
+$ kubectl describe pods <nginx-deployment-576c7c49b5-q4vlb >  | grep 1.23
+	-->above command it will describe pods 
+----------------------
+-->this is rolling update this process is default process in deploment in kubernetes
+---------------------------------------
+Recreate  strategy (or) freev Strategy
+-------------------------------------------------------
+$ recreatestrategy.yml
+==============================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    type: proxy
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      type: proxy
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        type: proxy
+    spec:
+      containers:
+        - name: mynginx
+          image: nginx:1.22
+          ports:
+            - containerPort: 80
+              hostPort: 8080
+==================================
+-->from above recreaterestrategy.yml file containe nginx:1.22 version image 
+-->by implementing recretestrategy cost effective and downtime will be there 
+-->it will work first it will delete older pod and recreate new pod with latest version
+-->most of the times these recreate strategy will use in prepod environment 
+------------------------------------------------
+Blue green deployments:
+-------------------------------------
+-->suppose imagin there are 100 server which running nginx1.22 version(this si called as green deployment)
+-->now they want to update to nginx1.23(this is called blue deployment )
+-->initially nodeport and loadbalancing point to nginx1.22 version after they update to nginx:1.23 now they slowly move to which is nodeport and loadbalancing to nginx1.23 
+-->after all nginx1.23 version working properly now they remove to nginx1.22 version 
+-->now nginx:1.23 will become Green deployment 
+=======================================================
+exaples:
+-------------
+$ vim green.yml
+-----------------------------------------
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    type: proxy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: proxy
+      version: "1.22"
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        type: proxy
+        version: "1.22"
+    spec:
+      containers:
+        - name: mynginx
+          image: nginx:1.22
+          ports:
+            - containerPort: 80
+              hostPort: 8080
+==========================================
+$ kubectl apply -f green.yml
+	-->above command create nginx:1.2 cotainer will created 
+-->now create service definition file 
+$ vim service1.yml
+=================================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: LoadBalancer
+  ports: 
+    - targetPort: 80 
+      port: 80 
+      nodePort: 30008
+  selector: 
+    type: proxy
+    version: "1.22" 
+==============================
+$ kubectl apply -f service1.yml
+from above nginx:1.2 and with service with loadbalancer is called green environment
+=======================================
+-->now creating blue environment 
+$ vim blue.yml
+=============================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blue-nginx-deployment
+  labels:
+    type: proxy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: proxy
+      version: "1.23"
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        type: proxy
+        version: "1.23"
+    spec:
+      containers:
+        - name: mynginx
+          image: nginx:1.23
+          ports:
+            - containerPort: 80
+              hostPort: 8080
+===========================================
+-->above file cotaine nginx1.23 version image
+-->now creating service file
+$ vim serviceblue.yml
+=================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: LoadBalancer
+  ports: 
+    - targetPort: 80 
+      port: 80 
+      nodePort: 30008
+  selector: 
+    type: proxy
+    version: "1.23" 
+...
+=============================================
+-->above file is service file for nginx:1.23 for blue deployment file 
+--> now excute both blue deployment and service definition file 
+$ kubectl apply -f blue.yml
+$ kubectl apply serviceblue.yml
+-------------------------------------------------------
+-->now slowly green enviroment remove and blue environment will work 
+-->once blue environment work properly then automatically the blue environment become green environment 
+-->disadvantage is it expensive but still alot companys use this processor 
+=======================================================
+Cornary deployment: 35:00 min docker 30th session
+-------------------------------------------------------------------------
+-->here cornary deployment it works in such a way suppose there are 100 pods enviroment with nginx:1.22
+-->now i want to create 5 pod with nginx:1.23 
+=====================================================
+-->to remove nodes from cluster (41:00 min docker 30th session)
+concept used here 
+1.drain 
+2.uncorden
+============================
+
+

@@ -1,0 +1,52 @@
+apt module
+------------------------------
+The apt module in Ansible is used to manage packages on Debian and Ubuntu systems using the Advanced Packaging Tool (APT). It allows you to install, remove, and update packages, as well as manage package repositories 
+---------------------------------
+basic syntax yaml
+-----------------------------------
+- name: <task name>
+  apt:
+    name: <package name>
+    state: <installed|present|absent|latest>
+-----------------------------------------------
+For example, to install a package called "nginx":
+----------------------------------------------
+- name: install nginx
+  apt:
+    name: nginx
+    state: present
+------------------------------------
+You can also update packages to the latest version by using the state: latest:
+-------------------------------------------
+- name: update package
+  apt:
+    name: nginx
+    state: latest
+-------------------------------------------------
+You also can remove package by using state: absent:
+--------------------------------------------------
+- name: remove package
+  apt:
+    name: nginx
+    state: absent
+-----------------------------------------------------
+You can also specify multiple packages in a single task, by using the name option as a list:
+---------------------------------------------------------
+- name: install multiple packages
+  apt:
+    name:
+      - package1
+      - package2
+      - package3
+    state: present
+--------------------------------------------------
+Additionally, you can use the update_cache option to update the package cache before performing other actions:
+------------------------------------
+- name: update package cache
+  apt:
+    update_cache: yes
+-----------------------------------------
+You also can use the force_apt_get option to use apt-get instead of apt (default) for package management, this can be useful for some specific situations or for systems that have apt not installed by default.
+
+It's worth noting that the apt module is different from the yum module, which is used to manage packages on systems using the Yellowdog Updater, Modified (YUM) package manager, typically Redhat-based systems.
+---------------------------------------------------------------

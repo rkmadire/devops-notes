@@ -1,0 +1,18 @@
+Ansible 12th session   ansible.cfg file explanation 22:00 min to 34:00 min
+--------------------------------------------------------------------------------------------
+-->location /etc/ansible/asible.cfg  it is a configuration file of ansible
+
+
+
+=============================
+34:00 min to 38:00 min asible 12th session  
+-->when you run ansible commands and playbook that will reflect on remote machine 
+-->now i want to reflect also in my controller for that 
+-->first open inventory file provide local machine address which is controller
+$ sudo /etc/ansible/hosts
+-------------
+172.168.10.1
+127.168.2.3  ansible_user=ec2-user    
+loaclhost ansible_connection=local
+------------------
+-->now on the controller also work 

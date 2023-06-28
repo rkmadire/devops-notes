@@ -1,0 +1,45 @@
+get_url module
+-------------------------
+The get_url module in Ansible is similar to the uri module, it is used to download a file from a remote server using HTTP or HTTPS. It allows you to specify the URL of the file to download, the destination on the local filesystem, and various options for handling the download. 
+----------------------------------
+- name: <task name>
+  get_url:
+    url: <URL>
+    dest: <destination file path>
+---------------------------------------
+For example, to download a file from a specific URL:
+--------------------------------------------
+- name: download file
+  get_url:
+    url: http://example.com/file.tar.gz
+    dest: /tmp/file.tar.gz
+--------------------------------------------------
+You can also use the headers option to specify HTTP headers to send with the request:
+----------------------------------------------------
+- name: download file
+  get_url:
+    url: http://example.com/file.tar.gz
+    dest: /tmp/file.tar.gz
+    headers:
+      Accept-Encoding: gzip
+--------------------------------------------------------
+You can also use the validate_certs option to validate SSL/TLS certificates, for example:
+---------------------------------------------------------
+- name: download file
+  get_url:
+    url: https://example.com/file.tar.gz
+    dest: /tmp/file.tar.gz
+    validate_certs: no
+---------------------------------------------------------
+You can also use the checksum option to check the integrity of the downloaded file by specifying a checksum value. The module will calculate the checksum of the file after it is downloaded and compare it to the value you provide. If the checksums do not match, the module will raise an error.
+-----------------------
+- name: download file
+  get_url:
+    url: https://example.com/file.tar.gz
+    dest: /tmp/file.tar.gz
+    checksum: sha256:b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b87
+----------------------------
+You can also use the mode option to set the file mode on the destination file.
+
+It's worth noting that the get_url module is a simpler and more efficient option than the uri module if your only goal is to download a file.
+-----------------------------------

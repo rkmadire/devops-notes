@@ -1,0 +1,46 @@
+Docker 16th Session
+-----------------------
+-->in the Docker manager also works like worker
+-->when maintainace activity of manager is sligthly high compare to worker
+-->manager node not only taking workload and its also performing the activity of orchestration
+-----------------------------------
+Overlay networks:
+------------------
+-->when you working on docker default network is bridge network
+-->when you working on docker swarm default network is overlay network
+-->overlay network also called as ingress network 
+-->ingress network containe feature like ability to do network loadbalancing 
+#docker service create --name webserver -p 8080:80 --replicas 5 nginx
+	-->from above command nginx sevice run as 5 containers in the cluster
+---------------------------
+Network routing mesh:
+-----------------------
+-->service runs can be any machine in the cluster you can access the service from any machine using machine_public_ip:8080 port
+---------------------------------
+Custom overlay networks:
+-----------------------------
+-->in docker swarm default network is ovaerlay network 
+-->to make customized network 
+#docker network create --driver overlay intelliqit1
+	-->from above command intelliqit1 network created 
+#docker network create --driver overlay intelliqit2
+	-->from above command intelliqit2 network created 
+#docker network ls
+	-->to display networks
+-----------------------------------
+#docker service create --name webserver -p 8888:80 --replicas 4 --network intelliqit1 httpd
+	-->from above command httpd run as 4 container in intelliqit1 network
+----------------------------------------
+#docker service create --name appserver -p 9090:80 --replicas 4 tomcat
+	-->from above command tomcat service run in 4 containers in default overlay network
+	-->i want to make change to another network
+#docker service update --network-add intelliqit2 appserver
+	-->from above command already existing service network changing to another existing network
+-------------------------------------------------
+rollback network: it means go back to previous network
+------------------
+#docker service update --network-rm intelliqit2 appserver
+	-->from above command is rollback networks command 
+------------------------------------------------------------
+
+-----------------------------------------

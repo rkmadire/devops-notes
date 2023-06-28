@@ -1,0 +1,37 @@
+Docker Session 3rd 
+------------------------
+#docker run -d nginx
+ docker-- represent docker command
+ run -- command
+ -d -- dettach mode 
+ nginx -- webapplication
+-----------------------------
+note: every container generates a uniq id
+-----------------------------
+--->to see the list of all the containers
+	#docker container ls
+--------------------------------------
+#docker run -d --name webserver nginx
+	--name = represent name to add
+	  webserver = giving name what ever it is
+--------------------------------------
+#docker rm -f containername1 containername2
+	-->to delete multiple containers and single container also 
+---------------------------------------------
+#docker run --name webserver -d -p 8888:80 nginx
+	-->8888 it is host port what ever it is 
+	-->80 it is the predefined port for nginx
+	-->now 80 port is liked with 8888 it will access through 8888 port 
+------------------------------------
+#docker run --name myhttpd -d -P httpd
+	--> -d for detach
+	--> -P for assigning port automatically greater than 30000 
+------------------------------------------------
+#docker run --name myjenkins -d -p 7070:8080 jenkins/jenkins
+ --> if jenkins image not avilable in locally first download image from library and later should create a container 
+--------------------------------------------------
+#docker run --name u1 -it ubuntu 
+	--> -it represent interactive terminal 
+	--> above command will download ubuntu on docker machine and enter into that ubuntu machine with name u1  
+	--> when you type exit it will go back to host machine  
+ 

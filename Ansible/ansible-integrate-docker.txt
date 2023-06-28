@@ -1,0 +1,201 @@
+Ansible integrated with Docker 2:00 min to 11:00 min 
+----------------------------------------------
+-->ansible communicate with docker ansible require software called as docker-py
+-->docker-py it is a python related software 
+-->to install docker-py software we need install pip 
+-->pip is package management for python  related softwares it will install python related softwares
+-->now using pip i can install docer-py software on ansible 
+-->then docker-py available on ansible now ansible capable to communicate with docker 
+------------------------------------
+-->refer Link: https://drive.google.com/file/d/1X-2TtwLgu6udgwDEYO79i2LODcdFxjqA/view?usp=share_link
+--------------------------------------
+$ vim playbook1.yml
+----------------------------------------------------------
+---
+- name: intstall docker and required software to integrate withb ansible
+  hosts: all
+  tasks:
+    - name: Install python pip
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: yes
+    - name: download docker script and execute it and also install docker-py
+      shell: "{{item}}"
+      with_items:
+          - curl -fsSL https://get.docker.com -o get-docker.sh
+          - sh get-docker.sh
+          - pip3 install docker-py
+...
+----------------------------------------------------------
+$ ansible-playbook playbook1.yml -b
+-->from above playbook first install pip software which capable to instal python related softwares 
+-->then we installing docker and docker-py
+----------------------------------------------------------------------
+CREATING TOMCAT CONTAINERS 11:00 min to 15:00 min
+--------------------------------------------------------
+-->create tomcat container command is 
+#docker run tomee
+	-->above command will create tomcat comtainer on one host
+-->now using ansible we can able to create tomcat container with n number of machinens
+-->Refer Link: https://drive.google.com/file/d/1h4EOEOyJ5QfVMHA4bnK9R5wMi-7-fY8y/view?usp=share_link
+$ ansible_docker2.yml
+----------------------------
+---
+- name: working on docker containers
+  hosts: all
+  tasks:
+     - name: create a tomee container
+       docker_container:
+          name: appserver
+          image: tomee
+---------------------------------------
+-->now tomcat cotainer will available all machine 
+-->here creating tomee container and stoped container ad deleteing container also
+---------------------------------------------------
+---
+- name: working on docker containers
+  hosts: all
+  tasks:
+     - name: create a tomee container
+       docker_container:
+          name: appserver
+          image: tomee
+    - name: stop the tomee container
+      docker_container:
+         name: appserver
+         state: stopped
+   - name: delete the tomee container
+     docker_container:
+        name: appserver
+        state: absent
+...
+-------------------------------------------------------------------
+Creating contaier one by one to 10 containers with with_sequence  min 15:00 min to 20:00 min 
+with_items
+with_sequence
+-->refer Link: https://drive.google.com/file/d/1cN_xIWTfVJYheudRY5WMnV6KcWWWa7rJ/view?usp=share_link
+---------------------------
+---
+- name: create 10 nginx containers from load balancing 
+  hosts: all
+  tasks:
+     - name: create 10 nginx containers
+       docker_container:
+          name: "container{{item}}"
+          image: nginx
+      with_sequence: count=10
+...
+----------------------------------
+-->from above playbook nginx container will create 10 container in all connected node from ansible to managed nodes 
+-->deleting all containers on all machines
+$ ansibel all -m shell -a 'docker rm -f $(docker ps -aq)' -b
+
+-->deletig images from all machines
+$ ansible all -m shell -a 'docker system prune -af' -b
+----------------------------------
+Docker compose using ansible 20:00 min to 25:00 min
+-----------------------
+-->docker compose  use to setup multicontainer architecture   at the level one server
+-->setup multicontainer architecture at the level of all machine use from level of ansible
+-->refer Link:  https://drive.google.com/file/d/17V5CA3n9EoCK9hr7aZWekF_br5dW9TDe/view?usp=share_link
+$ vim ansible-docker4.yml
+-----------------------------------------------------------------
+---
+- name: Implementing docker compose using Ansible
+  hosts: all
+  tasks:
+     - name: create a my sql container
+       docker_container:
+          name: mydb
+          image: mysql:5
+          env:
+             MYSQL_ROOT_PASSWORD: intelliqit
+    - name: create wordpress container
+      docker_container:
+         name: mywordpress
+         image: wordpress
+         ports:
+            - 8888:80
+         links:
+            - mydb:mysql
+...
+------------------------------------------------------------------------
+$ ansible-playbook asible-docker4.yml -b
+-->now setting up mysql and wordpress environment at the level of multiple machines
+----------------------------------------------------------    
+Setup Jenkins and tomcat environment 25:00 min to 31:00 min
+-->Refer Link:  https://drive.google.com/file/d/1NUSBoti3AEU7_k_NXebWLR8k0nSaZP_l/view?usp=share_link 
+$ vim ansible-docker-jenkins.yml
+----------------------------------------------------
+---
+- name: create jenkins and tomcat containers for ci-cd
+  hosts: all
+  tasks:
+     - name: create jenkins container
+       docker_container:
+          name: myjenkins
+          image: jenkins/jenkins
+          ports:
+             - 5050:8080
+   - name: create tomcat containers
+     docker_container:
+        name: qaserver
+        image: tomee
+        ports:
+           - 6060:8080
+        links:
+           - myjenkins:jenkins
+   - name: create tomacat container
+     docker_container:
+        name: prodserver
+        image: tomee
+        ports:
+           - 7070:8080
+       links:
+         - myjenkins: jenkins
+...
+--------------------------------------------------------
+$ ansible-playbook ansible-docker-jenkins.yml -b
+----------------------------------------------------------------------------------------------------------------------
+Docker_image module 31:00 min to 35:00 min
+-->thist docker_image module mainly used to download docker images
+
+----------------------------
+---
+- name: download docker image
+  hosts: all
+  tasks: 
+     - name: download images
+       docker_image:
+          name: nginx
+          source: pull
+-------------------------------------------
+-->this will nginx image will downloaded on all machine
+
+----------------------------
+---
+- name: download docker image
+  hosts: all
+  tasks: 
+     - name: download images
+       docker_image:
+          name: "{{item}}"
+          source: pull
+       with_items:
+          - nginx
+          - tomee
+         - httpd
+         - ghost
+...
+-----------------------------------------
+-->from above playbook 4 images will download to all machines
+
+-------------------------------------------
+-->Run jobs periodically we use Jenkins
+-->install jenkins and setup password establissment from jenkins to controller
+-->then goto jenkins jenkins webpage -->goto build periodically
+
+
+
+

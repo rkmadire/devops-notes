@@ -1,0 +1,310 @@
+Docker-kubernetes 26th session(project-voting)
+-------------------------------------------------------------------
+-->there is an application called as an voting application created help of python jango
+-->after vote happens the very next step it will go into inmemory database that database is "redis"
+note:redis called as inmemory database
+-->from that redis database there is .NET application which actually filtered the Data (which data is important and stores into perminent in postgres database)
+Note:.Net application called as worker 
+---> the postgres called as persistent data from the postgres database result can be seen on application which is created using NodeJs application 
+----------------------------------------------------------------------------------------
+-->python, NodeJs, redis, postgres, .Net 5 application i need to create 5 deployment definition files in kubernetes 
+-->python and nodeJs are expose to the customers i need to create service object which is NodePort or LoadBalancer 
+-->for database redis and postgres they are not expose to the world so i need to create service object which is cluster ip 
+-->.Net application dont require any service definition file because it is created by developers via certaine connection strings to pickup the data from redis database to postgres databse 
+-->To create this entire architecture 5 deployment defiition files and 4 service definition files on kubernetes 
+---------------------------------------------------------------------------------------------------------
+$ voting-app-deployment.yml
+==================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voting-app-deployment
+  labels:
+    name: voting-app
+    author: intelliqit
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: voting-app
+  template:
+    metadata:
+      name: voting-app-pod
+      labels:
+        name: voting-app
+    spec:
+      containers:
+        - name: my-voting-app
+          image: dockersamples/examplevotingapp_vote
+...
+===============================================
+
+$ vim result-app-deployment.yml
+=======================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: result-app-deployment
+  labels:
+    name: result-app
+    author: intelliqit
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: result-app
+  template:
+    metadata:
+      name: result-app-pod
+      labels:
+        name: result-app
+    spec:
+      containers:
+        - name: my-result-app
+          image: dockersamples/examplevotingapp_result
+====================================================
+
+$ vim redis-app-deployment.yml
+============================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-app-deployment
+  labels:
+    name: redis-app
+    author: intelliqit
+spec:
+  selector:
+    matchLabels:
+      name: redis-app
+  template:
+    metadata:
+      name: redis-app-pod
+      labels:
+        name: redis-app
+    spec:
+      containers:
+        - name: my-redis-app
+          image: redis
+...
+==========================================
+
+$ vim postgres-app-deployment.yml
+=================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+  labels:
+    type: db
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: db
+  template:
+    metadata:
+      name: postgres-pod
+      labels:
+        type: db
+    spec:
+      containers:
+        - name: mydb
+          image: postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: username
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: dbname
+...
+==========================================
+
+$ vim worker-app-deployment.yml
+================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-app-deployment
+  labels:
+    name: worker-app
+    author: intelliqit
+spec:
+  selector:
+    matchLabels:
+      name: worker-app
+  template:
+    metadata:
+      name: worker-app-pod
+      labels:
+        name: worker-app
+    spec:
+      containers:
+        - name: my-worker-app
+          image: dockersamples/examplevotingapp_worker
+...
+=====================================================
+
+-->Now create service definition files
+-->above python and nodejs are exposed to world they need service NodePort or loadbalancer 
+
+-->create voting-app-service
+$ vim voting-app-service.yml
+====================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: voting-app-service
+  labels:
+    author: intelliqit
+spec:
+  type: LoadBalancer
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 30008
+  selector:
+   name: voting-app
+...
+==================================
+
+-->create result-app-service
+
+$ vim result-app-service.yml
+===========================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: result-app-service
+  labels:
+    author: intelliqit
+spec:
+  type: LoadBalancer
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 30009
+  selector:
+    name: result-app
+...
+==================================
+Note: from above two file result-app-service.yml file and voting-app-service.yml file they will link with voting-app-deployment.yml file and resul-app-deployment.yml based on there in the selector "key=value" must be same 
+-->Now redis database and postgres database are not exposed to customers so need to create service object of cluster ip which is maintaine not exposed outside only internall communication works 
+-->create redis-app-service
+$ vim redis-app-service.yml
+=============================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-app-service
+  labels:
+    author: intelliqit
+spec:
+  ports:
+    - targetPort: 6379
+      port: 6379
+  selector:
+    name: redis-app
+...
+==========================================
+
+-->create postgres-app-service
+$ vim postgres-app-service.yml
+=======================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-app-service
+  labels:
+    author: intelliqit
+spec:
+  ports:
+    - targetPort: 5432
+      port: 5432
+  selector:
+    type: db
+...
+==========================================================
+
+-->from above postgres databse deployment file containe some enviroment varaible for that we create on secret definition file in the secret definition file we assign variable which is important to postfres databes 
+$ vim secret.yml
+=================================================================
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-secret
+type: Opaque
+stringData:
+  password: intelliqit
+  username: myuser
+  dbname: mydb
+
+==========================================================================
+
+-->from above all defiition files used to setup architecture in kubernetes 
+=================================================================
+On Docker
+-----------------
+-->in docker swarm
+# vim docker-compose.yml
+==========================================
+---
+version: '3'
+services:
+  voting-app:
+    image: dockersamples/examplevotingapp_vote
+    ports:
+      - 5050:80
+    deploy:
+      replicas: 2
+
+  redis-app:
+    image: redis
+    ports:
+      - 6379:6379
+
+  worker:
+    image: dockersamples/examplevotingapp_worker
+
+  postgres-app:
+    image: postgres
+    deploy:
+      replicas: 2
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: intelliqit
+      POSTGRES_USER: myuser
+      POSTGRES_DB: mydb
+
+  result-app:
+    image: dockersamples/examplevotingapp_result
+    deploy:
+      replicas: 2
+    ports:
+      - 6060:80
+...
+================================================
+#docker stack deploy -c docker-compose.yml my-app
+#docker stack ps my-app 
+----------------------------------------------------------------------------------

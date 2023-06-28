@@ -1,0 +1,88 @@
+Replication Controller and ReplicaSet 21:00 min to 29:00 min kubernetes 23rd session
+------------------------
+-->Replication controller is high level object in the kubernetes cluster for managing multiple replicas of pod 
+-->to perform load balancing and scaling pods we use object called replication controller 
+-------------------------------
+$ vim replication-controller.yml
+======================================
+
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: httpd-rc
+  labels:
+    type: webserver
+    author: intelliqit
+spec:
+  replicas: 3
+  template:
+    metadata:
+      name: httpd-pod
+      labels:
+        type: webserver
+    spec:
+      containers:
+        - name: myhttpd
+          image: httpd
+          ports:
+            - containerPort: 80
+              hostPort: 8080
+...
+==========================================
+$ kubectl apply -f replication-controller.yml
+$ kubectl get pods 
+-->now 3 pods created based on above file we create multiple pods using replication controller 
+---------------------------------------------------
+ReplicaSet: 29:00 min
+--------------
+-->ReplicaSet is latest version of replication controller(outdated)
+-->ReplicaSet perform loadBalacing, and scaling and reuseability
+-->it container component called selector
+-->reuseabilty means it can search pods based on perticular label and use them instead of creating new or if not available it will create new pod from scrach
+$ vim replicaset.yml
+===================================================
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: tomcat-rs
+  labels:
+    type: appserver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      type: appserver
+  template:
+    metadata:
+      name: tomcat-pod
+      labels:
+        type: appserver
+    spec:
+      containers:
+        - name: mytomcat
+          image: tomee
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+...
+======================================================
+$ kubectl apply -f replicaset.yml
+$ kubectl get all 
+	-->from above command will display all components in the cluster
+
+Scaling:
+-----------
+-->from above replicaset.yml file we create 2 replicas
+-->now i want to scale to 2 to 3 replicas 
+-->to do scale up or scale down in two ways 
+step1:go into replicaset.yml file modify replicas 2 to 3
+then excute command like 
+$ kubectl replace -f replicaset.yml
+-->it will scale up to 3 replicas 
+(or)
+-->instead of modifying file execute command like 
+$ kubectl scale --replicas=1 -f replicaset.yml
+	-->from above command replicas will 3 to 1 
+-------------------------------

@@ -1,0 +1,37 @@
+volume empt dir  Docker-kubernetes 28th session 28:00 min to 44:00 min  
+----------------------------------------------------------------------
+emptdir:
+-->by adding emptdir volume to the pod if pod gets deleted by any time then automatcally a new pod will recreated within the same data available 
+
+$ vim volumes1.yml
+====================================================================
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-redis
+  labels:
+    author: intelliqit
+spec:
+  containers:
+    - name: myredis
+      image: redis
+      volumeMounts:
+        - name: myvolume
+          mountPath: /data/redis
+  volumes:
+    - name: myvolume
+      emptyDir:
+================================================================
+$ kubectl apply -f volumes1.yml
+	-->from above command redis pod will created and attached with emptdir volume on mout path is /data/redis (if data added inside this path the data will be vaialable even if pod gets deleted by any reason )
+--> volumeMounts: from above volumes1.yml file containe this means what is the name of the volume where it should be available 
+-----------------------------------------------------------------------------------------
+-->by help of emptdir volume concept the newly recreated pod containe same data which is previously deleted pod but here the software might be loss to overcome this we need to create customized images from at the level of dockerfile 
+ex:
+----------------
+FROM redis
+MAINATAINER intelliqit
+RUN apt-get update -y
+RUN apt-get install -y procs
+-------------------------------------------

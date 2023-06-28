@@ -1,0 +1,13 @@
+Docker layers Docker 12th Session 
+-------------
+1.at the time pull the image from docker registry it will pull some lines and extracting them after complete image will be available locally
+that process completely can be work layer by layer it will pull and donload the image 
+-------------------------------------
+Docker layers are the building blocks of Docker images. Docker images are made up of a series of layers that are stacked on top of each other. Each layer represents a change to the previous layer, such as the addition, deletion, or modification of a file or directory. When you create a Docker image, each command in the Dockerfile creates a new layer.
+
+Docker uses a layered architecture to optimize the storage and sharing of images. Because each layer represents a specific change to the image, Docker can reuse layers across multiple images, reducing the amount of disk space required and speeding up the image build process.
+
+When you run a container from a Docker image, Docker creates a new writable layer on top of the image layers, which is used to store any changes made to the container during runtime. This allows the container to be ephemeral, with any changes made during runtime being discarded when the container is stopped.
+
+In summary, Docker layers are the fundamental building blocks of Docker images, which allow for efficient storage and sharing of images, and enable the creation of ephemeral containers.
+----------------------------------

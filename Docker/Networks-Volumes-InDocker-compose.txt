@@ -1,0 +1,133 @@
+Docker 13th Session--networks--volumes--in docke compose
+--------------------
+1.i want to create jekins and two tomcat containers with docker compose file with differet networks jenkins run on abc network and two tomcat container run on xyz network
+--------------------------
+version: '3.8'
+services:
+  myjenkins:
+    image: jenkins/jenkins
+    ports: 
+      - 5050:8080
+    networks:
+      - abc
+
+  qaserver:
+    image: tomee
+    ports:
+      - 6060:8080
+    networks:
+      - xyz
+
+  prodserver:
+    image: tomee
+    ports:
+      - 7070:8080
+    networks:
+      - xyz
+
+networks:
+  abc: {}
+  xyz: {}
+
+...
+----------------------------------
+#docker compose up -d
+-->above command will  create jenkins with abc network and tomee conatiners will run within xyz networks
+#docker compose down 
+-->this command will delete containers with network also 
+----------------------------------------
+VOLUMES:
+----------
+#docker-compose.yml
+-->refer Link: https://drive.google.com/file/d/1Z4l4nD1-Ty9SxYqC1-aN3jiX27mO-HGB/view?usp=share_link
+---------------------------------------
+---
+version: '3.8'
+services:
+  mydb:
+    image: mysql:5
+    environment:
+      MYSQL_ROOT_PASSWORD: intelliqit
+    volumes: 
+      - db:/var/lib/mysql
+
+  mywordpress:
+    image: wordpress
+    ports:
+      - 8888:80
+    volumes: 
+      - wordpress:/var/www/html
+
+volumes:
+  db:
+  wordpress:
+
+...
+----------------------------------------------
+#docker compose up -d
+ -->above docker compose file will create containers with volumes
+#docker compose down 
+ -->from above command doker compose file will deleted but volumes will not deleted 
+---------------------------------------
+#docker volume prune -af
+  -->it will delete all unconnected volumes
+-->when the conatiners are deleted and still volumes are presented those volumes are generally called "dangling volumes" 
+-----------------------------------------------
+Docker file integration
+----------------------
+-->docker file purpose is create customised images 
+-->docker compose is used for setup multicontainer architecture 
+---------------------------------
+-->up to here we are creating containers with docker compose file and set up multicontainer architecture and now i want create containers with my customised images through docker compose file
+--------------------
+-->create a docker image file
+#vim dockerfile
+---------------------
+FROM jenkins/jenkins
+USER root
+RUN apt-get update 
+RUN apt-get install -y git maven 
+------------------------------------
+#docker build -t myjenkins .
+	-->customised jenkins image created with myjenkins name with software gi and maven 
+---------------------------------------------
+#vim docker-compose.yml
+--------------------------------
+---
+version: '3.8'
+services:
+  myjenkins:
+    image: myjenkins
+    ports: 
+      - 5050:8080
+  tomcat:
+    image: tomee
+    ports:
+      - 6060:8080
+...
+-------------------------------
+#docker compose up -d 
+	-->from above docker file jenkins will created as container  from our customised image
+	-->tomcat container will create from docker registry 
+--------------------------------------
+-->now we are create containers without building image locall we create containers from level of docker compose file
+#docker build -t myjenkins .
+	-->above command will create jenkis image locally with our customised docker file and then we use that image run as container in the docker compose file 
+	-->instead of that command "build" image from docker file at the level of docker compose file and run as container from that from below file observe
+---------------------------------- 
+---
+version: '3.8'
+services:
+  myjenkins:
+    build: .
+    ports: 
+      - 5050:8080
+  tomcat:
+    image: tomee
+    ports:
+      - 6060:8080
+...
+----------------------------
+-->now above file create jekins image from customised file docker file and run as container 
+-->tomcat will run as container from docker registry 
+----------------------------------

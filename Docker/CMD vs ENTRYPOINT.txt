@@ -1,0 +1,61 @@
+Docker 11th Session
+--------------------
+1.every container trigger one perticular command that is default command for that container
+2.for ubuntu based OS related system defaults command is bash
+3.to change default process command use ENTRYPOINT 
+---------------------
+FROM ubuntu
+MAINTAINER intelliqit
+RUN apt-get update
+
+RUN apt-get install -y nginx
+
+EXPOSE 80 
+ENTRYPOINT ["nginx", "-g", "daemon off;"] 
+----------------------------
+-->what is the different between CMD and ENTRYPOINT
+->both cmd and entrypoint used to specify the defaults process of command
+-->cmd has some advantages 
+-->default process can be modified by using CMD instruction 
+---------------------
+FROM ubuntu
+MAINTAINER intelliqit
+RUN apt-get update
+
+RUN apt-get install -y nginx
+
+EXPOSE 80 
+CMD ["nginx", "-g", "daemon off;"] 
+----------------------------
+-->if i give default process by using CMD process
+#docker run --name u2 -it myubuntu date
+-->from above command date default process set 
+-->when default process is over then it deleted container 
+--------------------------------------
+============================================================
+what is the difference between CMD and ENTRYPOINT in docker
+-------------------------------------------------------------
+Both CMD and ENTRYPOINT are instructions used in Dockerfile to specify the command to be executed when a Docker container starts. However, they have different functions and behaviors:
+
+CMD:
+CMD is used to set the default command that will be executed when a container is launched. It is usually used to define the main application that will run inside the container. CMD instruction can be overwritten at runtime with docker run command argument.
+Example:
+=================
+FROM ubuntu
+CMD ["echo", "Hello, World!"]
+===================
+In this example, when the container starts, it will execute the command echo "Hello, World!". If you run docker run <image> you will see Hello, World! printed in the console.
+
+ENTRYPOINT:
+ENTRYPOINT is similar to CMD in that it specifies the command to be executed when a container is launched. But unlike CMD, it is not overwritten by command-line arguments passed to docker run.
+Example:
+=========================
+FROM ubuntu
+ENTRYPOINT ["echo", "Hello, World!"]
+========================================
+In this example, when the container starts, it will execute the command echo "Hello, World!" and exit. If you run docker run <image> you will see Hello, World! printed in the console. But if you run docker run <image> Some other message, the container will still execute the same command (echo "Hello, World!") and append the additional message at the end, i.e., Hello, World! Some other message.
+
+In summary, CMD is used to set the default command that can be overwritten at runtime, while ENTRYPOINT specifies the main command that cannot be overwritten, and can be used for setting up the container environment or running a script.
+----------------------
+
+

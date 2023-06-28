@@ -1,0 +1,41 @@
+LAMP setup usig docker containers 
+------------------------------------------------
+using docker level commands 11:00 min docker 5th session
+-----------------------------
+To setup LAMP architecture is widely used environment in most of the organistation it is opensource L=linux, A=apache , M=mysql, P=php 
+-->first download mysql image convert them to container 
+-->second download apache image covert them to container link it with mysql
+-->third download programming language like php that will be link it with apache and mysql
+-----------------
+#docker run --name mydb -d -e MYSQL_ROOT_PASSWORD=thej mysql
+	-->from above command mysql will run  as container 
+#docker run --name apache -d -p 8080:80 --link mydb:mysql httpd
+	-->from above command will run httpd container with apache name liking with mysql
+#docker run --name php -d --link mydb:mysql --link apache:httpd php:7.2-apache
+	-->from above command will run php container from php:7.2-apache image and it linke it with mydb and apache
+=======================================================
+LAMP setup at the level docker compose file docker 7th session 1:00 min
+#vim docker-compose.yml
+=============================================
+---
+version: '3.8'
+services:
+  mydb:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: intelliqit
+  apache:
+    image: httpd
+    ports:
+      - 9999:80
+    links:
+      - mydb:mysql
+  php:
+    image: php:7.2-apache
+    links:
+      - mydb:mysql
+      - apache:httpd
+
+...
+====================================
+

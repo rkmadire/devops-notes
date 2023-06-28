@@ -1,0 +1,135 @@
+Ansible 12 Session ansible_distribution 
+-------------------------------------------
+-->ansible_distribution -->it is a ansible inbuilt environment variable it will capture os name and by using debug module it will print on controller 
+-->it will work like error handling also 
+-->suppose there are different flavours of OS in linux there are ubuntu and redhat for that we need to use some specific scenario like block and rescue to print OS name 
+-->but Block and rescue work only two types of different flavours  only but when we use Ansible environment variable it will work any type of flavours in linux 
+-->suppose we create two ubuntu nodes and 1 redhat nodes and one centos node 
+-->i want to display os name for all my nodes into my controller 
+-->for this i am using ansible environment variable for OS ansible_distribution
+	$vim playbook1.yml
+========================================= 
+---
+- name: capture os
+  hosts: all
+  tasks:
+    - name: capture OS name
+      debug: 
+        msg= "{{ansible_distribution}}"
+    - name: capture OS version
+      debug:
+        msg="{{ansible_distribution_version}}"
+    - name: capture major version 
+      debug: 
+        msg="{{ansible_distribution_major_version}}"
+...
+=============================================================
+$ansible-playbook playbook1.yml -b 
+	-->above command for excute playbook
+-->when you excute that playbook it will display into controller os name and os version and os major version accordingly 
+----------------------
+note:when multiple flavours of linux OS using use ansible environment variable  
+-------------------------
+note:ansible environment variable are predefined variables 
+-----------------------------
+$vim playbook3.yml
+=============================================================================
+---
+- name: Install git based on OS platforms
+  hosts: all
+  tasks:
+    - name: Install git using apt
+      apt:
+        name: git
+        state: present
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+    - name: Install git using yum
+      yum:
+        name: git
+        state: present
+        update_cache: yes
+      when: ansible_distribution == "RedHat"
+
+=====================================
+-->above playbook install git based on different os platforms
+-->apt module for ubuntu and yum module for redhat 
+-->we are using when condition then only it will only install that perticular operating system in that only 
+----------------------------------------------------
+-->configuring apache on ubuntu and configuring httpd on redhat machines 
+$vim playbook4.yml
+=====================
+---
+- name: Configure apache/httpd based on Os platform
+  hosts: all
+  tasks:
+    - name: Install apache2 on Ubuntu servers
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+    - name: Install httpd on Redhat servers
+      yum:
+        name: httpd
+        state: present
+        update_cache: yes
+      when: ansible_distribution == "RedHat"
+    - name: Edit the idnex.html file
+      copy:
+        content: "Welcome to IntelliQ"
+        dest: /var/www/html/index.html
+    - name: Restart apache2 on Ubuntu
+      service:
+        name: apache2
+        state: restarted
+      when: ansible_distribution == "Ubuntu"
+    - name: Restart https on Redhat
+      service:
+        name: httpd
+        state: restarted
+      when: ansible_distribution == "RedHat"
+    - name: Check apache/https response on all server
+      uri:
+        url: "{{item}}"
+        status_code: 200
+      with_items:
+        - http://172.31.59.208
+        - http://172.31.57.12
+        - http://172.31.14.207
+...
+========================================
+$ansible-playbook playbook4.yml
+	--> to excute playbbok
+-->above playbook configuring httpd and apache on different OS platforms and check httpd and apache using publick ip of machines accessing or not in a single playbook by using ansible environment variables 
+---------------------------------------------------------------------
+-->by default in ansible to excution of playbook is parallel
+-->imagine there are 10 servers and i want to excute my playbook first machine at the first time then excute playbook second time and third time and so on upto 10 machine 
+-->for this we use serial excution 
+$vim playbook.5yml
+===========================================================================
+---
+- name: creating user
+  hosts: all
+  serial: 1 
+  tasks:
+    - name: user creation 
+      user:
+        name: thej
+        password: thej
+...
+============================================================================
+-->above playbook excute one by one server 
+--> if we put serial 2 then it will excute playbooks every two machine based on that serial excution works 
+----------------------------------------------------------------------
+--> ansible.cf it is configuration file for ansible 
+--> if you want to modify it then it will work based on that only 
+--> suppose default module command module to change module from command to apt module simply modify in ansible.cfg file 
+-->to change inventory file give full path of cutomised path
+-->to change forks 5 to 50  --> by deafult 5 servers to use if you want increase more than that give number thare suppose 50 it will work 50 servers now 
+----------------------------------------------
+--> in the inventory file 
+private_ip ansible_user=ec2-user  -->it means redhat system on ubuntu 
+localhost ansible_connection=local -->if it will enetr in the inventory file then in the controller also it will excute playbooks 
+-------------------------------------------------------------
+

@@ -1,0 +1,55 @@
+The user module in Ansible is used to manage user accounts on remote servers. It allows you to create, modify, and delete user accounts, as well as set their properties such as passwords, UIDs, and GIDs.
+
+Here are some examples of using the user module in Ansible:
+
+Creating a user:
+yaml
+Copy code
+=============================
+- name: Create a user
+  ansible.builtin.user:
+    name: newuser
+    state: present
+===============================
+Changing a user's password:
+yaml
+Copy code
+======================================
+- name: Change a user's password
+  ansible.builtin.user:
+    name: existinguser
+    password: "$6$salt$hashedpassword"
+    state: present
+==========================================
+Setting a user's UID and GID:
+yaml
+Copy code
+==========================================
+- name: Set a user's UID and GID
+  ansible.builtin.user:
+    name: existinguser
+    uid: 1000
+    gid: 1000
+    state: present
+==========================================
+Deleting a user:
+yaml
+Copy code
+-----------------------------------
+- name: Delete a user
+  ansible.builtin.user:
+    name: existinguser
+    state: absent
+==============================================
+The user module is an important tool for managing remote servers, and it can be used in conjunction with other Ansible modules to automate tasks such as setting up new user accounts, modifying existing accounts, and maintaining system security.
+
+It's worth noting that ansible.builtin.user is the legacy way to call the user module, the recommended way is to call the user module directly.
+
+yaml
+Copy code
+-------------------------------
+- name: Create a user
+  user:
+    name: newuser
+    state: present
+===================================

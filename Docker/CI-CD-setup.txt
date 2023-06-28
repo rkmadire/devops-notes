@@ -1,0 +1,35 @@
+setup ci-cd container environment in using docker
+------------------------------------------------------
+using docker commands level docker 5th session min 2:00 min to 10:00 min
+---------------------------------------------
+#docker run --name myjenkins -d -p 5050:8080 jenkins/jenkins
+	-->from above command jenkins download and run as container
+#docker run --name qa-server -d -p 6060:8080 --link myjenkins:jenkins tomee
+	-->from above command tomcat run as container like it with jenkins
+#docker run --name prod-server -d -p 7070:8080 --link myjenkins:jenkis tomee
+	-->from above command tomacat download and run as container  with prod-server name and link it with jenkins
+-------------------------------------------------------
+setup ci-cd envoronment using compose file docker 6th session 24:00 min
+#vim docker-compose.yml
+=========================================
+---
+version: '3.8'
+services:
+  myjenkins:
+    image: jenkins/jenkins
+    ports: 
+      - 5050:8080
+  qaserver:
+    image: tomee
+    ports:
+      - 6060:8080
+    links:
+      - myjenkins:jenkins
+  prodserver:
+    image: tomee
+    ports:
+      - 7070:8080
+    links:
+      - myjenkins:jenkins
+...
+=================================

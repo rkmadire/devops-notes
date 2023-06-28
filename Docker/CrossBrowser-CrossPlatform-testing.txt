@@ -1,0 +1,51 @@
+Cross Browser and cross platform testing docker 5th session 22:00 min
+----------------------------------------------------------
+-->developers develop application that application need to test 
+-->to test application selenium programmers create selenium script to test code
+-->now my company wanted to test this application more than 800+ os and browser combinations 
+-->for this my company initially dependent on "Sause Lab" it is one organisation to test applications on the virtual machines to do this process is  very expensive 
+-->later by using docker those evironment setup by using docker containers
+-->each container will have one os and one browser
+-->to test application which os and which browser combinations selenium script will take care 
+------------------------------------
+ex:
+step1:download selenium/hub from docker registry
+#docker run --name hub -d -p 4444:4444 selenium/hub
+-->from above command it will download image selenium/hub and convert to container this will containe selenium script to test applications
+
+step2:download image which containe one browser with different os
+#docker run --name chrome -d -p 5901:5900 --link hub:selenium selenium/node-chrome-debug
+-->from above command downloading image which containe chrome browser and ubuntu os it will link to hub 
+-->now automatically by using test scipts it will detect test the  application with the chrome with dependent on ubuntu os
+
+step2:download firefox with ubuntu os 
+#docker run --name firefox -d -p 5902:5900 --link hub:selenium selenium/node-firefox-debug
+-->from above command container with ubuntu and firefox to test application for this we link with hub which containe selenium script to test application 
+---------------------------------------------------------------------------------------------
+
+Note:here we downloading image from registry instead of this we can create  image at the level of dockerfile use them like container  
+------------------------------------------------------
+above setup using docker compose file docker 7th session 8:00 min
+#vim docker-compose.yml
+==========================================
+---
+version: '3.8'
+services:
+  hub:
+    image: selenium/hub
+    ports:
+      - 4444:4444
+  chrome:
+    image: selenium/node-chrome-debug
+    ports:
+      - 5901:5900
+    links:
+      - hub:selenium
+  firefox:
+    image: selenium/node-firefox-debug
+    ports:
+      - 5902:5900
+    links:
+      - hub:selenium
+...
+===========================================

@@ -1,0 +1,15 @@
+Ansible has a number of inbuilt variables that can be used within playbooks and templates. Some of the commonly used inbuilt variables are:
+
+ansible_host: The hostname or IP address of the current host being targeted.
+ansible_port: The SSH port used to connect to the current host.
+ansible_user: The username used to connect to the current host.
+ansible_connection: The connection plugin used to connect to the current host (e.g. ssh, local, docker, etc.).
+ansible_python_interpreter: The path to the Python interpreter used by Ansible on the current host.
+ansible_distribution: The name of the distribution running on the current host (e.g. Ubuntu, CentOS, etc.).
+ansible_distribution_release: The release version of the distribution running on the current host.
+ansible_os_family: The operating system family of the current host (e.g. Debian, RedHat, etc.).
+ansible_facts: A dictionary containing facts about the current host, such as its IP address, MAC address, and installed packages.
+These variables can be used to conditionally execute tasks, template files, or roles based on the current host or operating system, or to gather information about the current host for use in other tasks. You can also define custom variables using the vars section of your playbook or by including a separate variables file.
+
+
+

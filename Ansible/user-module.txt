@@ -1,0 +1,44 @@
+ansible -4th Session-- playbooks.yml 
+---------------------------
+playbook1.yml  
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+---
+- name: Creating user
+  hosts: servers
+  tasks:
+    - name: User creation
+      user:
+        name: Anusha
+        password: intelliqit
+        home: /tmp/Anusha
+        uid: 3333
+        shell: /bin/bash
+        comment: "A normal user"
+
+
+...
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-->above playbook creating a anusha user with specified and desired 
+   information
+note:ansible playbook is very accurate for spaces so give accordigly
+-->yaml file starting with 3 line and ending with three dots
+- name: 
+  hosts:
+  tasks:
+	-->these three elements are sibling elements
+		- name: User creation
+    		  user:
+	-->name and user are module elements
+	-->these are arguments
+ 		name: Anusha
+       	 	password: intelliqit
+        	home: /tmp/Anusha
+        	uid: 3333
+        	shell: /bin/bash
+        	comment: "A normal user"
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+$ansible-playbook playbook1.yml --syntax-check   
+	-->above command check playbooks correct or not
+$ansible-playbook palybook1.yml -b
+	-->it will run the playbook
+	

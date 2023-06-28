@@ -1,0 +1,5 @@
+notify and Handlers -- youtube
+-----------------------
+1.Handlers are tasks that only run when notified
+2.Handlers are used in cases when you want a task to run only when a change is made on a machine
+3.Handlers run after all the tasks in a particular play have been completed. Handler only runs once, regardless of how many tasks notify it.    

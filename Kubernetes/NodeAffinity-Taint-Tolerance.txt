@@ -1,0 +1,231 @@
+NodeAffinity, Taint, Tolerance Docker-kubernetes 27th session 
+-------------------------------------------------------------------------------------
+1.NodeAffinity
+2.Taint
+3.Tolerance
+---------------------------------------
+NodeAffinity: 15 min to 44:00 min
+--------------------
+-->normally in kubernetes kubeSchedular deside pod where should run
+-->by using NodeAffinity we can able decide where pod should run on cluster
+-->first identify machine take machine id provide label like "key=value" to make to perform NodeAffinity on perticular machine
+ $ kubectl get nodes
+-->from above command display connected nodes in the cluster select on machine take id of that machine
+ $ kubectl   label   nodes   take_slave_id    slave1=intelliit1
+	-->above command apply to slave key=value (slave1=intelliit1) in a label 
+ $vim NodeAffinity1.yml
+====================================================
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    type: proxy
+spec:
+  containers:
+    - name: mynginx
+      image: nginx
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: slave1
+                operator: In
+                values:
+                  - intelliqit1
+===============================================================
+-->above file affinity added hereat level of containers 
+-->under affinity we have child element like requiredDuringSchedulingIgnoredDurigExcution
+-->under nodeSelectorTerms 
+-->under - matchExpressions 
+-->under - key: slave1 
+-->operation: In (or operator)
+-->value= itelliqit1
+-->from above file containe nginx pod. running only on perticular slave inside cluster (like slave1) based on label attach slave1=intelliqit1
+ 
+-------------------------------------------------------------------------------------------
+$ vim NodeAffinity.yml
+=================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    type: proxy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: proxy
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        type: proxy
+    spec:
+      containers:
+        - name: mynginx
+          image: nginx
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: slave1
+                    operator: In
+                    values:
+                      - intelliqit1
+...
+============================================
+
+-->from above file need to create service object for communication for outside 
+$ vim service1.yml
+============================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: niginx-service
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 80
+      port: 80
+      nodePort: 30008
+  selector:
+    type: proxy
+=============================
+-->now nginx pod access through browser with 30008 port number 
+===========================================================================================
+Taint:   
+----------
+-->Taint is work like opposite of NodeAffinty 
+-->Taint is process it will prevent machines not to run pods on perticular machines where taint applied
+-->taint is high priority compare to NodeAffinity 
+-->Taint mainly used for database pods (because where pod database available there should be no other pod will be placed )
+-->how to taint a machine in cluster 
+-->identify machine take id of that machine provide key=value:NoSchedule
+$ kubectl taint nodes take_node_id slave1=intelliit1:NoShedule 
+	-->from above command taint will be applied with key=value:NoShedule specfications 
+-->Now run pod with taint in definition file 
+$ vim pod-definitionfile2.yml
+=====================================
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-pod
+  labels:
+    type: db
+    author: intelliqit
+spec:
+  containers:
+    - name: mydb
+      image: postgres
+      env:
+        - name: POSTGRES_PASSWORD
+          value: intelliqit
+        - name: POSTGRES_USER
+          value: myuser
+        - name: POSTGRES_DB
+          value: mydb
+======================================================
+$ vim deployment2.yml
+==============================================================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  labels:
+    type: db
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: db
+  template:
+    metadata:
+      name: mysql-pod
+      labels:
+        type: db
+    spec:
+      containers:
+        - name: mydb
+          image: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: intelliqit
+...
+==================================================================================================
+-->to add taint machine command 
+$ kubectl taint node id_machine slave2=intelliit2:NoShedule
+-->to remove Taint on machine
+$ kubectl taint nodes id_machine slave2=intellit2:NoShedule-
+================================================================
+Toleration:
+------------------
+-->if you want to place pod on tainted machine then we apply Toleration 
+$ vim toleration1.yml
+================================
+  ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd-pod
+  labels:
+    type: webserver
+spec:
+  containers:
+    - name: myhttpd
+      image: httpd
+  tolerations:
+    - key: slave2
+      operator: Equal
+      value: intelliqit2
+      effect: NoSchedule
+
+...
+==================================================
+-->from above file we apply toleration on tainted machine then httpd pod runs on slave2 machine 
+------------------------
+-->imagine there are nginx pod is running on machine1 
+-->now i tainted machine1 then what will happen 
+-->actually nothing will happen because already nginx pod running from before tainted machine after tainted only machin will effect 
+-->which means after tainted machine next comming pods will not run on tainted machine 
+========================================================================================
+$ vim toleration2.yml
+===========================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-deployment
+  labels:
+    type: webserver
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: webserver
+  template:
+    metadata:
+      name: httpd-pod
+      labels:
+        type: webserver
+    spec:
+      containers:
+        - name: myhttpd
+          image: httpd
+      tolerations:
+        - key: slave3
+          operator: Equal
+          value: intelliqit3
+          effect: NoSchedule
+        
+=====================================
+-->from above httpd pod runs on tainted machine the machine actually slave3 in the cluster 
+=====================================================================================

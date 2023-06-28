@@ -1,0 +1,66 @@
+Horizontal Pod Autoscaler 22:00 min to 38:00 min docker-kuberenetes 31st session 
+------------------------------------------------------------------------------------------------
+-->kuberenetes has capability depending on memory utilization and cpu utilization automatically increase and decrease replicas this is done by using horizontal pod autoscaler object 
+-->To set up this i cretae a deployment and service definition file and create a horizontal autoscaler 
+$ vim autoscalig.yml
+=============================
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-apache
+spec:
+  replicas: 1
+  selector:
+     matchLabels:
+        run:  php:apache
+  template:
+     metadata: 
+        name: php-pod
+        labels:
+           run: php-apache
+    spec:
+      containers:
+         - name: php-apache
+           image:  intelliqit/mynew
+           ports:
+             - containerPort: 90 
+          resources:
+             request:
+                cpu: 200m 
+             limits:
+                cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-apache
+spec: 
+  ports:
+     - port: 80
+  selector:
+     run: php-apache
+...
+==================================
+$ kubectl apply -f autoscaler.yml 
+	-->it create one php-apache pod and attach with service to it with clusteIP 
+$ kubectl autoscale deployment php-apache --cpu-percent=50  --min=1  --max=10
+	-->from above command as the cpu utilization increase more than 50% the count will increase replicas upto 10 replicas 
+
+$ kubectl get hpa
+	-->it display horizaontal pod autoscaler status
+Q:how to check whether auscaler really scaling or not
+-->there are certain testing tools like (Load runnuer or J meter)these are called as performance testing tools these are used by testers 
+---------------------- 
+$ kubectl run -i --tty   lg   --rm  --image  busybox   --restart Never  --  /bin/sh  -c  "while sleep 0.01; do wget  -q -O - http://php-apache;done"
+
+$ kubectl get hpa 
+
+$ kubectl get hpa  --watch 
+
+-----------------------------------------
+$ kubectl delete -f autoscaler.yml
+$ kubectl delete hpa php-apache
+$ kubectl delete pods lg 
+----------------------------------------------
+

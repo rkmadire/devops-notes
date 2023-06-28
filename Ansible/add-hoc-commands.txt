@@ -1,0 +1,200 @@
+ansible all ansible 2nd Session and 3rd session
+---------------------------------------------------------------
+modules used here 
+
+copy   
+uri
+service
+apt
+fetch
+replace
+git
+get_url
+file
+user
+shell
+command
+-----------------------------------------------
+ansible   all/group name/ipaddress  -i path of inventory -m module name -a '   '
+field-1-->ansible (it is ansible)
+field-2-->all/group name/ipaddress (specifying nodes or group of nodes or ip adress of nodes or specifying name of the nodes instead of ip)
+field-3--> -i (it indicates customized path )
+field-4--> -m means modular give specific modular name (by defaults command mode in the ansible)  
+-----------------------------------------------------------------------------------
+$ ansible all -a 'free -m' ---->this command also works same like above command 
+				becaus when you specify manage nodes in default file (/etc/ansible/hosts) and 
+				command module also defaults in ansible so no need to add those options
+--> -i is not necessary when you working on defaults file (/etc/ansible/hosts)
+--> -m is not necessary when you working on default moduler (command) mode 
+------------------------------------------------------------------------------------------------------------------------
+
+$ asible options -i inventory_path -m moduler_name -a 'ls'
+	ansible -->keyword
+	options -->all or groupname or ipaddress
+	-i	-->inventory file symbol identification
+	-m	-->modular identification
+	-a	-->arguments identification (ls) is the argument  
+-----------------------------------------------------------------------------------------------------------------------------
+-->$ls -la --> this command list out on the single linux machine
+-->$ansible all -i /etc/ansible/hosts -m command 'ls -la'  -->this command will perform on the remote nodes
+-->$ansible all -i myinventoryname -m command -a 'free -m'
+	myinventory is a file name this is customized inventory file
+------------------------------
+1.command module is the default module
+---------------------------------------------
+ -->/etc/ansible/hosts --> is the defaults inventory file
+note: when you working on defaults inventory file dont need to mention -i
+note: when you working on defualts module dont need to mention -m
+------------------------------------ 
+2.shell module to run shell related commnands on remote nodes
+-----------------------------------------------------------
+$ansible all -m shell -a 'curl -fsSL https://get.docker.com -o get-docker.sh' 	
+	-->above command will perform download get.docker.sh file from the internet
+$ansible all -m shell -a 'sh get-docker.sh' 
+	-->it will download on the remote machins docker package
+note: check docker installed on remote nodes 
+	$docker --version
+-------------------------------
+-->ansible all -m shell -a 'free -m'
+	-->display remote machines free information
+$ansible all -m shell -a 'free -m' > file1
+	-->above commad will perform redirection which means free information will copid into file1
+-------------------------------------
+3.user module user for useradministration
+-----------------------------------------------------
+$sudo useradd thej -->this will perform only on localhost machine
+$ansible all -m user -a 'name=thej password=abcd' -b
+	-->this command wil perform useradd on the remote nodes thej user 
+	   will create all connectd nodes 
+	--> -b means become temporarly act like sudo 
+---------------------------------------------------------
+$asible all -m user -a 'name=anu password=anu123 home=/tmp/au shell=/bin/bash uid=2222' -b 
+	-->it wiil create a anu user in all nodes based on command specified will also create information
+---------------------------------------------------------------
+4.file module
+------------------------------------------------------------------------
+$asible all -m file -a 'name=/tmp/filename state=touch' -->create a file 
+$asible all -m file -a 'name=/tmp/dir1 state=directory'  -->create a directory
+$asible all -m file -a 'name=/tmp/filename state=absent'  -->delete a directory or file
+$asible all -m file -a 'name=/tmp/filename state=touch owner=sai group=anu mode=770' -b -->changin permissions for file
+------------------------------------
+5.copy module -->copy module meas copy the controller to all managed nodes
+-------------------------------------------------------------------------------
+$ansible all -m copy -a 'src=file2 dest=/tmp' -->this will copy file2 to all managed nodes 
+-->copy module also modified the content 
+$asible all -m copy -a 'content="welcome" dest=/tmp/file2'
+	-->above file2 will be modified.
+	-->copy module not also modified file its also change permissions based on their permission on their user 
+$asible all -m copy -a 'src=file2 dest=/tmp owner=root group=sai mode=740' -b
+-----------------------------------------------------------
+note:yellow color display means excuted perfectly
+note:green color display already availabe in the nodes
+ -->this called idempotency  
+-----------------------------------------------------------------------
+6.apt module used to install packages 
+-------------------------------------------------
+$ansible all -m apt -a 'name=git state=present' -b
+	-->to install git on all managed nodes
+$ansible all -m apt -a 'name=git state=absent' -b 
+	-->uninstalling git on all the managed nodes 
+$ansible all -m apt -a 'name=tomcat9 state=present update_cache=yes' -b
+	-->to update packages and install 
+$ansible all -m apt -a 'name=tomcat9-admin state=present update_cache=yes' -b
+--------------------------------------------------------------------------------------
+7.service module start and restart and stop services in the managed nodes 
+---------------------------------------------------------------------------------------------
+$ansible all -m service -a 'name-tomcat9 state=restarted' -b 
+$ansible all -m service -a 'name-tomcat9 state=stoped' -b 
+ -->tomcat9 restart and stop 
+ansible all -m service -a 'name-tomcat9 state=started' -b 
+---------------------------------------------------------------------------------------------
+example seneario
+---------------------------------------------------------------------------------------------
+controll node
+---------------------
+$ vim /etc/tomcat9/tomcat-users.xml
+----------------------------------------------------------------------------
+<tomcat-users>
+	<user username="thej" password="thej" roles="manager-script/>
+</tomcat-users>
+------------------------------------------------------------------------------
+note: above tomcat-users.xml file copy  to all connected manafed nodes or tomcat server node
+$ansible all -m copy -a 'src=tomcat-users.xml dest=/etc/tomcat9' -b
+	-->above command will perform copy the file to all managed nodes 
+$ansible all -m service -a 'name-tomcat9 state=restarted' -b
+------------------------------------------------------------------------------------------
+======================================================================
+
+Ansible session 3rd
+------------------------
+uri module --used to check remote url connection  
+$ansible all -m uri -a 'url=http://google.com status_code=200'
+	-->if status code get 200 connection is perfect
+	-->if status code get -1 connection not perfect 
+
+-----------------------
+module get_url
+wget http://address -->this will download from website in to local system 
+$ansible all -m get_url -a 'url=https:address dest=/tmp'
+	-->above command will download from website to all conected nodes 
+-----------------------------------------------
+git module
+------------
+
+$ansible all -m git -a 'repo=https://github.com/thej950/maven.git dest=/tmp/mygit'
+	-->to dowload code from github in all nodes
+----------------------------------------------------------------
+replace module 
+-----------------
+-->by default 8080 is tomcat9 port
+-->for example changing tomcat9 8080 port to 9090 port
+$ansible all -m replace -a'regex=8080 replace=9090 path=/etc/tomcat9/server.xml' -b
+	-->above command will replace 8080 port to 9090
+$ansible all -m service -a 'name=tomcat9 state=restarted ' -b
+	-->now tomcat9 restarted with service module
+=========================================================================
+fetch module -->means copy from  manage nodes to controller 
+		it is reverse like copy module 
+	-->copy module works copy from controller to manage nodes
+---------------------------
+$ansible all -m fetch -a 'src=/etc/passwd dest=/tmp'
+	-->copy from manage nodes passwd file to controll node 
+	   name specified with passwd file in the cotroll node with specified nodes ip address
+--------------------------------------
+-->addhoc commands these are disadvanges of adhoc commands when you perform commands 
+   use multiple times modules for single package 
+-->suppose i want to install git and maven here i need to install to run two times apt module commands 
+-->addhoc commands will work on one type module and at same time one type of arguments only 
+====================
+i want to install apache2 use apt module
+$ansible all -m apt -a 'name=apache2 state=present update_cache=yes ' -b
+	-->this command install and update the apche2 package 
+$ansible all -m copy -a 'content="welcome to intelliQ" dest=/var/www/html/index.html' -b 
+	-->this command will over write the existing file on the remote nodes  
+$ansible all -m service -a 'name=apache2 state=restarted' -b
+	-->this will restart the service
+$ansible all -m uri -a 'url=http://ipaddress_private'
+	-->if status_code=200 -->it will working
+	-->if status_code=-1 -->it will not working  
+note:for simple package install and run that service we use lot of module commands and multiple argument with different module. to avoid this problem we use playbooks
+======================================================================================
+one more example 
+-------------------
+$ansible all -m apt -a 'name=tomcat9 state=present' -b
+	-->it will install tomcat9 on manage nodes 
+$ansible all -m apt -a 'name=tomcat9-admin state=present' -b
+	---->it will install tomcat9-admin on manage nodes
+controll node tomcat-users.xml file
+$vim /etc/tomcat9/tomcat-users.xml
+----------------------------------------------------------------------------
+<tomcat-users>
+	<user username="thej" password="thej" roles="manager-script/>
+</tomcat-users>
+-----------------------------------------------
+$ansible all -m copy -a 'src=tomcat-users.xml dest=/etc/tomcat9' -b
+	-->for copy
+$ansible all -m service -a 'name=tomcat9 state=restarted' -b
+	-->service restarted
+$ansible all -m uri -a 'url=http://adress_private_ip status_code=200' -b
+	-->it will check connection pingagable or not 
+note:here we experience dowload tomcat and configure it and start the service we use so many modules and argument it is a repitative process so  to avoid this use playbooks

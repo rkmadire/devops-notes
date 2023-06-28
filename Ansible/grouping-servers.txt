@@ -1,0 +1,26 @@
+Grouping Servers ansible 5th session time 26 min
+---------------------------------------------------------
+
+[webserver] -->this is called group
+172.56.0.2
+172/56.3.4
+[dbserver] -->group
+172.56.7.6
+172/56.3.4
+[appserver] -->group  
+172/56.3.4
+[server:children]
+webserver
+appserver
+---------------------------------------
+note: above [server:children] this field server name can be anything but children is predefined
+-->server is combination of multiple groups 
+--> $ansible server -a 'date --> it will work on both dbserver and webserver
+       	
+--> one machine containe multiple groups
+	
+$ ansible appserver -m command -a 'date'				--> this command will display date of appserver machines
+-----------------------------------------
+
+
+  

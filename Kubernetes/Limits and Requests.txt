@@ -1,0 +1,64 @@
+limits and requests Docker-kubernetes-27th session 3:00 min to 14:00 min 
+----------------------------------------------------------------------
+limits:
+-->to setup upper limit to pod which is set limit cpu and ram utiliation of system resources to pod 
+-->it represents maximum amount of hardware allocation to pods 
+Request:
+-->request represents of minimum amout of hardware allocation to pods 
+
+$ vim Requestandlimits1.yml
+============================
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    type: proxy
+spec:
+  containers:
+    - name: mynginx
+      image: nginx
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+
+=================================
+
+$vim Requestandlimits2.yml
+=====================================
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    type: proxy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: proxy
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        type: proxy
+    spec:
+      containers:
+        - name: mynginx
+          image: nginx
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "128Mi"
+              
+===================================================

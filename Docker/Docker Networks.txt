@@ -1,0 +1,38 @@
+Docker Networks
+--------------------
+Docker networks are a feature that allows containers to communicate with each other securely and efficiently. A Docker network provides a virtual network that is isolated from the host network and other Docker networks, allowing containers to communicate with each other using IP addresses assigned to the network.
+
+Docker networks offer several advantages over traditional networking methods, including:
+
+Secure isolation: Docker networks provide secure isolation between containers, preventing containers from accessing each other's network traffic unless they are explicitly connected to the same network.
+
+Scalability: Docker networks make it easy to scale containerized applications by allowing new containers to be added to the network without the need for complex networking configurations.
+
+Service discovery: Docker networks provide a built-in DNS service that allows containers to discover and communicate with each other using container names instead of IP addresses.
+
+Docker supports several types of networks, including:
+
+Bridge network: This is the default network created by Docker, which allows containers to communicate with each other on the same host.
+
+Host network: This allows containers to use the host network stack instead of being isolated in their own network namespace.
+
+Overlay network: This allows containers to communicate with each other across multiple Docker hosts using a software-defined network overlay.
+
+Macvlan network: This allows containers to have their own MAC address and appear as physical hosts on the network.
+Creating and using a Docker network is simple. To create a new bridge network, you can use the docker network create command, like this:
+#docker network create my-network
+To connect a container to the network, you can use the --network option when starting the container, like this:
+#docker run --network my-network my-image
+You can also specify a network in a Docker Compose file, like this
+=======================================================
+version: "3"
+services:
+  my-service:
+    image: my-image
+    networks:
+      - my-network
+
+networks:
+  my-network:
+=====================================================
+In this example, the my-service container is connected to the my-network network.

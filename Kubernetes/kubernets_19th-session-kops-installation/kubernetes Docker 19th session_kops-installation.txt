@@ -1,0 +1,159 @@
+kubernetes Docker 19th session 
+--------------------------------
+kops installation process
+------------------------------
+unmanaged kubernetes setup/self managed
+-------------------------------------------
+1.KOPS -->kubernetes operation
+2.kubeadm 
+
+managed kubernetes
+--------------------
+1.EKS (AWS)
+2.GKE (GCP)
+
+------------------------
+KOPS: installation process
+-->kops need permission to access s3,ec2,vpc,route53,autoscaling etc
+step1:
+-->create a server with amazon linux machine in aws with kops server name
+step2:
+-->create IAM role with administration policy
+----------------
+==>search IAM role in search bar-->select role->create role->select type(aws services)->select common usecase(select ec2)->click on next->search role in permission policy(admin policy)->find administrator access role and make slect->click on next->give name in the role name(kops9)->click on create role
+------------------------
+-->now that kops9 role have administrative privilages
+step3:
+-->now that IAM kops9 role link with ec2(kops server)
+-------
+==>goto ec2(kops server)->select kops server->goto actions->select security->click on modify IAM roles->find kops9 role->click on update   
+-------------
+-->now kops server have administration privilages that server able to create ec2 instance and s3 create and many more 
+------------------------
+step4:
+-->connect to kops server
+-->install kops in the server 
+$curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+-->from above command kops-linux-amd64 file will be downloaded
+$chmod +x kops-linux-amd64
+$sudo mv kops-linux-amd64 /usr/local/bin/kops
+-->from above command kops-linux-amd64 file move to /usr/local/bin (that path containe system program file) and when you perform $PATH command it will display where downloaded software available
+-----
+-->Now install kubectl
+$ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+
+-->from above command kubectl will installed 
+$chmod +x ./kubectl
+$sudo mv ./kubectl /usr/local/bin/kubectl
+------------
+step5:
+-->now create s3 bucket using kops server
+-->kops uses s3 for etcd (repository) to store information 
+$ aws s3 mb s3://thej123.in.k8s --region us-west-1
+-->from above command s3 bucket will create in use-west-1 region in the aws with the name intel.in (name can be anything)
+-------------------
+step6:
+-->create a route53 service in aws for communication purpose
+==>goto route53 service->click on hosted zones->create hosted zones->provide domain name(thejdomain123.in)(name can be anything)->select type(private)->select region(north-california)->go with default vpc->created hosted zone
+----------
+-->now domain name with thejdomain123.in
+-->we created s3 bucket(thejstore123.in.k8s) and route53 service for this two services i need to store two environment varaibles 
+-->create two variables 
+$vim .bashrc
+====================
+export KOPS_CLUSTER_NAME=thejdomain123.in
+export KOPS_STATE_STORE=s3://thejstore123.in.k8s
+===================
+note:whenever changes in .bashrc file that changes will reflect next time you login in to server(restart)
+(or)
+-->execute command like 
+$ source .bashrc
+-->now .bashrc wil reconfigure
+--------------
+step6:
+-->$ genrate ssh-keygen
+-----------
+step7:
+-->create a kubernetes cluster defination
+$ kops create cluster \
+--state=${KOPS_STATE_STORE} \
+--node-count=2 \
+--master-size=t3.large \
+--node-size=t3.large \
+--zones=ap-southeast-1a \
+--name=${KOPS_CLUSTER_NAME} \
+--dns private \
+--master-count 1
+---------------------
+note:kubernetes require minimum 2 core cpu and 4gb ram
+-->even also there is no guarantee kubernetes run efficiently 
+------------
+state8:
+-->create kubernetes cluster 
+$ kops update cluster --yes --admin
+	-->above command will update the cluster
+Above command may take some time to create the required infrastructure resources on AWS. Execute the validate command to check its status and wait until the cluster becomes ready
+
+kops validate cluster
+For the above above command, you might see validation failed error initially when you create cluster and it is expected behaviour, you have to wait for some more time and check again.
+
+$kops validate cluster 
+
+$kubectl get nodes
+
+--> To connect to the master
+$ ssh admin@api.javahome.in 
+-->Destroy the kubernetes cluster
+$kops delete cluster  --yes
+
+Update Nodes and Master in the cluster
+We can change numner of nodes and number of masters using following commands
+
+   kops edit ig nodes change minSize and maxSize to 0
+   kops get ig- to get master node name
+   kops edit ig - change min and max size to 0
+   kops update cluster --yes	
+========================================================
+steps:to install kubernetes throuh kops
+1.first launch ec2 machine provide name kopsServer
+2.create IAM role with administratorAccess and link with kopsServer
+3.connect to kopsServer perform commands to istall kubernetes
+$curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+$chmod +x kops-linux-amd64
+$sudo mv kops-linux-amd64 /usr/local/bin/kops
+$ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+$chmod +x ./kubectl
+$sudo mv ./kubectl /usr/local/bin/kubectl
+$ aws s3 mb s3://thej123.in.k8s --region us-west-1
+4.create route53 thejdomain123.in
+5.provide env in .bashrc file
+$vim .bashrc
+====================
+export KOPS_CLUSTER_NAME=thejdomain123.in
+export KOPS_STATE_STORE=s3://thej123.in.k8s
+===================
+$ source .bashrc
+6.generate ssh keys
+$ genrate ssh-keygen
+7.create kubernetes cluster 
+$ kops create cluster \
+--state=${KOPS_STATE_STORE} \
+--node-count=2 \
+--master-size=t3.large \
+--node-size=t3.large \
+--zones=ap-southeast-1a \
+--name=${KOPS_CLUSTER_NAME} \
+--dns private \
+--master-count 1
+8.create kubernetes cluster 
+$ kops update cluster --yes --admin
+9.to establish cluster it takes some time upto 10 to 15 min upto then excute command
+$kops validate cluster 
+10.to display cluster nodes
+$kubectl get nodes
+11.to delete cluster
+$kops delete cluster  --yes
+12.to connect master machine
+$ ssh admin@api.javahome.in 
+=================================================================
+==============================================================

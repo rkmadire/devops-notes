@@ -1,0 +1,49 @@
+Docker Customised networks 30:00 min docker 12 the sesssion
+---------------------------------------------------------------------
+-->there are 4 type of networks available in docker host,null.bridge,overlay networks
+-->bridge networ is defualt network
+-->create network with customised name 
+-----------------------------------------------------
+#docker network create --driver bridge mynetwork
+	-->from above command a customised mynetwork created with belongs to the bridge type
+-->suppose if want create a contaier inside a customised network 
+#docker run --name n1 -d -P --network mynetwork nginx 
+	-->from above command nginx container running inside mynetwork
+-------------------------------------------------
+To set up subnet range to mu networks 32:00 min docker 12th session
+-----------------------------------------------------
+#docker network create --driver bridge --subnet 10.0.0.0/28 intelliqit
+	-->from above command it will create network with intelliqit name assigned range with 10.0.0.0/28 which means whatever container will be created inside this network that all container will get that range related ip address  only
+-->10.0.0.0/28 ---- 16 ip will be available
+-->suppose i create nginx container within this intelliqit network
+#docker run --name n2 -d -P --network intelliqit nginx 
+--------------------------------------------------------------------------------
+
+
+-->when you create container at the level of docker compose file it will create a customised bridge network  using that network only cotainer will comminicate with each other 
+-->when you docker compose down all container will be deleted and including networks and volumes also deleted whenever they created automatically 
+------------------------------------------
+-->when you create containers with docker compose file with customised network it will not delete at the time of docker compose down only containers got deleted 
+#docker network create --driver bridge mynetwork 
+	-->from above command a mynetwork created with type bridge  
+-->creating container through docker compose file with customised network
+==============================
+---
+version: '3.8'
+services:
+  mydb:
+    image: postgres
+    environment:
+       POSTGRES_PASSWORD: thej123
+       POSTGRES_USER: thej
+       POSTGRES_DB: mydb
+  myadminer:
+    image: adminer
+    ports:
+      - 8888:80
+networks:
+  defaults:
+     external:
+       name: intelliqit
+=======================================
+
