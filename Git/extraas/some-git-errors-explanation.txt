@@ -1,0 +1,37 @@
+When encountering errors while pushing commits to GitHub, it's essential to pay attention to the exact error message to understand the issue correctly. Common errors you might encounter while pushing commits include:
+----------------------------------------------------------
+1. Authentication-related errors: These occur when you don't have the proper permissions to push to the remote repository or when your authentication credentials are incorrect.
+
+troubleshoot:
+----------------------
+Double-check the error message: Ensure you have the correct error message to identify the problem accurately.
+==============================================================
+2. Non-fast-forward error: This happens when your local branch is behind the remote branch, and you need to pull the changes before pushing your own.
+
+Troubleshoot:
+-----------------------
+Check your authentication: Make sure you have the necessary permissions to push to the remote repository. If using HTTPS, verify your username and password/token.
+
+=============================================================
+3. Conflict errors: These arise when someone else has pushed changes to the remote branch, and Git can't automatically merge your changes due to conflicts with theirs.
+
+Troubleshoot:
+-----------------------
+Pull changes from the remote: If you encounter non-fast-forward errors, pull the changes from the remote branch into your local branch and resolve any conflicts before pushing again.
+==============================================================
+4. Missing upstream branch error: This occurs when you haven't set an upstream branch for your local branch, so Git doesn't know where to push.
+
+Troubleshoot:
+----------------------
+Set upstream branch: If you encounter a missing upstream branch error, set the upstream branch using the following command:
+-------------------
+# git push --set-upstream origin <branch-name>
+---------------------
+======================================================
+5. Repository not found: This happens when the repository you're trying to push to doesn't exist or the URL is incorrect.
+
+Troubleshoot:
+---------------------
+Verify the repository URL: Check the remote repository's URL to ensure it is correct.
+--------------------------------------------
+Retry pushing: After addressing the specific issue, try pushing your commits again.

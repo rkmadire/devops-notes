@@ -13,7 +13,7 @@ metadata:
     type: proxy
 spec:
   selector:
-    matchLabeels:
+    matchLabels:
       type: proxy
   template:
     metadata:

@@ -13,7 +13,7 @@ Service Objects 2:00 min to
 2.Loadbalancer
 3.ClusterIP 
 4.Headless (this is clssification of cluster ip )
--->remember there are only three sub objects in sservice object
+-->remember there are only three sub objects in service object
 ----------------------
 NodePort:
 -------------
@@ -54,7 +54,8 @@ $ kubectl get all
 -->so we need to establish network load balancer 
 -->actually in kubernetes network load balancer not perform directly
 -->to perform network load balancer we use NodePort object via this service it will work
--->in simple create NodePort service object it will help to perform Network load balancing 
+--
+>in simple create NodePort service object it will help to perform Network load balancing 
 -->create a nginx service with no ports
 $ vim pod-definition1.yml
 ===================================
@@ -93,7 +94,7 @@ spec:
     author: intelliqit
     
 =================================================================================
-targetport -->it means container port
+targetport -->it means container default port
 port --> it means service port
 nodeport -->it means host port
 note: thet node port shoud be 30000 to 32767 only 
@@ -102,20 +103,20 @@ note: thet node port shoud be 30000 to 32767 only
 -->so here we give 
 -------------------------------------------------------------------------------------------------
 on pod-definition1.yml			service1.yml
-------------------------			----------------------
-selector:				        selector:
-  type: proxy				     type: proxy
-  author: intelliqit			author: intelliqit
+---------------------------------- 			----------------------
+selector:					selector:
+  type: proxy				  type: proxy
+  author: intelliqit				  author: intelliqit
 --------------------------------------------------------------------------------------------------------
 -->from above 2 file we provide in the labels selector same information
 -->based on selector information it will match and access through service 
 Q:how do you link a service with pod
-ans:using selector we give labelsthose labels matching with the labels you give in the pod-definition file like that it will work
+Ans: using selector we give labels those labels matching with the labels you give in the pod-definition file like that it will work
 ---------------------------------------------------------------------------------------------
 -->Nodeport capability to perform Network loadbalncing 
 -----------------------------------------------------------------------------------------------------------------
 $ kubectl get all
--->ow observe nginx service containe 30008 port to accsess service from cluster level 
+-->Now observe nginx service containe 30008 port to accsess service from cluster level 
 ================================================================================
 Loadbalacing 26:00 min
 ----------------------------------
@@ -157,7 +158,7 @@ spec:
     author: intelliqit
 ====================================
 $ kubectl apply -f service2.yml
---> from above file it will create loadbalancer and attach with  previously created httpd  service using pod-definitio file based on selctor
+--> from above file it will create loadbalancer and attach with  previously created httpd  service using pod-definition file based on selctor
 ============================================
  ClusterIP 35:00 min
 ----------------------------------
@@ -167,7 +168,7 @@ ClusterIp: 4:00 min to 12:00 min docker-kubernetes 25th session
 -->cluster ip means it is private subnet in the kubernetes clusterip object only provide private address to pods in kubernetes
 ex:
 ----
--->create a pod which is not use external world ot will only works other pods i the cluster which means (private subnet) inside cluster 
+-->create a pod which is not use external world it will only works other pods in the cluster which means (private subnet) inside cluster 
 -->cluster ip mainly used for when you want to use pods inside cluster the cluster not used for external world 
 Note: cluster ip is default service object
 --------------------
@@ -228,7 +229,7 @@ Ex:
 LoadBalncer:
 -->loadbalncer means increasing and decreasing slaves inside cluster based on bussiness requirements so service lodabalancer provide one uniq public ip it will assigned for entire cluster
 ex:
--->some scenario slaves or increasing ad decreasing based on bussiness requirements 
+-->some scenario slaves or increasing and decreasing based on bussiness requirements 
 -->if slaves increasing automatically new ip need to take care by dns same like decreasing time also 
 -->to overcome this kubernets provide service loadbalancer it will provide single uniq public ip for entire cluster
 Note: load balancer works only managed kubernetes

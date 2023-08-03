@@ -1,0 +1,236 @@
+END TO END PROJECT
+--------------------------------
+Pre-requiset for this project
+-----------------------------------
+git
+jenkins
+docker
+ansible
+kubernetes
+-------------------------
+Creating Environment for END to END Project
+-------------------------
+1. setup jenkins server and install docker where jenkins is available 
+2.setup ansible controller with two managed nodes those managed nodes called as QA-servers
+3.setup kops server with one master and two nodes 
+4.establish ssh connections from jenkins to controller and jenkins to kops server to integrate at the level of jenkins webpage
+5.at the level of ansible to create containers inside qa servers we need to install docker on qa servers and to integrate to run docker related information on ansible first download a software called as docker-py it is a python related software it is capable to run docker commands on inside ansible to download this software first we need to download a packagemanagement for pip using pip we can able to download docker-py then ansible capable to integrate with docker using this docker-py software 
+-------------------------------
+pipeline{
+    agent any
+    stages{
+        stage('downloadcode'){
+            steps{
+                git 'https://github.com/thej950/maven.git'
+            }
+        }
+        stage('buildcode'){
+            steps{
+                sh 'mvn package'
+            }
+        }
+        stage('dockerfiledesign'){
+           steps{
+                sh '''cat > dockerfile << EOF
+                     FROM tomee
+                     MAINTAINER thej
+                     COPY  webapp/target/webapp.war  /usr/local/tomee/webapps/javaapp.war'''
+           }
+        }
+        stage('dockerimageCreation'){
+            steps{
+                sh 'sudo docker build -t navathej408/javaapp .'
+            }
+        }
+        stage('dockerpushimage'){
+            steps{
+                
+                sh 'sudo docker push navathej408/javaapp'
+            }
+        }
+        stage('deploydockerimageintoqaservers'){
+            steps{
+                sh 'ssh ubuntu@172.31.18.123 ansible-playbook deploy_playbook2.yml -b'
+            }
+        }
+        stage('Download and run selenium scripts'){
+            steps{
+                git 'https://github.com/thej950/FunctionalTesting.git'
+                sh 'java -jar /home/ubuntu/.jenkins/workspace/project1/testing.jar'
+            }
+        }
+        stage('delete docker containers from controller'){
+            steps{
+                sh 'ssh ubuntu@172.31.18.123 ansible-playbook delete.yml -b'
+            }
+        }
+        stage('Deploy into kubernetes'){
+            steps{
+                sh 'ssh ec2-user@172.31.30.106 kubectl apply -f javaa1.yml'
+            }
+        }
+    }
+}
+------------------------------------------
+
+----------------------------------------
+1.developers create code and upload into github
+2.via jenkins we have to download code and convert that code into artifact through maven
+3.next i want create a dockerfile from jenkins create image out of the dockerfile once this image created 
+4.next i want to push this image into the docker registry (it can called also docker hub) 
+5.next jenkins should download this docker image started as container in controller managed servers which is (qaservers) 
+6.and then it should run the selenium automation programs created by testers 
+7.if the testing completed successful it should deploy into production environment which is running on one master machine and two slave machines in the kubernetes cluster 
+--------------------------
+
+-----------------------------
+On Ansible
+-----------------------------------
+1.setup ansible controller with 2 managed nodes
+2.connect to controller create a playbook1.yml to install python pip package management on maaged nodes
+$ vim playbook1.yml
+----------------------------------------------
+---
+- name: install docker and required s/w's
+  hosts: all
+  tasks: 
+    - name: install python pip
+      apt: 
+        name: python3-pip
+        state: present
+        update_cache: yes
+    - name: download docker, install docker and also install docker-py
+      shell: "{{item}}"
+      with_items: 
+         - curl -fsSL https://get.docker.com -o get-docker.sh
+         - sh get-docker.sh
+         - pip3 install docker-py
+...
+--------------------------------------------------------
+-->above playbook contaier python pip package management
+-->docker installation steps
+-->docker-py software which neccessary for ansible docker integration
+----------------------------------------------------------
+3.create playbook2.yml which is neccessary from deploy image from dockerhub
+$vim playbook2.yml
+-----------------------------------------------------
+---
+- name: deploy javaapp as docker container in all QA Servers
+  hosts: all
+  tasks: 
+    - name: create a docker container for javaapp
+      docker_container: 
+          name: javaapp
+          image: navathej408/javaapp
+          ports: 
+            - 9090:8080
+...
+----------------------------------------------------------
+-->above playbook2.yml containe image which is present in dockerhub
+-->above playbook will work pull that navathej408/javaapp image from dockerhub run as a container on managed nodes 
+-----------------------------
+Kops-servers
+--------------------
+1.create a deployment definition file and service definition file to create pods with javaapp containers
+$ vim app-deployment.yml
+---------------------------------------------
+---
+apiVersion: appa/v1
+kind: Deployment
+metadata: 
+  name: javaapp-deployment
+  labels: 
+    type: javaapp
+spec: 
+  replicas: 2
+  selector: 
+    matchLabels: 
+        type: javaapp
+  templates: 
+     metadata: 
+        name: javaapp-pod
+        labels: 
+           type: javaapp
+     spec: 
+       containers: 
+         - name: javaapp
+           image: intelliqit/javaapp
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: javaapp-service
+  labels: 
+    type: javaapp
+spec: 
+   type: LoadBalancer
+   selector: 
+     type: javaapp
+   ports: 
+     - targetPort: 8080
+       port: 8080
+       nodeport: 30008
+...
+
+----------------------------------------------------
+-->above file container Deployment definition file and service definition file to create pods with javaapp in the clusters
+  
+------------------------------------------------------------------------------------------------------------------
+pipeline{
+    agent any
+    stages{
+        stage('downloadcode'){
+            steps{
+                git 'https://github.com/thej950/maven.git'
+            }
+        }
+        stage('buildcode'){
+            steps{
+                sh 'mvn package'
+            }
+        }
+        stage('create dockerfile'){
+            steps{
+                sh '''echo "FROM tomee \nMAINTAINER thej \nCOPY webapp/target/webapp.war /usr/local/tomee/webapps/app11.war">dockerfile'''
+            }
+        }
+        stage('create image from dockerfile'){
+            steps{
+                sh 'sudo docker build -t navathej408/app1 .'
+            }
+        }
+        stage('uploadimage into dockerhub'){
+            steps{
+                sh 'sudo docker login -u navathej408 -p 1234@Nava'
+                sh 'sudo docker push navathej408/app1'
+            }
+        }
+        stage('deploy into qa servers throgh ansibel'){
+            steps{
+                sh 'ssh ubuntu@172.31.22.133 ansible-playbook deploy_app.yml -b'
+            }
+        }
+        stage('download test scripts and run selenium scripts'){
+            steps{
+                git 'https://github.com/thej950/FunctionalTesting.git'
+                sh 'java -jar /var/lib/jenkins/workspace/project1/testing.jar'
+            }
+        }
+        stage('deploy into kubernetes pods'){
+            steps{
+                sh 'ssh ec2-user@172.31.30.106 kubectl apply -f app-deployment.yml'
+            }
+        }
+    }
+}
+==============================================
+-->there are 8 steps
+step1:download code from github
+ste2:build code through maven and create artifact out of it
+step3:create docker file with artifact included
+step4:create image from docker file
+step5:upload image into dockerhub with docker login credentials
+step6:download image from docker hub create a container out of it from at the level of ansible docker integration that container will be available on qa-servers
+step7:download selenium scripts and test the code
+step8:deploy the code into production servers with help of kubernetes cluster 
+-----------------------------------------------------------------------------------------------------------------

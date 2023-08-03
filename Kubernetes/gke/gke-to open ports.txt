@@ -1,0 +1,47 @@
+ ( To open ports in gke)
+$ gcloud compute firewall-rules create rule10 --allow tcp:30009 
+
+ ( To list ports in gke cluster )
+$gcloud compute firewall-rules list 
+========================================================
+To open ports on Google Kubernetes Engine (GKE), you can follow these steps:
+
+Identify the Target Nodes:
+Determine the node pool or nodes where you want to open the ports. You can either choose a specific node pool or all nodes within your GKE cluster.
+
+Create a Firewall Rule:
+-------------------------------
+gcloud compute firewall-rules create <firewall-rule-name> \
+--allow <protocol>:<port-range> \
+--target-tags <target-tags> \
+--source-ranges <source-ranges>
+-------------------------------------------------
+Replace <firewall-rule-name> with a name for your firewall rule.
+Specify the desired <protocol> and <port-range> to allow. For example, tcp:80 to allow TCP traffic on port 80.
+<target-tags> can be the tags assigned to your GKE nodes or node pool.
+Specify <source-ranges> as the IP ranges from where the traffic should be allowed. You can use 0.0.0.0/0 to allow traffic from any IP.
+
+Apply the Firewall Rule to the Nodes:
+Associate the firewall rule with the target nodes or node pool by adding the appropriate tags to them.
+
+To add tags to a node pool, use the following command:
+
+-----------------------------------------------
+gcloud container node-pools update <node-pool-name> --cluster <cluster-name> --tags <firewall-rule-name>
+----------------------------------------------
+Replace <node-pool-name> with the name of the node pool and <cluster-name> with the name of your GKE cluster.
+
+To add tags to individual nodes, use the following command:
+--------------------------------------------------------
+gcloud compute instances add-tags <node-name> --zone <zone> --tags <firewall-rule-name>
+---------------------------------------------------------------
+Replace <node-name> with the name of the node and <zone> with the zone where the node is located.
+
+Verify the Firewall Rule:
+To confirm that the firewall rule is applied and the ports are open, you can check the status of the firewall rule:
+-----------------------------------------
+gcloud compute firewall-rules describe <firewall-rule-name>
+-------------------------------
+Replace <firewall-rule-name> with the name of your firewall rule.
+
+That's it! You have successfully opened ports on GKE by creating a firewall rule and associating it with the target nodes or node pool. Now, the specified ports should be accessible to the allowed source ranges.

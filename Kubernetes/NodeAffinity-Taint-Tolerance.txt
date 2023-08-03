@@ -13,6 +13,12 @@ NodeAffinity: 15 min to 44:00 min
 -->from above command display connected nodes in the cluster select on machine take id of that machine
  $ kubectl   label   nodes   take_slave_id    slave1=intelliit1
 	-->above command apply to slave key=value (slave1=intelliit1) in a label 
+-->To unlabe machine in the cluster 
+----------------------------------------------------------
+$ kubectl label nodes ip-192-168-78-213.ap-southeast-1.compute.internal key1-
+----------------------output------------------------------
+node/ip-192-168-78-213.ap-southeast-1.compute.internal unlabeled
+------------------------------------------------------------
  $vim NodeAffinity1.yml
 ====================================================
 ---
@@ -36,7 +42,7 @@ spec:
                 values:
                   - intelliqit1
 ===============================================================
--->above file affinity added hereat level of containers 
+-->above file affinity added here at level of containers 
 -->under affinity we have child element like requiredDuringSchedulingIgnoredDurigExcution
 -->under nodeSelectorTerms 
 -->under - matchExpressions 
@@ -44,7 +50,8 @@ spec:
 -->operation: In (or operator)
 -->value= itelliqit1
 -->from above file containe nginx pod. running only on perticular slave inside cluster (like slave1) based on label attach slave1=intelliqit1
- 
+----------------------------------------------------------------------------------------
+-->Affinity means a natural liking for and understanding of someone or something. 
 -------------------------------------------------------------------------------------------
 $ vim NodeAffinity.yml
 =================================
@@ -108,9 +115,20 @@ Taint:
 -->Taint mainly used for database pods (because where pod database available there should be no other pod will be placed )
 -->how to taint a machine in cluster 
 -->identify machine take id of that machine provide key=value:NoSchedule
-$ kubectl taint nodes take_node_id slave1=intelliit1:NoShedule 
+$ kubectl taint nodes take_node_id slave1=intelliit1:NoSchedule 
 	-->from above command taint will be applied with key=value:NoShedule specfications 
 -->Now run pod with taint in definition file 
+---------------------------------------------------
+-->To see tainted machine on the cluster 
+$ kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints
+-------------------------output-----------------------------------------------------------------------------------------------------
+NAME                                                TAINTS
+ip-192-168-20-6.ap-southeast-1.compute.internal     <none>
+ip-192-168-78-213.ap-southeast-1.compute.internal   [map[effect:NoSchedule key:key1 value:value1]]
+[ec2-user@Eks-server Kubernetes-01]$ client_loop: send disconnect: Connection reset by peer
+----------------------------------------------------------------------------------------------------------------------------------------
+Refere Link: https://drive.google.com/file/d/1H85B0dS0x48Wty4U8AN42Beyxcx64y-1/view?usp=drive_link
+--------------------------------------------------------------------------------------------------------------------------------------
 $ vim pod-definitionfile2.yml
 =====================================
 ---

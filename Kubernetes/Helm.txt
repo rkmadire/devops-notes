@@ -1,3 +1,4 @@
+
 helm  Docker-kubernetes 28th session 01:00 min to 26:00 min
 -------------------------------------------------------
 -->heml is a package management in kubernetes 
@@ -38,11 +39,22 @@ $ tree
 
 
 $ helm   install   nginx1   mynginx  
-	-->above command will create nginx pod with mynginx chat  all related information 
+	-->above command will create nginx pod with mynginx that  all related information 
 	-->nginx1 is the realease name (name can be anything)
 	-->mynginx it is a chart 
 
 $ helm delete nginx-1
 	-->above command used to delete nginx pods 
 	-->nginx-1 release name
-
+$ helm version (to see version of helm )
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Adding helm repos
+$ helm repo add my-repo https://charts.btnami.com/bitnami
+$ helm repo list (to see repositories locally )
+$ helm repo remove reponame ( removing repositories loaclly )
+---------------------
+$ helm repo update (latest modified data will be reflected )
+--------------------------
+$ helm install my-release my-repo/wordpress ( it will create all pods which are used  to setup wordpress and postgres )
+---------------------------------------- 
+ 

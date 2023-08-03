@@ -1,0 +1,61 @@
+VM vs Containers
+-------------------------
+-->the bussiness running in a traditional way the application running on servers
+-->one application on one server
+-->the operating system didn't have the capability to run multiple applications on a single server before
+-->they need to buy new server for it to run and also application not fully utilize also 
+-->running application on a single server iys a waste of money 
+-------------------------------------------
+To fix above problem engineers design virtual machines
+---------------------------------------------
+-->by using Virtual Machines  multiple servers like (windows,linux,unix) ru on sing;e server
+-->A hypervisor allow one machines to run multiple virtual machies
+-->its whats allocate and controls the sharing of machinehardware 
+example:
+-->VMware ESXi
+-->Citrix XenServer
+-->Microsoft Hyper-V
+
+-->each virtual machine will have their own operating system 
+-->on top os there applications 
+disadvantages
+----------------------
+-->consume lot of disk spaces
+-->consume a lot of RAM anad CPU power from the server
+-->slow startup 
+-->each os require licese it cost more 
+--------------------------------------------------------
+To overcome those problems containers developed
+-----------------------------------------
+-->A container is an application that's been packaged with all the 
+-->files
+-->configuration
+-->dependencies 
+neccessary to run containers 
+-----------------
+ex:
+-->if a developer create a website he wanted to distribute that website so that can be hosted any other computer they va create a container for that website by bundling it with everything it takes for it to be hosted on another computer such as the library HTML code scripts web images and web serversoftware then that container image can be distributed and hosted just about any computer or serverwithout adding any additional software or doing any configuration the container has everything it needs to run that website all in a convenient liitle package with which is amazing the leading softeware that is used now for create manage and run containers is docker docker can run linux and windows machies 
+ 
+-->the contaiers engine is what unpacks the contaier    files and hands them off to the operating system kernal 
+
+
+-->instead of hypervisor container wiil use container engine 
+-->a container engine unpacks the container files and then hands off to the core the operating system which is the kernal 
+-->the major difference between vm and containers 
+-->each vm containe an entire operating system which akes their files size larger that they boot up slower 
+
+-->containers underlying os thats server between them contaiers only containe application which makes files size much smaller this is why consider light weight and it because if that boot fast i milliseconds while vm takes minuites to bootup 
+-->containers also consume less ram and cpu 
+-->both vm files and containers files are portable 
+-->it means you can them different machies easily 
+-->but containers files a lot smaller which makes them ultra portable 
+
+-->contaiers also some disadvatages when compared to vm 
+-->containers must be packaged to work with the same operating system of the severs
+-->if server operating system is linux then the container file must be linux based 
+-->if the operating system is windows the container must be windows based 
+-->in virtual machine that problem not their 
+-->vm can run any operating sustem it wants another 
+
+-->another disadvantages 
+-->if the server OS crashes, then the containers will go down  

@@ -20,7 +20,7 @@ $ eksctl create cluster --name thej-cluster --node-type t2.large --nodes 3 --reg
 	-->from above command to create cluster with 3 machines in singapoor region 
 -->it takes minimum 15 minuites to create cluster 
 ----------------------------
-step6: Afetr cluster creation to login into cluster it needs a pluggin called aws-iam-authenticator pluggin (when launch amazon linux it will not ask plugin setup)  
+step6: After cluster creation to login into cluster it needs a pluggin called "aws-iam-authenticator pluggin" (when launch amazon linux it will not ask plugin setup)  
 --------------
 $ curl -Lo aws-iam-authenticator https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.5.9/aws-iam-authenticator_0.5.9_linux_amd64
 $ chmod +x ./aws-iam-authenticator
@@ -36,4 +36,12 @@ $ eksctl delete cluster thej-cluster
 $ eksctl delete cluster thejcluster --region ap-southeast-1
 -->above command delete cluster and it will take few minuites to delete 
 -----------
-$ eksctl delete cluster thej-cluster-1 --region ap-south-1
+$ eksctl delete cluster thej-cluster --region ap-south-1 
+======================================================================
+$ eksctl create cluster --name=thej-cluster --region=ap-southeast-1 --node-type=<node-instance-type> --nodes=<number-of-nodes>
+---------------------------------------------------------------------------------------------------
+$ eksctl create cluster --name=thej-cluster --region=ap-southeast-1 --node-type=t2.large --nodes=3
+--------------------------------------------------------------------
+$ eksctl delete cluster --name=thej-cluster --region=ap-southeast-1
+---------------------------------------------------------------------------------------------------------------------------------  
+

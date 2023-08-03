@@ -42,9 +42,11 @@ spec:
      run: php-apache
 ...
 ==================================
+ReferLink: https://drive.google.com/file/d/1WNd_mjqGrOCw-4nq6BYc1dDfZICuTGO7/view?usp=drive_link
+-------------------------------------------------------
 $ kubectl apply -f autoscaler.yml 
 	-->it create one php-apache pod and attach with service to it with clusteIP 
-$ kubectl autoscale deployment php-apache --cpu-percent=50  --min=1  --max=10
+$ kubectl autoscale deployment php-apache(podname) --cpu-percent=50  --min=1  --max=10
 	-->from above command as the cpu utilization increase more than 50% the count will increase replicas upto 10 replicas 
 
 $ kubectl get hpa
@@ -63,4 +65,4 @@ $ kubectl delete -f autoscaler.yml
 $ kubectl delete hpa php-apache
 $ kubectl delete pods lg 
 ----------------------------------------------
-
+$ kubectl delete all --all ( To delete all pods and services in default namespace) 

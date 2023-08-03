@@ -1,0 +1,52 @@
+To push code into different github account 
+-----------------------------------------------------------
+To push code to a different GitHub account, you need to follow these steps:
+
+Set up SSH Keys: Make sure you have SSH keys set up on your local machine. If you haven't done this before, follow these steps:
+
+a. Check for existing SSH keys on your machine:
+
+bash
+Copy code
+ls ~/.ssh
+b. If you don't have any existing keys, generate a new SSH key:
+
+mathematica
+Copy code
+ssh-keygen -t ed25519 -C "your_email@example.com"
+c. Add the SSH key to the ssh-agent (replace "id_ed25519" with the name of your generated key):
+
+bash
+Copy code
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+d. Add the public SSH key (id_ed25519.pub) to your GitHub account:
+
+Go to your GitHub account settings.
+Click on "SSH and GPG keys."
+Click on "New SSH key" and paste the contents of your id_ed25519.pub file.
+Create a New Repository: If the repository does not exist on GitHub, create a new repository under the desired GitHub account.
+
+Clone the Repository: Clone the repository to your local machine using the SSH URL. Replace "github_username" with the username of the GitHub account where you want to push the code and "repository_name" with the name of the repository:
+
+bash
+Copy code
+git clone git@github.com:github_username/repository_name.git
+Add, Commit, and Push Code: Now you can add your code, commit changes, and push to the new repository:
+
+bash
+Copy code
+cd repository_name
+# Add your code and make changes as needed
+
+# Stage the changes
+git add .
+
+# Commit the changes
+git commit -m "Your commit message here"
+
+# Push to the repository
+git push origin main
+Note: Replace "main" with the name of the branch you want to push to if it's different from the default branch name.
+
+After completing these steps, your code will be pushed to the repository under the different GitHub account that you set up. Remember that you need the appropriate permissions (write access) on the repository to push code successfully. If you encounter any issues during the process, double-check your SSH setup, repository permissions, and credentials (if applicable).

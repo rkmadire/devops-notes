@@ -1,0 +1,35 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+config.ssh.insert_key = false
+config.vm.provider :virtualbox do |vb|
+vb.customize ["modifyvm", :id, "--memory", "2048"]
+ end
+
+ # control
+ config.vm.define "Jenkins" do |app|
+ app.vm.hostname = "Jenkins"
+ app.vm.box = "bento/ubuntu-22.04"
+ app.vm.network :private_network, ip: "10.10.10.50"
+ end
+ 
+ 
+ # Load Balancer.
+ config.vm.define "QAserver" do |app|
+ app.vm.hostname = "QAserver"
+ app.vm.box = "bento/ubuntu-22.04"
+ app.vm.network :private_network, ip: "10.10.10.51"
+ end
+ 
+ # Application server 1.
+ config.vm.define "Prodserver" do |app|
+ app.vm.hostname = "Prodserver"
+ app.vm.box = "bento/ubuntu-22.04"
+ app.vm.network :private_network, ip: "10.10.10.52"
+ end
+
+ 
+ end

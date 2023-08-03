@@ -3,7 +3,7 @@ Docker 15th Session
 #docker service create 
 	-->above command to create containers from one service
 #docker service create  --name websever -p 8080:80 --replicas 4 httpd
-	-->from above command 4 conatiner will be ceated from one httpd service in all swarm machines
+	-->from above command 4 conatiner will be created from one httpd service in all swarm machines
 #docker service ls 
 	-->to check docker services list
 #docker service ps webserver
@@ -34,8 +34,8 @@ Rolling rollback update:
 --------------------------------
 High availability:
 -------------------
--->any point of time desired state cant be changed suppose we specify a service with desired state 6/6 contaier 
--->some how a container container crashes docker swarm notice there is mismatch of desired state then automatically a new conatainer will be created within in the cluster 
+-->any point of time desired state cant be changed suppose we specify a service with desired state 6/6 container 
+-->if gets container crashes docker swarm notice that there is mismatch of desired state then automatically a new conatainer will be created within in the cluster 
 Drain:
 ------
 drain means remove worker from docker swarm at the level of manager machine 
@@ -47,7 +47,8 @@ drain means remove worker from docker swarm at the level of manager machine
 -----------------------------------
 #docker node rm worker2
 	->from above command remove worker2 from cluster
--->worker2 again come back to cluster generate token from level of manager node paste in worker2
+---------------------------------------------
+-->worker2 again come back to cluster for that generate token from level of manager node paste in worker2
 #docker swarm join-token worker
 ---------------------------------------
 #docker swarm join-token manager
@@ -82,5 +83,5 @@ High Availability
 #docker swarm leave --force
 ----------------------------------------
 #dokcer service update --network-add intelliqit1 appserver
-#docker service update --network-rm intelliqit appserver
+#docker service update --network-rm intelliqit1 appserver
 #docker service inspect webserver --pretty

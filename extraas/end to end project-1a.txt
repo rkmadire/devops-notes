@@ -1,0 +1,85 @@
+end to end project
+--------------------------- 
+download code and build application and test using maven then integrate with sonarqube for identify bugs in the code if evrything is ok then create a dockerfile for building image from code after push that image into docker hub then deploying into kuberenetes based on definition file inside kubernetes cluster 
+--------------------------------------------------------- 
+pipeline{
+    agent{
+        label "jenkins-agent"
+    }
+    tools{
+        jdk 'java17'
+        maven 'Maven3'
+    }
+    environment {
+        APP_NAME = "myabcd"
+        RELEASE = "1.0.0"
+        DOCKER_USER = "navathej408"
+        DOCKER_PASS = 'dockerhub'
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+    }
+    stages{
+        stage("clenup workspace"){
+            steps{
+                cleanWs()
+            }
+        }
+        stage("checkout code"){
+            steps{
+                git 'https://github.com/thej950/maven.git'
+            }
+        }
+        stage("build application"){
+            steps{
+                sh 'mvn clean package'
+            }
+        }
+        stage("test application using maven"){
+            steps{
+                sh 'mvn test'
+            }
+        }
+        stage("sonarqube Analysis"){
+            steps{
+                script{
+                     withSonarQubeEnv(credentialsId: 'jenkins-sonarqube'){
+                        sh "mvn sonar:sonar"
+                    }
+                }
+            }
+        }
+        stage("Quality Gate"){
+            steps{
+                script{
+                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube'
+                }
+            }
+        }
+        stage("create file"){
+            steps{
+                sh '''echo "FROM tomee \nMAINTAINER thej \nCOPY webapp/target/webapp.war /usr/local/tomee/webapps/app11.war">dockerfile'''
+            }
+        }
+        stage("build and push image"){
+            steps{
+                script{
+                    docker.withRegistry('',DOCKER_PASS){
+                        docker_image = docker.build "${IMAGE_NAME}"
+                    }
+                    docker.withRegistry('',DOCKER_PASS){
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push('latest')
+                    }
+                }
+            }
+        }
+        stage("deploy into productions"){
+            steps{
+                script{
+                sh "ssh ec2-user@172.31.9.87 kubectl apply -f deployment-service.yml"
+                }
+            }
+        }
+    }
+}
+------------------------------------------------------------------

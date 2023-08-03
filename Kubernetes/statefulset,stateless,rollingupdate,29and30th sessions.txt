@@ -16,7 +16,7 @@ spec:
   storageClassName: manual
   capacity:
     storage: 10Gi
-  accessmodes:
+  accessModes:
     - ReadWriteOnce
   hostPath:
     path: /mnt/data
@@ -25,7 +25,15 @@ spec:
 -->above file is persistent volume
 $pvc.yml
 $ kubectl get pv 
-	-->above command will display pv 
+	-->above command will display pv
+++++++++++++++++++++[OUTPUT]++++++++++++++++++++++++++++++
+[ec2-user@Eks-server ~]$ kubectl get pv
+NAME        CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS   REASON   AGE
+pv-volume   10Gi       RWO            Retain           Available           manual                  10s
+[ec2-user@Eks-server ~]$
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+
+ 
 $ vim pvc.yml
 ======================================
 ---
@@ -109,7 +117,7 @@ metadata:
 spec:
   replicas: 2
   selector: 
-    matchlabels:
+    matchLabels:
       app: mysql
   serviceName: mysql
   template: 

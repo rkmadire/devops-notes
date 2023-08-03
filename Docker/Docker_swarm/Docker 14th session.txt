@@ -2,13 +2,34 @@ Container orchestration Docker 14th session
 -------------------------
 Container orchestration it means load balancing huge amount of data sittig in my application i should able to increase no. of containers and i should able to handle that and scaling depending  bussines requirements need to be do scale up and down without customer facing down time 
 --------------
-rolling update
-------------------
-rolling update means software update from one version to another version 
+Rolling update:
+-------------------------
+-->Rolling update means software update from one version to another version 
+-->In Docker Swarm, a rolling update is a mechanism to update services running in the swarm without causing downtime. 
+-->It allows you to upgrade your application by gradually replacing containers with newer versions while ensuring that the service remains available and responsive.
+-->Rolling updates in Docker Swarm help to minimize service downtime and maintain high availability during the update process.
+-->By gradually replacing containers, the application remains accessible to users
+-->if   
 -------------------
 High availability
 -----------------
-High availability means even if container crashes the desired state is always maintained 
+High availability means even if container crashes the desired state is always maintained
+Docker Swarm provides built-in support for high availability, allowing you to create and manage a cluster of Docker nodes that work together to ensure the availability and fault tolerance of your services. Here are some key features of high availability in Docker Swarm:
+
+Node Redundancy: Docker Swarm allows you to create a cluster of multiple Docker nodes (physical or virtual machines) that work together as a single entity. This cluster provides redundancy, ensuring that if one or more nodes fail, the swarm can continue to function and maintain service availability.
+
+Service Replication: Docker Swarm allows you to define the desired number of replicas for each service. Replicas are instances of your service running on different nodes in the swarm. Docker Swarm automatically distributes replicas across the nodes, ensuring that if a node fails, the service continues to run on other healthy nodes.
+
+Load Balancing: Docker Swarm includes an internal load balancer that distributes incoming requests across the replicas of a service. This load balancer ensures that requests are evenly distributed, allowing your application to scale horizontally and handle increased traffic. If a node with a replica fails, the load balancer automatically redirects traffic to other healthy replicas.
+
+Automatic Service Recovery: Docker Swarm monitors the health of services and containers within the swarm. If a container or node becomes unresponsive or fails, Docker Swarm automatically restarts the failed container on another healthy node to maintain service availability.
+
+Leader Election: Docker Swarm uses a leader-follower model to manage the swarm. The swarm manager nodes elect a leader, which is responsible for managing the cluster state and making decisions. If the leader node fails, another manager node is automatically elected as the new leader, ensuring continuous swarm operation.
+
+Rolling Updates: As mentioned in the previous response, Docker Swarm supports rolling updates, allowing you to update services without downtime. This feature helps maintain service availability while upgrading containers to new versions.
+
+By leveraging these features, Docker Swarm provides a highly available environment for running your applications. It ensures that your services are accessible, resilient to failures, and can scale to meet demand.
+ 
 ------------------
 -->this is called container orchestration 
 -------------------------
@@ -21,7 +42,7 @@ High availability means even if container crashes the desired state is always ma
 ------------------------------
 -->Docker will be setup on one machine that machine called manager remaining machines which going to take workload these machines called workers
 -->we are excuting commands from manager machines
--->manager and workers setup called as docker swarm cluster it is a combination of manager machine and cluste machine  
+-->manager and workers setup called as docker swarm cluster it is a combination of manager machine and cluster machine  
 -------------------------------------------------------
 step1: first launch 3 instances in aws 
 step2: connect each machines download docker in that machines 
