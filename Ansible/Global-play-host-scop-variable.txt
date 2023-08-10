@@ -111,6 +111,7 @@ Host scope variables: it is desined to work on group of machines in their are tw
 --> $mkdir group_vars
     $ cd group_vars -->enter in to directory
 -->create a file here with same groupnaname available in the (/etc/ansible/hosts)  inventory file 
+-->create a filename (db-server) that need to be same whatever mentiona inside inventory file 
 	suppose:
 	--------
 	vim db-server -->filename 
