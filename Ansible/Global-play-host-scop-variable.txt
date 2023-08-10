@@ -95,6 +95,7 @@ note: here see the difference between global scope variables and
 -->when you run that playbook it will install tomcat9 into all servers
 --> $ansible-playbook playbook3.yml --extra-vars "a=git" -b 
 	--> the above command simply takes git to install it will replace tomcat9 when use this command 
+-->playscope variable can be overide using globalscope process using --extra-vars  
 -->global scope variables bypass the play scope variables 
 -->play scope variable are templates i can use them freqqently 
 -->some cases i dont need them so i put --exra-vars which is global scope variable it will bypass the playscope variables
