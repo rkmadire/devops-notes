@@ -1,0 +1,14 @@
+This step include for update remote machines
+============================
+- name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+===============================
+
+Certainly! The cache_valid_time parameter in the Ansible playbook's apt task specifies the maximum age (in seconds) for the package cache. It controls how often the package manager (APT in this case) fetches updated package information from the repositories.
+
+cache_valid_time: 3600 line was included in the playbook to set the cache validity to 3600 seconds (1 hour). This means that Ansible will update the package cache if it's older than 1 hour before proceeding with package installation.
+
+-->which means if remote machine updated if it was update before one hour 
+-->otherwise it will not update 
