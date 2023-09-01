@@ -1,0 +1,19 @@
+#minikube installation on the ubuntu system   
+# Reference Youtube Video Link: https://www.youtube.com/watch?v=AHxgSAyYr4A&t=335s
+#/bin/bash
+sudo apt update -y
+sudo apt install curl -y
+# installing docker Docker official Link: https://get.docker.com/
+curl -fsSL https://get.docker.com -o install-docker.sh
+sh install-docker.sh
+# installing  minikube  # official Link: https://minikube.sigs.k8s.io/docs/start/
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo cp minikube-linux-amd64 /usr/local/bin/minikube
+sudo chmod 755 /usr/local/bin/minikube
+# installing kubectl tool official Link: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+# using below command make default current user to run docker commands here we add default current user into docker group
+sudo usermod -aG docker $USER && newgrp docker
+minikube start --driver=docker
+
