@@ -34,11 +34,11 @@ By leveraging these features, Docker Swarm provides a highly available environme
 -->this is called container orchestration 
 -------------------------
 -->to perform Container orchestration there are different tools 
-1.Docker swarm
-2.kubernets
-3.open shift
-4.AWS ECS
-5.Apache Mesos
+	1.Docker swarm
+	2.kubernets
+	3.open shift
+	4.AWS ECS
+	5.Apache Mesos
 ------------------------------
 -->Docker will be setup on one machine that machine called manager remaining machines which going to take workload these machines called workers
 -->we are excuting commands from manager machines
@@ -60,21 +60,21 @@ step3: connect to manager machine
 	#docker service create nginx 
 	-->above command to create contaier
 -----------
-Quoram:
+# Quoram:
 ---------
 Quoram it is an application it checks the hardware availability of machines (how many machines and their hardware details cpu ram memory) it checks based on that quoram uses an algorithm which called as RAFT algorithm the quoram desides which container run on which machines 
 -----------------------------
-#docker service create --name webserver -p 8888:80 --replicas 5 nginx
+	#docker service create --name webserver -p 8888:80 --replicas 5 nginx
 -->here from above command creating 5 containers from single nginx software and all 5 containers only have one nginx image software running 
-#docker service ls
-	-->to display services
-#docker service ps webserver
-	-->to see webserver running 
-#docker service create --name mydb -e MYSQL_ROOT_PASSWORD=intelliqit --replicas 3 mysql
-#docker service ls
-#docker service ps mydb
-#docker service rm mydb 
-	-->to delete services 
+	#docker service ls
+		-->to display services
+	#docker service ps webserver
+		-->to see webserver running 
+	#docker service create --name mydb -e MYSQL_ROOT_PASSWORD=intelliqit --replicas 3 mysql
+	#docker service ls
+	#docker service ps mydb
+	#docker service rm mydb 
+		-->to delete services 
 ---------------------------------------------------------
 #docker swarm init
 #docker service create --name webserver -p 8888:80 --replicas 5 nginx
