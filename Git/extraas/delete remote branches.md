@@ -1,10 +1,10 @@
 To delete Remote branches from locally
 ----------------------------------------
 1. when we perform git fetch command it will create a remote branch in to our local system  that will visible
- 
+
     $ git branch -a
 
-2.To remove those remote branches from our local machine 
+2. To remove those remote branches from our local machine 
 
 $ git push origin --delete branch_name
 
