@@ -11,6 +11,7 @@ To delete Remote branches from locally
 ![Alt text](../../images/image.png)
 
 =======================================================
+
 To delete a remote Git branch, you'll use the `git push` command with the `--delete` option. Here's the general syntax:
 
 ```bash
