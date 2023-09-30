@@ -6,7 +6,7 @@ To delete Remote branches from locally
 
 2. To remove those remote branches from our local machine 
 
-$ git push origin --delete branch_name
+    $ git push origin --delete branch_name
 
 
 ![Alt text](../../images/image.png)
