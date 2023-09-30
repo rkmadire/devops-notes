@@ -4,11 +4,11 @@ Better reference
 chrome Link: https://dmancloud.github.io/tutorial-documentation/install-sonarqube/
 youtube https://www.youtube.com/watch?v=20tcGv48KC4
 ------------------
-1.install postgres
-2.install java 
-3.download sonarqube
-4.configure sonarqube
-----------------------------------
+	1.install postgres
+	2.install java 
+	3.download sonarqube
+	4.configure sonarqube
+----------------------------------	
 -->sonarqube is a self managed automatic code review tool that helps you deliver clean code
 -->SonarQube is an open-source platform developed by SonarSource for continuous inspection of code quality to perform automatic reviews with static analysis of code to detect bugs and code smells on 29 programming languages.
 -->prerequisite
