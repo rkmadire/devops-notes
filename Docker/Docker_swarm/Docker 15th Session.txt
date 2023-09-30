@@ -1,25 +1,25 @@
-Docker 15th Session
+# Docker 15th Session
 -------------------
-#docker service create 
-	-->above command to create containers from one service
-#docker service create  --name websever -p 8080:80 --replicas 4 httpd
-	-->from above command 4 conatiner will be created from one httpd service in all swarm machines
-#docker service ls 
-	-->to check docker services list
-#docker service ps webserver
-	-->to check docker service container
+	#docker service create 
+(above command to create containers from one service)
+	#docker service create  --name websever -p 8080:80 --replicas 4 httpd
+(from above command 4 conatiner will be created from one httpd service in all swarm machines)
+	#docker service ls 
+(to check docker services list)
+	#docker service ps webserver
+(to check docker service container)
 -----------------
-To increas replicas from 4 to 8
+# To increas replicas from 4 to 8
 ------------
-#docker service scale webserver=8
-	-->from above command existing 4 container increase to 8 container
-#docker service scale webserver=2
-	-->from above command decrease 8 container to 2 container
+	#docker service scale webserver=8
+(from above command existing 4 container increase to 8 container)
+	#docker service scale webserver=2
+(from above command decrease 8 container to 2 container)
 --------------------
 #docker service rm webserver
 	-->from above command to delete a service
 ----------------------------
-Rolling updates:
+# Rolling updates:
 ------------------
 -->to update from one version to another version of service is called rolling updates
 #docker service create --name myredis --replicas 4 redis:3

@@ -19,8 +19,8 @@ $ kubectl run --image nginx webserver1
 -->out of default namespace remaing three other namespace will containe cluster components like 
 
 on master machine			 slave machine
-------------------			----------------
-1.container runtime			1.container runtime
+------------------		----------------
+1.container runtime		1.container runtime
 2.kube apiserver			2.kubelet
 3.kube scheduler			3.kubeproxy
 4.controller			

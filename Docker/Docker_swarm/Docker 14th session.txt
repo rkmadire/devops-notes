@@ -65,21 +65,20 @@ step3: connect to manager machine
 Quoram it is an application it checks the hardware availability of machines (how many machines and their hardware details cpu ram memory) it checks based on that quoram uses an algorithm which called as RAFT algorithm the quoram desides which container run on which machines 
 -----------------------------
 	#docker service create --name webserver -p 8888:80 --replicas 5 nginx
--->here from above command creating 5 containers from single nginx software and all 5 containers only have one nginx image software running 
-	#docker service ls
-		-->to display services
-	#docker service ps webserver
-		-->to see webserver running 
+(here from above command creating 5 containers from single nginx software and all 5 containers only have one nginx image software running )
+	
+	#docker service ls (to display services)
+	#docker service ps webserver  (to see webserver running)
 	#docker service create --name mydb -e MYSQL_ROOT_PASSWORD=intelliqit --replicas 3 mysql
 	#docker service ls
-	#docker service ps mydb
-	#docker service rm mydb 
-		-->to delete services 
+	#docker service ps mydb 
+	#docker service rm mydb (to delete services)
+		 
 ---------------------------------------------------------
-#docker swarm init
-#docker service create --name webserver -p 8888:80 --replicas 5 nginx
-#docker service ls
-#docker service ps webserver
-#docker service ls
-#docker service ps mydb
-#docker service rm mydb webserver
+	#docker swarm init
+	#docker service create --name webserver -p 8888:80 --replicas 5 nginx
+	#docker service ls
+	#docker service ps webserver	
+	#docker service ls
+	#docker service ps mydb
+	#docker service rm mydb webserver
