@@ -3,6 +3,11 @@ KinD Setup
 step1: install kind on ubuntu with simple 3 commands 
 Link: https://kind.sigs.k8s.io/docs/user/quick-start/#installation
 
+step2: install kubectl command line tool for to communicate cluster
+Link: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+
+step3: install docker for supports for To setup KinD environment 
+Link: https://get.docker.com/
  
 # kind create cluster  
 -->To create a K8s cluster above command will create one default cluster that name can be (kind-kind) it will provide single node that will be worker and controll node
