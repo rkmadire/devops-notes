@@ -43,9 +43,9 @@ $ helm   install   nginx1   mynginx
 	-->nginx1 is the realease name (name can be anything)
 	-->mynginx it is a chart 
 
-$ helm delete nginx-1
+$ helm delete nginx1
 	-->above command used to delete nginx pods 
-	-->nginx-1 release name
+	-->nginx1 release name
 $ helm version (to see version of helm )
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Adding helm repos
