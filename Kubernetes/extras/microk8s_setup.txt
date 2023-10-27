@@ -1,0 +1,96 @@
+MicroK8s setup on single machine 
+--------------------------------------------
+1. installing microk8s
+Refer Link: https://microk8s.io/#install-microk8s/
+  # sudo snap install microk8s --classic 
+    -->above command will download k8s
+  # microk8s status --wait-ready
+    -->check the status of the k8s starts
+  # sudo usermod -a -G microk8s ubuntu
+    -->this will add ubuntu to in microk8s group
+  # newgrp microk8s 
+    -->to reflect changes inside microk8s group 
+
+2. Now install kubectl tool ( using this tool we can communicate with cluster)
+Refer Link: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+
+  
+  # curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    -->from above command a kubectl package will be downloaded
+  # sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    --> from above command installing kubectl 
+  # kubectl version 
+  ============output=================
+  vagrant@thej-machine:~$ kubectl version
+Client Version: v1.28.2
+Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+vagrant@thej-machine:~$
+===========================================
+    -->above information  To verify kubectl installed or not 
+
+3. Till Now we installed microk8s and kubectl tool those are different packages those are not communicate with each other that we need to configure with .kube config now based on this our kubetl command can interact with microk8s
+Refer Link: https://microk8s.io/docs/working-with-kubectl
+  
+  # cd $HOME
+    -->swith to home directory 
+  # mkdir .kube
+    -->creating .kube directory 
+  # cd .kube 
+    -->go into that directory
+  # microk8s config > config
+    -->generating config file here
+=================output======================================
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUREekNDQWZlZ0F3SUJBZ0lVV3RqcUNHRzgreGNHYTF2ZWdsVzM2dklYSk5Fd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0Z6RVZNQk1HQTFVRUF3d01NVEF1TVRVeUxqRTRNeTR4TUI0WERUSXpNVEF4TmpBMk1qa3lNVm9YRFRNegpNVEF4TXpBMk1qa3lNVm93RnpFVk1CTUdBMVVFQXd3TU1UQXVNVFV5TGpFNE15NHhNSUlCSWpBTkJna3Foa2lHCjl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFuSXFvTHQ4T09scklTa2t2Y0NFTVJYR2ZtanJSZHJmOGZvVVIKLy9EZmRTOXU4TnV4aHhmeWc4V2N4bys3MGFFR2pGaHJBTnYxUmh5QXA4a0QyZnVtdURaWGhmTkdydm52VUFSeApjbjhSQmtOSldQdkhqUEpNWThjL1M1bGhocXhHeFVGb0QrWCszd2tvSmx3c29kQnJINnJWRStRczZZZ21WWm1jCml6Z2ZXendRZllJVGo1ZFI5ZndpR3h2T2kwY0tpaWdsWElKSXF3WlJRVUxxelJwRkNYWTN2a0M3MlNhWWIrdmoKcUdxRVdIU3htTjBqR0ZpTldVbTJiV05qVHUzK2N3RS9hR3dsZzd2UkJiK3NxSUN2NEVqVWtCWkJXZGM3RlFUQgp4ajcrT05sVWdta2hKZkZzMVNOTVRFTXE5TGpNcCtsT3piT0VseFBueXFPeVhMNjg5d0lEQVFBQm8xTXdVVEFkCkJnTlZIUTRFRmdRVXdPUEVFMFQweHVyNEdla2VqbWhjN1lDUVhZSXdId1lEVlIwakJCZ3dGb0FVd09QRUUwVDAKeHVyNEdla2VqbWhjN1lDUVhZSXdEd1lEVlIwVEFRSC9CQVV3QXdFQi96QU5CZ2txaGtpRzl3MEJBUXNGQUFPQwpBUUVBa3ZiQ2UxcFJzaUw5dUQ4YSt0andVVmJoZ1RuY2NFMDA3Zzd5UFpJTDhtZ1lHbUZxM3dRWDZNc2xWYUhHCjl3RnlrN1VzanRmUWlySXpzUTRNYkVRNVNRMVdiVWFEbnpaN0N1c29yU1dtVWMrUXJWMDdoeFQ3ak9mQXcvd0QKWmpiQUlTdlhTZFlFY0YvSXUxMGU5S1psdmNFRlVOZDdRZzBaaEMyaWx5eDY3UGtBU0lYWVlKak8va00xdGhOdApoMnVxRUpPRC9ZTE11MDRpTWV0MmJDVGMwNDVlSlA3RVhLV2RqWmk4YUsyWnlGOTlxUWt0eHQzYmhhY2NHSC84ClBXVFROSE1pQkxBeW03bVRYMUtiWlpNbkc1TE5vUkJiUFIrdGFQYWZ0bHpHTzN0cFYwYytDbXBwakh4OTZxV3gKOFl3YjFJSmxZcS9zU05LcGYzWSt4MDNERkE9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    server: https://10.0.2.15:16443
+  name: microk8s-cluster
+contexts:
+- context:
+    cluster: microk8s-cluster
+    user: admin
+  name: microk8s
+current-context: microk8s
+kind: Config
+preferences: {}
+users:
+- name: admin
+  user:
+    token: REtYZkMrZDJLdGNHM1NUU2dpU1dmc290WEN4R2hGRThUUHVvVlNKR2cvaz0K
+
+=============================================================================
+4. Now Restart machine 
+5. start using kubernetes To verify k8s 
+  # kubectl get all --all-namespaces 
+====================output below==========================================
+vagrant@thej-machine:~$ kubectl get all --all-namespaces
+NAMESPACE     NAME                                           READY   STATUS    RESTARTS      AGE
+kube-system   pod/coredns-7745f9f87f-ct586                   1/1     Running   1 (99s ago)   8m5s
+kube-system   pod/calico-kube-controllers-6c99c8747f-d2xbj   1/1     Running   1 (99s ago)   8m4s
+kube-system   pod/calico-node-xrsnb                          1/1     Running   1 (99s ago)   8m4s
+
+NAMESPACE     NAME                 TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                  AGE
+default       service/kubernetes   ClusterIP   10.152.183.1    <none>        443/TCP                  8m17s
+kube-system   service/kube-dns     ClusterIP   10.152.183.10   <none>        53/UDP,53/TCP,9153/TCP   8m6s
+
+NAMESPACE     NAME                         DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-system   daemonset.apps/calico-node   1         1         1       1            1           kubernetes.io/os=linux   8m4s
+
+NAMESPACE     NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system   deployment.apps/calico-kube-controllers   1/1     1            1           8m4s
+kube-system   deployment.apps/coredns                   1/1     1            1           8m6s
+
+NAMESPACE     NAME                                                 DESIRED   CURRENT   READY   AGE
+kube-system   replicaset.apps/calico-kube-controllers-6c99c8747f   1         1         1       8m4s
+kube-system   replicaset.apps/coredns-7745f9f87f                   1         1         1       8m6s
+vagrant@thej-machine:~$
+================================================================================
+
+To start MicroK8s cluster
+--------------------------
+$ microk8s kubectl get all --all-namespaces
+
+
+    

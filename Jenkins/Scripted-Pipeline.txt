@@ -49,6 +49,7 @@ pipeline
          Groovy code to implement this stage
       }
     }
+  }
 }
 =================================================================================
 Scripted Pipeline

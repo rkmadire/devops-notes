@@ -27,7 +27,7 @@ webhooks
 4.here display webhook information in the playLoad URL give jenkins http://jenkins_public_ip:8080/github-webhook/
 	-->content type-->select json 
 	-->click on add webhook
-5.Now goto Jenkins web page -->goto prject -->configure-->goto general-->goto build trigger-->select Github hook trigger for GITScm polling 
+5.Now goto Jenkins web page -->goto project -->configure-->goto general-->goto build trigger-->select Github hook trigger for GITScm polling 
 	-->click on save 
 6.now here my jenkins never go into check the remote repository whenever code changes in the git repository
   git will send a notification to the jenkins to build the job and based on that notification 

@@ -8,7 +8,8 @@ helm  Docker-kubernetes 28th session 01:00 min to 26:00 min
 
 -->by default helm package avaialable in managed kubernetes but in umanaged kubernetes helm package is not available you need to install helm software from google
 -----------------------------
-
+Helm installation steps on k8s
+--------------------------------
 $ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 $ chmod 700 get_helm.sh
 $ ./get_helm.sh

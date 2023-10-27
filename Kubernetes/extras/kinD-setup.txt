@@ -9,10 +9,10 @@ Link: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 step3: install docker for supports for To setup KinD environment 
 Link: https://get.docker.com/
  
-# kind create Clusters  
+# kind create Cluster  
 -->To create a K8s cluster above command will create one default cluster that name can be (kind-kind) it will provide single node that will be worker and controll node
 
-# kind get cluster
+# kind get Clusters
 -->from above command will get current running cluster 
 
 # kubectl cluster-info --context kind-kind

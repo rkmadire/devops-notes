@@ -33,6 +33,7 @@ cicd.groovy -->filename
 -------------------------------------
 def newGit(repo){
 	git $"{repo}"
+}
 ---------------------------
 cicd -->is file
 newGit -->function

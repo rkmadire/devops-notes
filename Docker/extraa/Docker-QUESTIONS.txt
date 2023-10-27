@@ -4,7 +4,7 @@ what is docker?
 
 what is container?
 ------------------------------
---->containers are light weight they are alternative to virtual machines 
+-->containers are light weight they are alternative to virtual machines 
 -->contaiers allow developers to package up the application with libraryies and dependencies and ship it as a single package 
 -->the advantage of using containers it doesn't require to allocate storage and ram for the applications . it automatically generates storage and space according to the application requirement
 

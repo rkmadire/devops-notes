@@ -118,7 +118,7 @@ $ vim /etc/tomcat9/tomcat-users.xml
 	<user username="thej" password="thej" roles="manager-script/>
 </tomcat-users>
 ------------------------------------------------------------------------------
-note: above tomcat-users.xml file copy  to all connected manafed nodes or tomcat server node
+note: above tomcat-users.xml file copy  to all connected managed nodes or tomcat server node
 $ansible all -m copy -a 'src=tomcat-users.xml dest=/etc/tomcat9' -b
 	-->above command will perform copy the file to all managed nodes 
 $ansible all -m service -a 'name-tomcat9 state=restarted' -b
