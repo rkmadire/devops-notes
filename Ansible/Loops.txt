@@ -11,21 +11,21 @@ loops: time 1 min
    tasks: 
       - name: install tree
         apt:
-	  name: tree
-	  state: present
-	  update_cache: yes
+	       name: tree
+	       state: present
+	       update_cache: yes
 
       - name: install git
         apt:
-	  name: git
-	  state: present
-	  update_cache: yes
+	        name: git
+	        state: present
+	        update_cache: yes
 
       - name: install maven
         apt:
-	  name: maven
-	  state: present
-	  update_cache: yes
+	       name: maven
+	       state: present
+	       update_cache: yes
 =======================================
 --> when you observe the playbook we are using apt module three times to reduce these types of steps
 -->we use concept call loops

@@ -38,25 +38,25 @@ $vim playbook22.yml
   tasks:
      - name: install apache2
        apt:
-	 name: apache2
-	 state: present
-	 update_cache: yes
-      - name: Edit the index.html file
-	copy:
-	  content: "IntelliQ"
-	  dest: /var/www/html/index.html
-      - name: restart apache2
-        service: 
-	    name: apache2
-	    state: restarted
-      - name:: check apache responce on server-1
-        uri: 
-	  url: http://172.31.57.12
-	  status_code: 200
-      - name: check apache responce on server2
-        uri:
-	  url: http://172.31.59.208
-	  status_code: 200
+	       name: apache2
+	       state: present
+	       update_cache: yes
+     - name: Edit the index.html file
+    	 copy:
+	       content: "IntelliQ"
+	       dest: /var/www/html/index.html
+     - name: restart apache2
+       service: 
+	       name: apache2
+	       state: restarted
+     - name: check apache responce on server-1
+       uri: 
+	       url: http://172.31.57.12
+	       status_code: 200
+     - name: check apache responce on server2
+       uri:
+	       url: http://172.31.59.208
+	       status_code: 200
 ...
 ======================================================
 -->above playbook configuring apache2 
