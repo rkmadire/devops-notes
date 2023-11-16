@@ -125,7 +125,7 @@ $ kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints
 NAME                                                TAINTS
 ip-192-168-20-6.ap-southeast-1.compute.internal     <none>
 ip-192-168-78-213.ap-southeast-1.compute.internal   [map[effect:NoSchedule key:key1 value:value1]]
-[ec2-user@Eks-server Kubernetes-01]$ client_loop: send disconnect: Connection reset by peer
+[ec2-user@Eks-server Kubernetes-01]$ 
 ----------------------------------------------------------------------------------------------------------------------------------------
 Refere Link: https://drive.google.com/file/d/1H85B0dS0x48Wty4U8AN42Beyxcx64y-1/view?usp=drive_link
 --------------------------------------------------------------------------------------------------------------------------------------

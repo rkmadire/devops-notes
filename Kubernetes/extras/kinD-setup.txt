@@ -91,7 +91,7 @@ nodes:
 - role: control-plane
 - role: worker
 ========================
-# kubectl create cluster --config /tmp/kind.yml  
+# kind create cluster --config /tmp/kind.yml  
 -->from above file here we are creating multi master cluster (three master node and one worker node ) 
 -->this setup it is here in it will  automatically Configuring externall loadbalancer  why because if one cluster gets down then automatically another cluster will be there 
 

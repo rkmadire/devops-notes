@@ -22,7 +22,7 @@ webhooks
 -----------
 1.here whenever code is modified that time only intimation will send to jenkins
   to build the job that is called web hooks
-2.webhooks first configure the at the level of web repository in the git hub
+2.webhooks first configure the at the level of web repository in the github
 3.goto github-->open one project like "maven"-->open settings-->webhooks-->add webhook-->asking credential of github
 4.here display webhook information in the playLoad URL give jenkins http://jenkins_public_ip:8080/github-webhook/
 	-->content type-->select json 
