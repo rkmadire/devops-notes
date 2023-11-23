@@ -1,0 +1,4 @@
+---
+- name: wait or pause for 30 seconds
+  pause:
+    seconds: "{{seconds}}"

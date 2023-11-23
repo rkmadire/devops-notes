@@ -1,0 +1,6 @@
+---
+- name: change port for tomcat9
+  replace:
+    regexp: 8080
+    replace: 9090
+    path: /etc/tomcat9/server.xml

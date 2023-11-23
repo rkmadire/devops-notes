@@ -1,0 +1,4 @@
+---
+- name: wait for a moment after restart
+  pause:
+    seconds: 30

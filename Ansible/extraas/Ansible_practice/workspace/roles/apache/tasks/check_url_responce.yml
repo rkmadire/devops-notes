@@ -1,0 +1,5 @@
+---
+- name: check url respoce from apache2
+  uri:
+    url: http://10.10.10.63
+    status_code: 200

@@ -1,0 +1,8 @@
+---
+- name: changing port 
+  replace:
+    regexp: "{{oldport}}"
+    replace: "{{newport}}"
+    path: /etc/tomcat9/server.xml
+  notify: Restart tomcat
+

@@ -1,0 +1,5 @@
+---
+- name: check url responce
+  uri:
+    url: http://10.10.10.63:80
+    status_code: 200

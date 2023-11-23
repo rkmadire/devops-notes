@@ -1,0 +1,21 @@
+---
+# vars file for tomcat
+# below are variables for tomcat9 installation in the install.yml file
+pkg1: tomcat9
+state1: present
+cache1: yes
+
+# below are variables for tomcat9-admin installation it is in the install.yml file 
+pkg2: tomcat9-admin
+state2: present
+cache2: no
+
+# below variables are to change ports these are from chage_port.yml file 
+oldport: 6060
+newport: 8080
+
+# below variable for to wait 30 seconds it is in from pause.yml file 
+seconds: 30
+
+# below variables are to check url reponce these are from check_url.yml file
+link1: http://10.10.10.63:6060

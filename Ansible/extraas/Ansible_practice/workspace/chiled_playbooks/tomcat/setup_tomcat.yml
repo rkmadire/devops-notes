@@ -1,0 +1,14 @@
+---
+- name: setup tomact9
+  hosts: all
+  become: yes
+  tasks:
+    - name: call chiled plabooks
+      include: "{{item}}"
+      with_items:
+        - install.yml
+        - change_tomcat_file.yml
+        - change_port.yml
+        - restart_tomcat.yml
+        - pause.yml
+        - check_url_responce.yml

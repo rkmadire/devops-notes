@@ -1,0 +1,11 @@
+---
+- name: setup apache2 using chiled playbooks
+  hosts: all
+  tasks:
+    - name: call chiled playbooks to setup apache2 step by step
+      include: "{{item}}"
+      with_items:
+        - install.yml
+        - edit_index.html.yml
+        - restart_apache2.yml
+        - check_url_reponce.yml

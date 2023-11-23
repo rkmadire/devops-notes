@@ -1,0 +1,8 @@
+---
+- name: Check Url Responce
+  uri:
+    url: "{{item.a}}"
+    status_code: "{{item.b}}"
+  with_items:
+    - {a: "{{link1}}", b: 200}
+

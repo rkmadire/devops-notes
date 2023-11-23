@@ -1,0 +1,14 @@
+---
+- name: setup nginx and configure nginx using child playbooks
+  hosts: all
+  become: yes
+  tasks:
+    - name: excute chiled playbooks
+      include: "{{item}}"
+      with_items:
+        - install.yml
+        - edit_index.yml
+        - change_port.yml 
+        - handlers/main.yml
+        - check_url_responce.yml
+  

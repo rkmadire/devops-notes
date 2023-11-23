@@ -1,0 +1,8 @@
+---
+- name: change nginx port number from 80 to 90
+  replace:
+    regexp: 80
+    replace: 80
+    path: /etc/nginx/sites-available/default
+  notify:
+...

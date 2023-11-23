@@ -1,0 +1,21 @@
+---
+- name: install apache2 and configure apache2
+  hosts: all
+  tasks:
+    - name: install apache2
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+    - name: configure apache2
+      copy:
+        content: "Hello Good Morning"
+        dest: /var/www/html/index.html
+    - name: restart apache2 service
+      service:
+        name: apache2
+        state: restarted
+    - name: check url responce
+      uri:
+        url: http://10.10.10.63
+        status_code: 200

@@ -1,0 +1,5 @@
+---
+- name: change tomcat-users.xml file in /etc/tomcat9/
+  copy:
+    src: tomcat-users.xml
+    dest: /etc/tomcat9/tomcat-users.xml

@@ -1,0 +1,7 @@
+---
+# tasks file for tomcat
+- include: install.yml
+- include: change_port.yml
+- include: copy_tomcat_file.yml
+- include: pause.yml
+- include: check_url.yml
