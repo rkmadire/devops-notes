@@ -1,0 +1,36 @@
+# file name 10-nodeaffinity-httpd-deployment.yml
+# we need to add first in the terminal cluster command is #$ kubectl label nodes ip-192-168-13-232.ap-southeast-1.compute.internal slave1=thej1
+# above command is like # ip-192-168-13-232.ap-southeast-1.compute.internal --> it is node id
+# 
+# only when you specify node in the cluster then only it will work otherwise it will still in pending state containers will not created 
+# otherwise remove those affinity section and run the definition file 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-httpd
+  labels:
+    type: affection
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: webserver
+  template:
+    metadata:
+      name: pod-httpd
+      labels:
+        type: webserver
+    spec:
+      containers:
+        - name: myhttpd
+          image: httpd
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: slave1
+                  operator: In
+                  values:
+                    - thej1

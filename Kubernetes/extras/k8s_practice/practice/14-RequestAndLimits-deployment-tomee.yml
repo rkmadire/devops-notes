@@ -1,0 +1,56 @@
+# file name 14-RequestAndLimits-deployment.yml
+# Request ---> minimum amount of hardware allocation to the Pod 
+# Limits ----> maximu amount of Hardwae allocation to the Pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomee-deployment
+  labels:
+    type: application-server
+    author: thej
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: application
+      author: thej
+  template:
+    metadata:
+      name: pod-tomee
+      labels:
+        type: application
+        author: thej
+    spec:
+      containers:
+        - name: mytomee
+          image: tomee
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "128Mi"
+
+...
+# above tomee it is a application server it should access from broweser so we need service object file
+# for that we need to create NodePort or LoadBalance need to create 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-tomee
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 8080
+      port: 8080
+      nodePort: 30008
+  selector:
+    type: application
+    author: thej
+
+...
+
+

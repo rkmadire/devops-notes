@@ -1,0 +1,36 @@
+# file name 20-postgres-adminer-pod.yml
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-pod
+  labels:
+    type: db
+    author: thej
+spec:
+  containers:
+    - name: mydatabase
+      image: postgres
+      env:
+        - name: POSTGRES_PASSWORD
+          value: admin
+        - name: POSTGRES_USER
+          value: admin
+        - name: POSTGRES_DB
+          value: mydb
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-adminer
+  labels:
+    type: web
+    author: thej
+spec:
+  containers:
+    - name: myadminer
+      image: adminer
+      ports:
+        - containerPort: 8080
+          hostPort: 30009

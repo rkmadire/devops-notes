@@ -1,0 +1,42 @@
+# file name 13-horizonatlPodAutoscaler-ubuntu.yml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ubuntu-os-dpt
+  labels:
+    type: os
+    author: thej
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: os
+  template:
+    metadata:
+      name: pod-ubuntu
+      labels:
+        type: os
+    spec:
+      containers:
+        - name: myubuntu
+          image: ubuntu
+          command: ["sleep", "infinity"]
+          resources:
+            requests:
+              cpu: 200m
+            limits:
+              cpu: 500m
+...
+# it is a ubuntu os so we dont need service to assign 
+# we applying resources to this so it means minimum should take cpu 200 memory and maximum shoul take only 500m 
+# if more than that it should not take at any time 
+# so suppose if ubuntu pod reach maximum limit then it should stop or crash pod 
+# to avoid crash pod we should apply Horizontal Pod Autoscaler to this ubuntu os Pod 
+# for that we should apply HPA by command 
+# ( kubectl autoscale deployment ubuntu-os-dpt --cpu-percent=50  --min=1  --max=10 ) this is command to excute after creation pod in the cluster 
+# after adding maximum and minium count if the pod feels reach the 50% limits then automatically a ne pod will create upto 10 pods 
+# ( kubectl get hpa  --watch ) this is command to watch increasing pods when Current pod facing heavy traffic 
+#
+#
+          

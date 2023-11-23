@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dp-mysql
+  labels:
+    type: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: db
+  template:
+    metadata:
+      name: pod-mysql
+      labels:
+        type: db
+    spec:
+      containers:
+        - name: mydatabase
+          image: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-mysql
+                  key: password
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret-mysql
+                  key: username
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-mysql
+                  key: userpassword
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: secret-mysql
+                  key: dbname
+
+

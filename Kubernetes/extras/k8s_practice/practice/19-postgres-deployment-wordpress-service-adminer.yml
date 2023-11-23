@@ -1,0 +1,71 @@
+# 18-mysql-deployment-adminer-service-adminer.yml 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-deployment
+  labels:
+    type: db
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: db
+  template:
+    metadata:
+      name: pod-postgres
+      labels:
+        type: db
+    spec:
+      containers:
+        - name: mydatabase
+          image: postgres
+          env:
+            - name: POSTGRES_PASSWORD
+              value: admin
+            - name: POSTGRES_USER
+              value: thej
+            - name: POSTGRES_DB
+              value: mydb
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminer-deployment
+  labels:
+    type: web
+    author: thej
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: web
+      author: thej
+  template:
+    metadata:
+      name: pod-adminer
+      labels:
+        type: web
+        author: thej
+    spec:
+      containers:
+        - name: newadminer
+          image: adminer
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-adminer
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 8080
+      port: 8080
+      nodePort: 30009
+  selector:
+    type: web
+    author: thej
+
+

@@ -1,0 +1,31 @@
+#file 06-autoscaling-ubuntu.yml 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myubuntu-deployment
+  labels:
+    type: os
+    author: thej
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: os
+      author: thej
+  template:
+    metadata:
+      name: myubuntu-pod
+      labels:
+        type: os
+        author: thej
+    spec:
+      containers:
+        - name: myubuntu
+          image: ubuntu
+          resources:
+            requests:
+              cpu: 200m
+            limits:
+              cpu: 500m
+

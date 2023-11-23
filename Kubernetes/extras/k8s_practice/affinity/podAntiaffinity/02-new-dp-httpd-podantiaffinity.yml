@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-deployment-new
+spec:
+  replicas: 1  # Set the desired number of replicas as per your requirement
+  selector:
+    matchLabels:
+      app: httpd-new  # Replace 'app' label with your desired label
+  template:
+    metadata:
+      labels:
+        app: httpd-new  # Replace 'app' label with your desired label
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: type
+                    operator: In
+                    values:
+                      - web
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: myhttpd-new
+          image: httpd
+

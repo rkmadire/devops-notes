@@ -1,0 +1,30 @@
+# 01-new-Podaffinity-nginx-pod.yml --> manifest file  
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - backend
+          topologyKey: kubernetes.io/hostname
+...
+################ below are commented lines ################
+#The nginx-pod Pod will run an Nginx container with port 80 exposed.
+#The affinity section defines the Pod Affinity rules for this Pod.
+#We use requiredDuringSchedulingIgnoredDuringExecution to specify that the rule must be enforced during scheduling, but can be ignored during execution (i.e., if the Pod is already running on a node).
+#In the labelSelector, we set key: app, operator: In, and values: backend to indicate that this Pod should be scheduled with other pods that have the label app=backend.
+#The topologyKey: kubernetes.io/hostname specifies that the Pod Affinity rule should be applied based on the nodes' hostnames. This means that the Nginx Pod will be scheduled on a node that has another pod with the label app=backend.
+##################################################################

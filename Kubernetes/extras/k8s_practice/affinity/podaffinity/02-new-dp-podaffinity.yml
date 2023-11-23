@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dp-nginx-new
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: web
+  template:
+    metadata:
+      name: pod-nginx-new
+      labels:
+        type: web
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - backend
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: mynginxnew
+          image: nginx
+

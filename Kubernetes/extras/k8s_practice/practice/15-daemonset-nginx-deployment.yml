@@ -1,0 +1,34 @@
+# file name 15-daemonset-nginx-deployment.yml
+# deamonset it is an object it ensure that each one copy available on each and every slave in the cluster 
+# this is used for mainly for logs collector
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-daemonset
+  labels:
+    type: proxy
+    author: thej
+spec:
+  selector:
+    matchLabels:
+      type: proxy
+      author: thej
+  template:
+    metadata:
+      name: pod-nginx
+      labels:
+        type: proxy
+        author: thej
+    spec:
+      containers:
+        - name: webserver
+          image: nginx
+          ports:
+            - containerPort: 80
+              hostPort: 30009
+...
+# The DaemonSet creates a pod on each node in the cluster, ensuring that there is an NGINX pod running on every node.
+# The matchLabels field specifies the label selector to match the pods with the DaemonSet.
+#

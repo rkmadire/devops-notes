@@ -1,0 +1,12 @@
+# 01-old-httpd.yml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-httpd
+  labels:
+    type: web
+spec:
+  containers:
+    - name: myhttpd
+      image: httpd

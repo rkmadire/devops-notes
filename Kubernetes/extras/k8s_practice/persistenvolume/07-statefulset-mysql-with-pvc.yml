@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    type: db
+spec:
+  clusterIP: None
+  ports:
+    - name: tcp
+      port: 3306
+      protocol: TCP
+  selector:
+    app: mysql
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mysql
+  serviceName: mysql
+  template:
+    metadata:
+      name: pod-mysql
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mydb
+          image: mysql:5
+          env:
+           - name: MYSQL_ROOT_PASSWORD
+             value: admin
+          volumeMounts:
+            - name: infosys-volume
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: infosys-volume
+          persistentVolumeClaim:
+            claimName: pvc-volume
+...
+         
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    type: db
+spec:
+  clusterIP: None
+  ports:
+    - name: tcp
+      port: 3306
+      protocol: TCP
+  selector:
+    app: mysql
+---
