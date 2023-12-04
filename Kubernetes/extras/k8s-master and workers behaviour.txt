@@ -1,0 +1,13 @@
+On master Node
+---------------
+1. Kube Api server  --> api server  it is act like gateway point to the cluster, it will authenticate the excuted commands, api server validate our requests to other process to work next to create pod 
+2. scheduler --> scheduler is deside where pod shoud deploy on to cluster on which node it will maintaine health of the nodes
+3. controller manager --> controller manager is the main controll point of cluster it will detects pod crashes then to recreate pod it will inform to scheduler to create pod on the cluster 
+4. etcd --> it is a brain of cluster it containes all the changed and updated information stored in a key value format like for example pod creation and deletion and ipdation and node related configurations of the cluster nodes 
+5. container runtime --> this is docker container mostly 
+
+on worker node
+---------------
+1. kubelet --> it is tool its like process it interacts with both containers and node, kubelet starts pod with a container inside 
+2. kube proxy --> kube proxy it is a intelligent process it will work smartly to route traffic between app pod to database pod  based on nearest pod only  in a worker node  
+3. container runtime --> it is container process to be placed on worker node mostly it is docker 
