@@ -123,6 +123,14 @@ $ansible all -m copy -a 'src=tomcat-users.xml dest=/etc/tomcat9' -b
 	-->above command will perform copy the file to all managed nodes 
 $ansible all -m service -a 'name-tomcat9 state=restarted' -b
 ------------------------------------------------------------------------------------------
+
+Note: copy module only copies files only to copy directory also use sychronize module 
+
+-> If you need to copy entire directories recursively, you can use the synchronize module instead
+
+$ ansible all -m synchronize -a "src=/path/to/local/directory dest=/path/on/remote/machine"
+
+
 ======================================================================
 
 Ansible session 3rd

@@ -1,5 +1,5 @@
-DevOps project
--------------------
+DevOps project From dinesh mistry
+----------------------------------
 maven integration
 pipeline maven integration
 eclips temurin installer
@@ -220,7 +220,11 @@ stage("sonarqube Analysis"){
             steps{
                 script{
                      withSonarQubeEnv(credentialsId: 'jenkins-sonarqube'){
-                    sh "mvn sonar:sonar"
+                        sh "mvn sonar:sonar"
+                     }
+                }
+            }
+    }
 
 --------------------------
 

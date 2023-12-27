@@ -1,0 +1,63 @@
+Docker Architecture
+-----------------------
+1. Docker daemons runs in the host system in the backround docker daemons  communicate with other daemons in the system, Docker daemons is responsible to run docker containers, docker daemons offers various Docker objects like docker images, containers, networking, and storages
+
+2. docker follow client and server architecture, it will include main three components 
+	- dokcer clinets
+	- docker hosts
+	- docker registry 
+
+	1. docker client 
+		- docker client communicate with docker daemon with commands using rest API 
+		- docker client excute docker commands on the terminal client terminal sends these signals to docker daemon 
+		- docker daemon recieve this commands from the docker client in the form of REST API request 
+		- dokcer clinet uses commands like 
+			- docker build 
+			- docker pull
+			- docker run
+	2. docker host
+		- docker host it is a evironment where docker commands need to be excute and containe images and application containers
+		- normally it containers docker daemon, docker containers, ad it will store docker images 
+
+	3. Docker Registry
+		- Docker registry manages to store Docker images 
+		- In Docker there are two types of registries public and private
+			- public Registry -> public registry is called dockerhub
+			- private registry -> it is used to share images within the enterprise 
+
+Docker Objects
+---------------
+1. docker objects are docker images, docker containers, networking, storage
+	
+	1. docker images
+		- dokcer images are read only temlates ysed to create docker containers.
+		- it uses private cotainer registry to store images within the enterprise
+		- it can be also store images in public registry where everyone can access image
+	2. Docker containers
+		- containers are strucheral units of Docker, which is used to hold the entire package that is used to run entire application 
+		- The advantages of containers are it requires very less resources to run an application
+	3. Docker Networking
+		- Docker networking is a isolated package to use communicate with the network 
+		- In docker there are multiple network components
+			1. Bridge
+				- Bridge is the default network driver for containers when containers are created automatically bridge driver selected defaultly  
+				- multiple containers can communicate with each other when containers are deployed inside this bridge etwork
+			2. Host
+				- it is used when we dont need for network isolation 
+				- which meas within the host contaiers only communicate with each other 
+			3. Overlay
+				- it will offers swarm services to communicate with each other it enables containers to run on the different docker host 
+			4. Macvlan
+				- Macvlan is used when we want to assign MAC Address to the containers 
+
+	4. Docker Storage
+		- Docker storage is used to store data on the containre
+		- Docker offers multiple options to store data 
+			1. Data Volume 
+				- Data volumes provide the ability to create persistence storage.it is also allow us to name volumes, list volumes, and containers associates with volumes.
+			2. Directory Mounts
+				- it is the one of the best options for docker storage. it will mount host directory into a container
+			3. storage plugins
+				- it will provides an ability to connect to external storage platforms 
+
+	  

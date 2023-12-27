@@ -186,5 +186,11 @@ step5: To setup Grafana Dashboard
 
 
 
+==================================
+
+To run commands in Backround 
+-----------------------------
+	
+	$ nohup ./node_exporter > node_exporter.log 2>&1 &
 
 

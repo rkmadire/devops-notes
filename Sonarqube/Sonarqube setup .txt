@@ -1,0 +1,48 @@
+Sonarqube setup 
+---------------------------
+SonarQube is an open-source platform developed by SonarSource for continuous inspection of code quality to perform automatic reviews with static analysis of code to detect bugs and code smells on 29 programming languages.
+•	To install sonarqube minimum requirements 2cpu and 2gb ram
+•	Install postgres and create a databse for sonarqube in sonarqube server
+•	Install java 
+•	Install sonarqube 
+Access sonarqube (sonar-server-public_ip:9000) on the browser 
+Username : admin
+Password : admin
+
+To access jenkins to sonarqube need to generate global token in sonar server
+-->goto administation-->goto security-->generate global tokens
+sqa_f812af33aa4e1a830c9167c197abe0ceb87134b5   ----- sonar token
+
+Take copy of that token paste in jenkins credentials page
+-->goto jenkins-->goto manage jenkins-->credentials-->click on global-->add credentials-->select secret text-->scope(global)-->paste sonar key-->provide Id name (sonar-key) this name will be use in pipeline code-->provide description name-->click on add 
+
+====================================================================
+stage("Sonarqube Analysis"){
+            steps{
+                script{
+                    withSonarQubeEnv(credentialsId:'sonar-key'){
+                    sh "mvn sonar:sonar"
+                }
+             }
+         }
+		 
+=====================================================================
+
+Setup and create a code in at the level of git and it will directly sync to jenkins 
+Setup
+Step1: goto jenkins webpage goto global tool credentials
+-->goto jenkins-->goto manage jenkins-->credentials-->system-->global credentials-->kind(username and password)-->scope(global)-->username(thej950)-->password(github token(**********))-->id(github)description(github)
+
+-->now goto jenkins-->create a project(project name)-->
+
+Sonarqube webhooks setup it is for send meassage to jenkins to approve 
+To generate sonarqube 
+-->goto sonarqube -->goto administration-->goto configurartion-->under configuration webhooks select -->create webhook-->name(jenkins machine name)-->url(jenkins-public-ip/sonarqube-webhook/-->click on create 
+
+
+Installation of SonarQube:
+Refer Link: https://gist.github.com/dmancloud/0abf6ad0cb16e1bce2e907f457c8fce9
+
+
+
+
