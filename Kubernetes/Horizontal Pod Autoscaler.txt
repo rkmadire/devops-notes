@@ -26,7 +26,7 @@ spec:
            ports:
              - containerPort: 90 
           resources:
-             request:
+             requests:
                 cpu: 200m 
              limits:
                 cpu: 500m
@@ -51,10 +51,12 @@ $ kubectl autoscale deployment php-apache(podname) --cpu-percent=50  --min=1  --
 
 $ kubectl get hpa
 	-->it display horizaontal pod autoscaler status
-Q:how to check whether auscaler really scaling or not
+Q:how to check whether autoscaler really scaling or not
 -->there are certain testing tools like (Load runnuer or J meter)these are called as performance testing tools these are used by testers 
 ---------------------- 
-$ kubectl run -i --tty   lg   --rm  --image  busybox   --restart Never  --  /bin/sh  -c  "while sleep 0.01; do wget  -q -O - http://php-apache;done"
+$ kubectl run -i --tty   lg   --rm  --image  busybox   --restart Never  --  /bin/sh  -c  "while sleep 0.01; do wget  -q -O- http://php-apache;done"
+
+$ kubectl run -i --tty lg1 --image=busybox -- /bin/sh -c "while sleep 0.01;do wget -q -O- http://php-apache;done"
 
 $ kubectl get hpa 
 

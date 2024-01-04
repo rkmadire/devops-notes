@@ -1,4 +1,4 @@
-Docker Architecture
+Docker Architecture 
 -----------------------
 1. Docker daemons runs in the host system in the backround docker daemons  communicate with other daemons in the system, Docker daemons is responsible to run docker containers, docker daemons offers various Docker objects like docker images, containers, networking, and storages
 
@@ -60,4 +60,3 @@ Docker Objects
 			3. storage plugins
 				- it will provides an ability to connect to external storage platforms 
 
-	  

@@ -6,7 +6,7 @@ SonarQube is an open-source platform developed by SonarSource for continuous ins
 •	Install java 
 •	Install sonarqube 
 Access sonarqube (sonar-server-public_ip:9000) on the browser 
-Username : admin
+Username : admin
 Password : admin
 
 To access jenkins to sonarqube need to generate global token in sonar server
@@ -25,6 +25,7 @@ stage("Sonarqube Analysis"){
                 }
              }
          }
+	}
 		 
 =====================================================================
 

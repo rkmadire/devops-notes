@@ -115,7 +115,7 @@ controll node
 $ vim /etc/tomcat9/tomcat-users.xml
 ----------------------------------------------------------------------------
 <tomcat-users>
-	<user username="thej" password="thej" roles="manager-script/>
+	<user username="thej" password="thej" roles="manager-script"/>
 </tomcat-users>
 ------------------------------------------------------------------------------
 note: above tomcat-users.xml file copy  to all connected managed nodes or tomcat server node
