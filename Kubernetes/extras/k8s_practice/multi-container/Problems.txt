@@ -1,6 +1,0 @@
-1. while practicing if both containers same container port then it will go with default container only
-2. in manifest file first specified container is default container when we try to go inside container first it will enter into default container only 
-3. if we want to go to another container then excute command like 
-------------------------------------------------------------------------------
-# kubectl exec -it jenkins-pod-6fbbc44687-jkcrt -c nginx-server -- bash # 
-------------------------------------------------------------------------------
