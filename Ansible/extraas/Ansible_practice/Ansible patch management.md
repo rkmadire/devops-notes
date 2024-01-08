@@ -36,11 +36,11 @@ Best practices for patch
 
 #Practicals 
 ------------
-##step1: setup ansible cluster
+- step1: setup ansible cluster
 	
 		 ansible all -m ping
 
-## vim patch.yaml
+- vim patch.yaml
 
 		---
 		- name: " This playbook is to apply patches to linux servers"
@@ -96,16 +96,16 @@ Best practices for patch
 
 #BreakDown above yaml file
 --------------------------
-###Task 1 — Installing httpd
+- Task 1 — Installing httpd
 	
 		- name: install httpd
 	  	  yum:
-	   		name: httpd
-	   		state: latest
+	   	    name: httpd
+	   	    state: latest
 	  	  delegate_to: node2
 
 
-Task 2 — Check whether application and database are running
+- Task 2 — Check whether application and database are running
 
 		- name: "Check whether application and database are running"
 		    script: /home/ansible/ansible_demo/appcheck.sh
@@ -128,14 +128,14 @@ Task 2 — Check whether application and database are running
 		fi
 
 
-##Task 3 — Check whether the application is stopped and start the patching
+- Task 3 — Check whether the application is stopped and start the patching
 	
 		- name: "Will check and start patching on linux servers"
 		    fail: msg='{{ inventory_hostname }} have running Application. Please stop application and then proceed with patch.'
 		    when: application_process_check.stdout == "process is running"
 
 
-##Task 4 — Applying patches to the server.
+- Task 4 — Applying patches to the server.
 
 		- name: "Applying patches to the server"
 		    yum: name=kernel state=latest
@@ -143,7 +143,7 @@ Task 2 — Check whether application and database are running
 		    register: patch_update
 
 
-##Task 5 — Check if reboot required
+- Task 5 — Check if reboot required
 
 
 		- name: "Check if reboot required"
@@ -152,7 +152,7 @@ Task 2 — Check whether application and database are running
 		    register: reboot_status
 
 
-##Task 6 — According to above status reboot will be started
+- Task 6 — According to above status reboot will be started
 
 		- name: "This play is to restart the system using above status check"
 		    command: shutdown -r +1 "Rebooting System After Patching"
@@ -163,13 +163,13 @@ Task 2 — Check whether application and database are running
 		    ignore_errors: true
 
 
-##Task 7 — This play will wait for 1 minutes for system to come up
+- Task 7 — This play will wait for 1 minutes for system to come up
 
 		- name: "This play will wait for 1 minutes for system to come up"
 		    pause: minutes=1
 
 
-##Task 8 — Check the system status
+- Task 8 — Check the system status
 
 		- name: check the system status
 		    local_action: shell ansible -u ansible -m ping {{ inventory_hostname }}
@@ -179,7 +179,7 @@ Task 2 — Check whether application and database are running
 		    delay: 10
 
 
-##Task 9 — Check the client uptime
+- Task 9 — Check the client uptime
 
 		- name: check the client uptime
 		    shell: uptime
