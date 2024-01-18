@@ -7,6 +7,7 @@ helm  Docker-kubernetes 28th session 01:00 min to 26:00 min
 -->but disadvantage is using helm it will only by default comming from nginx service to create pods we need to change necessary changes in the helm inside helm there is a file called values.yml file modify that file based on requirements
 
 -->by default helm package avaialable in managed kubernetes but in umanaged kubernetes helm package is not available you need to install helm software from google
+
 -----------------------------
 Helm installation steps on k8s
 --------------------------------

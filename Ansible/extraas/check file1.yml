@@ -1,0 +1,24 @@
+# check if file1 exist only machine the next module will perform
+- name: Check if file1 exists on any managed node
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Check if file1 exists
+      stat:
+        path: /tmp/file1
+      register: file1_status
+
+    - name: Set fact for file1 existence
+      set_fact:
+        file1_exists: "{{ file1_status.stat.exists | default(false) }}"
+      run_once: true
+
+- name: Sync playbook directory only to node with file1
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Synchronize playbook directory if file1 exists on this node
+      synchronize:
+        src: /home/ubuntu/playbook
+        dest: /tmp
+      when: file1_exists | bool and file1_status.stat.exists == true

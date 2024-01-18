@@ -1,13 +1,14 @@
 Multi branch pipeline Session 15th time 9:30 min  
 --------------------------------------------------------
-A multibranch pipeline in Jenkins is a Jenkinsfile that defines a pipeline for multiple branches of a single Git repository. 
-When a change is pushed to the repository, Jenkins automatically detects the branch and runs the pipeline for that branch. 
-This allows for separate build and deployment processes for different branches, such as development, staging, and production. 
-Jenkins uses the Jenkinsfile to define the pipeline stages, steps, and actions for each branch.
-------------------------------------------------------------
--->in every organisation there are developes create code and upload code into git. they do freaquently changing code for better results
-   based on client requirement and upload into git 
--->also developers create code different branches to complete work in a uncluttered way 
+
+1. A multibranch pipeline in Jenkins is a Jenkinsfile that defines a pipeline for multiple branches of a single Git repository. 
+2. When a change is pushed to the repository, Jenkins automatically detects the branch and runs the pipeline for that branch. 
+3. This allows for separate build and deployment processes for different branches, such as development, staging, and production. 
+4. Jenkins uses the Jenkinsfile to define the pipeline stages, steps, and actions for each branch.
+
+
+5. in every organisation there are developes create code and upload code into git. they perform frequently changing code for better results based on client requirement and upload into git 
+-> Also developers create code different branches to complete work in a uncluttered way 
 	supose there is master branch in that branch 
 		   	loans branch
 			personal banking branch
@@ -39,7 +40,7 @@ steps:
 5.if code modified and upload into github automatically run job based on jenkinsfile
 6.if code modified and upload code into github related to all branches it builds the job all branches
   or if code modified and upload code into github in a sigle branch it will perform only that branch 
--------------------------------------------------------------------------------------------------------------------------------------- 
+
 
 
 
