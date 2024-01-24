@@ -214,9 +214,9 @@ $ kubectl set image deployment/nginx-deployment mynginx=nginx:1.23
 $ kubectl describe pods <nginx-deployment-576c7c49b5-q4vlb >  | grep 1.23
 	-->above command it will describe pods 
 ----------------------
--->this is rolling update this process is default process in deploment in kubernetes
+-->this is rolling update this process is default process in deployment in kubernetes
 ---------------------------------------
-Recreate  strategy (or) freev Strategy
+Recreate  strategy (or) free Strategy
 -------------------------------------------------------
 $ recreatestrategy.yml
 ==============================================
