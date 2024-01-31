@@ -318,8 +318,8 @@ Deploy an Application in Fargate cluster And Access From Browser
 # step6: To Delete Cluster 
  1. Delete pods 
  2. Delete ALB
- 3. Delete 
- . delete fargate profiles 
+ 3. Delete fargate profiles
+ 4. delete  cluster
  
  	    eksctl delete cluster --name thej-cluster-1 --region us-east-1
 
