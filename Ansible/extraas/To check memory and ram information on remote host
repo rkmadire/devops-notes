@@ -1,0 +1,115 @@
+To check memory and ram information on remote hosts using ansible 
+-------------------------------------------------------------------
+
+step1: create script file 
+    
+    - vim check_sys.sh
+    
+        #!/bin/bash
+
+        # Get CPU usage
+        cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | awk -F. '{print $1}')
+
+        # Get Memory usage
+        mem_usage=$(free | grep Mem | awk '{print $3/$2 * 100.0}')
+
+        # Print results
+        echo "CPU Usage: $cpu_usage%"
+        echo "Memory Usage: $mem_usage%"
+
+
+step2: create yaml file 
+
+        ---
+        - name: Execute System Check Script
+          hosts: your_remote_host
+          become: yes  # Run the commands with sudo
+
+          tasks:
+            - name: Copy Shell Script to Remote Host
+              copy:
+                src: check_sys.sh
+                dest: /path/to/remote/check_sys.sh
+                mode: 0755  # Set execute permissions
+
+            - name: Execute Shell Script
+              command: /path/to/remote/check_sys.sh
+              register: script_output
+
+            - name: Display Script Output
+              debug:
+                var: script_output.stdout_lines
+
+
+        ===========OUTPUT===============================
+
+        ubuntu@ip-10-0-1-10:~$ ansible-playbook check_cpu_memory.yml
+
+        PLAY [Execute System Check Script] ******************************************************************************************************************
+
+        TASK [Gathering Facts] ******************************************************************************************************************************
+        ok: [10.0.1.11]
+        ok: [10.0.1.12]
+
+        TASK [Copy Shell Script to Remote Host] *************************************************************************************************************
+        ok: [10.0.1.11]
+        ok: [10.0.1.12]
+
+        TASK [Execute Shell Script] *************************************************************************************************************************
+        changed: [10.0.1.12]
+        changed: [10.0.1.11]
+
+        TASK [Display Script Output] ************************************************************************************************************************
+        ok: [10.0.1.11] => {
+            "script_output.stdout_lines": [
+                "CPU Usage: 0%",
+                "Memory Usage: 17.4568%"
+            ]
+        }
+        ok: [10.0.1.12] => {
+            "script_output.stdout_lines": [
+                "CPU Usage: 0%",
+                "Memory Usage: 17.4901%"
+            ]
+        }
+
+        PLAY RECAP ******************************************************************************************************************************************
+        10.0.1.11                  : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+        10.0.1.12                  : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+        ubuntu@ip-10-0-1-10:~$
+        ======================================================
+
+# Another way to pich file from remote host to controller
+        ---
+        - name: Execute System Check Script
+          hosts: all
+          become: yes  # Run the commands with sudo
+
+          vars:
+            script_src_path: "/home/ubuntu/check_sys.sh"
+            script_dest_path: "/home/ubuntu/check_sys_output.txt"
+            local_dest_path: "/tmp/"
+
+          tasks:
+            - name: Copy Shell Script to Remote Host
+              copy:
+                src: check_sys.sh
+                dest: "{{ script_src_path }}"
+                mode: 0755  # Set execute permissions
+
+            - name: Execute Shell Script and Capture Output
+              shell: "{{ script_src_path }} > {{ script_dest_path }} 2>&1"
+              args:
+                chdir: "{{ script_dest_path | dirname }}"
+              register: script_execution
+
+            - name: Fetch Output File from Remote Host
+              fetch:
+                src: "{{ script_dest_path }}"
+                dest: "{{ local_dest_path }}"
+                flat: yes  # Avoid creating a directory for the fetched file
+
+            - name: Display Script Execution Result
+              debug:
+                var: script_execution.stdout_lines

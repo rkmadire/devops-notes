@@ -316,9 +316,29 @@ Deploy an Application in Fargate cluster And Access From Browser
  - Wait Atleast 3 to 5 min for loadbalancer active 
 
 # step6: To Delete Cluster 
- 1. Delete pods 
+ 1. Delete pods in a specific file what ever it containes
+
+        kubectl delete -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/examples/2048/2048_full.yaml
+
+ - To delete only pods 
+
+        kubectl delete pods -l app=2048-game
+
+
  2. Delete ALB
+ - Below This command will remove the Helm release named aws-load-balancer-controller from the kube-system namespace
+
+        helm uninstall aws-load-balancer-controller -n kube-system
+ - After deleting delete remaing resources which is required to setup ALB also like IAM Policy and Role 
+
+        aws iam delete-policy --policy-arn arn:aws:iam::712351660193:policy/AWSLoadBalancerControllerIAMPolicy
+
+
  3. Delete fargate profiles
+    
+        eksctl delete fargateprofile --cluster thej-cluster --region us-east-1 --name alb-sample-app
+
+
  4. delete  cluster
  
  	    eksctl delete cluster --name thej-cluster-1 --region us-east-1

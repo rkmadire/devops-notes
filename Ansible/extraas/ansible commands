@@ -1,0 +1,14 @@
+ansible commands
+------------------------------------------
+1. To check modules information in detailed
+	
+	ansible-doc -s copy
+		- above command will display in detailed information about copy module
+
+-----------------------------------------
+2. To checck modules count inside ansible system 
+	
+	ansible-doc -l | wc -l
+
+-----------------------------------------
+
