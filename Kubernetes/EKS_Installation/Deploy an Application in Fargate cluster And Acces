@@ -103,8 +103,6 @@ step3: Deploy pods using yaml file
         [ec2-user@ip-172-31-89-76 ~]$
         ===================================================
 
-
-
 step4: setup ALB add On 
 
  - To setup ALB add on first we need to create Role with some IAM policy 
@@ -204,7 +202,6 @@ step4: setup ALB add On
         2024-01-30 12:18:12 [ℹ]  created serviceaccount "kube-system/aws-load-balancer-controller"
         [ec2-user@ip-172-31-89-76 ~]$
         =============================================================
-
 
 step5: Deploy ALB controller
 
@@ -320,7 +317,6 @@ step5: Deploy ALB controller
         ==================================================
 
     - Wait Atleast 3 to 5 min for loadbalancer active 
-
 
 step6: To Delete Cluster 
  
