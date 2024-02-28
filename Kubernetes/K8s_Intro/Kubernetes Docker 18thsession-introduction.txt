@@ -48,7 +48,7 @@ Kubernetes objects:
 -->because docker commands directly works on docker container 
 -->in kubernetes commands first working on pod and pod understand and transalte to contaiers 
 ==============================================
-2.service obeject:
+2.service object:
 -------------------
 -->obeserver image 2
 -->one container with wordpress and aother contaier with mysql they both have in the same network they commuicate with each other
@@ -67,7 +67,7 @@ Kubernetes objects:
 -->if pod crashes then autoamtiocally a new pod will create and based on service object ip will be same 
 -->service object ensure that irrespective of your pod how many times it will crash and recreated with same ip will be given 
 ======================================================
-Namespace beject:
+Namespace object:
 ------------------
 Cluster:
 ----------
