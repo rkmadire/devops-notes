@@ -17,7 +17,9 @@ Agile is a way of managing projects by breaking them into smaller, manageable pa
 
 In short, Agile is all about being flexible, working in smaller cycles, and continuously improving based on feedback.
 
-====
+---
+
+
 Here’s a simple example of how Agile might work in a company using the **Scrum framework**, one of the most popular Agile methodologies:
 
 ---
