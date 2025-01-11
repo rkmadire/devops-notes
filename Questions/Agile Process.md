@@ -85,3 +85,12 @@ For an **e-commerce platform**:
 - Sprint 3: Implement payment gateway integration.
 
 Each sprint delivers small, usable portions of the platform, allowing feedback and iterative improvement.
+
+---
+
+1. We Recieve Product Backlog creation tasks
+2. we do sprint planning for the tasks
+3. I am attaend regular meetings for 30 min to discuss regular work 
+4. End of the sprint we demonstrate completed work to stackholders
+5. Any feedback will be taken from stackholders
+6. Based on feedback we repeate tasks for next sprints  
