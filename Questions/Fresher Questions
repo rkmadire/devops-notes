@@ -1,0 +1,216 @@
+Fresher Questions
+---------------------
+
+1. Use and need of all the devops tools
+	 
+	DevOps tools are essential for achieving automation and continuous delivery in software development, as well as for managing the infrastructure on which the software runs. Here are some of the most commonly used DevOps tools and their use cases:
+	 
+	Version Control Systems (VCS) such as Git: Used to track changes to the codebase, manage branching and merging, and ensure code consistency and collaboration.
+	 
+	Continuous Integration (CI) tools such as Jenkins, CircleCI, and Travis CI: Used to automate the build and testing process, and provide continuous feedback to developers.
+	 
+	Configuration Management tools such as Ansible, Puppet, and Chef: Used to automate the deployment and configuration of servers and infrastructure.
+	 
+	Containerization tools such as Docker: Used to create lightweight, portable, and consistent application environments that can be deployed and scaled easily.
+	 
+	Container Orchestration tools such as Kubernetes, Docker Swarm, and Mesos: Used to manage and scale containerized applications, and provide high availability and fault tolerance.
+	 
+	Monitoring and Logging tools such as Prometheus, Grafana, and ELK stack: Used to monitor the health and performance of applications and infrastructure, and provide insights for troubleshooting and optimization.
+	 
+	Collaboration and Communication tools such as Slack, Microsoft Teams, and Jira: Used to facilitate collaboration and communication among team members, and provide visibility into project progress and issues.
+	 
+	By using these tools and integrating them into the software development lifecycle, DevOps teams can achieve faster, more reliable, and more frequent releases, as well as more efficient infrastructure management and troubleshooting.
+ 
+2. Architecture of Kubernetes & docker swarm
+	 
+	Kubernetes and Docker Swarm are two of the most popular container orchestration tools that are used in the DevOps world. They both provide a way to manage and deploy containers at scale, but they have different architectures.
+	 
+	Architecture of Kubernetes
+	Kubernetes is a container orchestration platform that manages containerized workloads and services. It is built around the concept of a cluster, which is a group of nodes that work together to run applications. The basic components of a Kubernetes cluster include:
+	 
+	Master Node: The master node is responsible for managing the cluster and the tasks associated with it. It is the main control plane of the Kubernetes cluster, and it is responsible for scheduling tasks and managing the state of the cluster.
+	 
+	Worker Nodes: The worker nodes are the worker machines that run the applications and services. They are responsible for running the containers that make up the applications and services.
+	 
+	API Server: The API server provides an interface for interacting with the Kubernetes cluster. It exposes a RESTful API that can be used to manage the cluster.
+	 
+	etcd: etcd is a distributed key-value store that is used by Kubernetes to store the configuration and state of the cluster.
+	 
+	Controller Manager: The controller manager is responsible for managing the various controllers that control the state of the Kubernetes cluster.
+	 
+	Scheduler: The scheduler is responsible for scheduling tasks and managing the placement of containers on the worker nodes.
+	 
+	Kubelet: The Kubelet is an agent that runs on each worker node. It is responsible for communicating with the API server and running the containers that make up the applications and services.
+	 
+	Architecture of Docker Swarm
+	Docker Swarm is a container orchestration tool that is built on top of Docker. It allows you to manage and deploy Docker containers at scale. The basic components of a Docker Swarm cluster include:
+	 
+	Manager Nodes: The manager nodes are responsible for managing the cluster and the tasks associated with it. They are the main control plane of the Docker Swarm cluster, and they are responsible for scheduling tasks and managing the state of the cluster.
+	 
+	Worker Nodes: The worker nodes are the worker machines that run the applications and services. They are responsible for running the containers that make up the applications and services.
+	 
+	Swarmkit: Swarmkit is the distributed systems toolkit that is used by Docker Swarm to manage the cluster and the tasks associated with it.
+	 
+	Service: Services are the unit of deployment in Docker Swarm. A service is a set of tasks that are deployed to the worker nodes.
+	 
+	Task: A task is the smallest unit of work in Docker Swarm. It represents a single instance of a container that is deployed to a worker node.
+ 
+3. Yml files concepts in different tools like Docker, Kubernetes, Ansible
+	 
+	YAML (short for YAML Ain't Markup Language) is a human-readable data serialization language used for configuring applications and infrastructure. It is commonly used in various DevOps tools such as Docker, Kubernetes, and Ansible to define and manage the desired state of the environment.
+	 
+	In Docker, the YAML file is called the Docker Compose file, and it is used to define the services that make up an application and how they interact with each other. The Docker Compose file can be used to define container images, network settings, volumes, and other configuration options.
+	 
+	In Kubernetes, the YAML file is used to define the Kubernetes objects, such as pods, services, deployments, and so on. It is used to describe the desired state of the Kubernetes cluster, including the containers that should be running, how they should be networked, and how they should be scaled.
+	 
+	In Ansible, the YAML file is used to define the configuration management tasks and playbooks. It is used to describe the desired state of the infrastructure, including the packages that should be installed, the configuration files that should be created, and the services that should be running.
+	 
+	Overall, YAML files provide a structured way to define the desired state of the environment, making it easier to manage and scale the infrastructure.
+ 
+4. What is the need of Jenkins
+	 
+	Jenkins is a popular open-source automation server that helps in building, testing, and deploying software projects. It is used to implement Continuous Integration (CI) and Continuous Deployment (CD) processes, where software is built and tested continuously to catch and fix issues early in the development cycle. Jenkins provides a wide range of plugins and integrations with other DevOps tools, which makes it a popular choice among developers and DevOps engineers. It helps to automate the software delivery process, reduce manual intervention, and increase the speed of software development and delivery. Overall, the need for Jenkins is to make the software development process faster, more reliable, and efficient.
+	 
+5. Difference between VMS & docker
+	 
+	Virtual Machines (VMs) and Docker are both technologies used to deploy and manage applications, but they differ in their architecture and implementation.
+	 
+	Virtual Machines (VMs) are software emulations of physical machines. A VM runs an entire operating system (OS) and provides virtual hardware, such as CPU, memory, storage, and network interfaces, to an application. Each VM is isolated from the host and other VMs, and the resources allocated to a VM are reserved exclusively for that VM. VMs are created and managed by a hypervisor, which provides the abstraction layer between the VMs and the physical host.
+	 
+	Docker, on the other hand, is a containerization platform that allows you to run applications in isolated containers. A Docker container is a lightweight, standalone executable package that includes everything needed to run the application, such as code, libraries, and dependencies. Containers share the host OS kernel, but are otherwise isolated from each other and the host. Docker images, which are used to create containers, are built from a set of instructions in a Dockerfile.
+	 
+	The key difference between VMs and Docker is that VMs provide full isolation between the host and the guest OS, while Docker containers share the host OS kernel. This makes Docker more lightweight and efficient than VMs, as it eliminates the need for a hypervisor and allows for faster startup and deployment times. However, this also means that Docker containers have less isolation and security than VMs.
+	 
+	In summary, VMs and Docker are both important technologies for deploying and managing applications, but they differ in their architecture and implementation. VMs provide full isolation between the host and the guest OS, while Docker containers share the host OS kernel and are more lightweight and efficient.
+ 
+6. Build Stages of dockerfile 
+	 
+	Dockerfile is a script that contains a set of instructions for building a Docker image. The build stages of a Dockerfile include:
+	 
+	FROM: The FROM instruction is used to specify the base image that the Docker image will be built upon. For example, you can use a base image of Ubuntu or Alpine Linux.
+	 
+	RUN: The RUN instruction is used to run commands within the Docker container during the build process. This can include things like installing packages or running scripts.
+	 
+	COPY/ADD: The COPY and ADD instructions are used to copy files and directories from the host machine to the Docker container.
+	 
+	WORKDIR: The WORKDIR instruction sets the working directory for any subsequent instructions in the Dockerfile.
+	 
+	ENV: The ENV instruction is used to set environment variables in the Docker container.
+	 
+	EXPOSE: The EXPOSE instruction is used to specify the ports that the Docker container will listen on.
+	 
+	CMD/ENTRYPOINT: The CMD and ENTRYPOINT instructions are used to specify the command that will be run when the Docker container is started.
+	 
+	These stages can be combined in various ways to create a Dockerfile that meets the needs of your project.
+ 
+7. Difference b/w Private subnets & public subnets
+	 
+	In a network, a subnet is a range of IP addresses that can be allocated to hosts, servers, and devices. Subnets are typically created by dividing a larger network into smaller, more manageable parts. There are two types of subnets: private subnets and public subnets.
+	 
+	A private subnet is a range of IP addresses that are not accessible from the public internet. Private subnets are typically used for resources that are not intended to be accessed by external users or devices, such as databases, application servers, or other backend services. Private subnets are usually located behind a firewall or a network address translation (NAT) gateway that allows internal resources to access the public internet while blocking external access to the private subnet.
+	 
+	A public subnet is a range of IP addresses that are accessible from the public internet. Public subnets are typically used for resources that need to be accessed by external users or devices, such as web servers, load balancers, or other front-end services. Public subnets are usually located in front of a firewall or a NAT gateway that allows external users to access the resources in the public subnet while blocking access to the private subnet.
+	 
+8. Difference between webserver and app server
+	 
+	Web servers and application servers are both used to host and deliver applications and websites to clients, but they perform different roles.
+	 
+	A web server is a computer system that stores and delivers web pages to clients over the internet. It receives HTTP requests from clients and returns static web pages or files as a response. Examples of web servers include Apache and Nginx.
+	 
+	An application server, on the other hand, is a software framework that provides an environment for running applications. It hosts and manages the business logic of an application, such as user authentication, database access, and messaging. Application servers typically support multiple programming languages and provide services such as connection pooling, transaction management, and security. Examples of application servers include JBoss, Tomcat, and WebSphere.
+	 
+	In summary, a web server is used to host and deliver static web pages, while an application server provides an environment for running dynamic applications with more advanced functionality.
+	 
+9. What is use of networks in Kubernetes & Docker
+	 
+	In Docker, a network is used to facilitate communication between containers, and can be used to isolate containers or provide network access to the host. Containers can be attached to a network at the time of creation or can be attached to an existing network. Docker provides various types of network drivers, such as bridge, host, overlay, and macvlan, which can be used to create different types of networks.
+	 
+	In Kubernetes, a network is used to enable communication between pods and services. Kubernetes uses a software-defined network to provide an isolated, secure, and flexible network for pods to communicate with each other. A Kubernetes network can be created using one of the following plugins: Flannel, Calico, Weave Net, or Canal. The network plugin is responsible for managing the networking requirements of Kubernetes, including pod-to-pod communication, load balancing, and service discovery.
+ 
+10.  Difference b/w Docker compose files & stack files & definition files 
+	 
+	Docker Compose files and stack files are used to define multi-container applications, but they are used in different environments.
+	 
+	Docker Compose is used to define and run multi-container Docker applications on a single Docker host. It uses a YAML file to define the services, networks, and volumes required for the application.
+	 
+	Docker stack files are used to define and run multi-container Docker applications across multiple Docker hosts. They use a Compose YAML file as input, but are deployed using the Docker swarm mode, which provides clustering and orchestration of multiple Docker hosts.
+	 
+	Definition files are used in the context of Kubernetes, and are used to define the desired state of a Kubernetes object such as a pod, deployment, or service. They are written in YAML or JSON format, and are used to create, update, or delete Kubernetes objects.
+	 
+	Overall, Compose and stack files are used in Docker environments, while definition files are used in Kubernetes environments.
+	 
+11. When did the Devops technology started
+	 
+	The term "DevOps" was first coined in 2009 by Patrick Debois, a Belgian software engineer, who organized the first DevOpsDays conference in Ghent, Belgium. However, the roots of DevOps can be traced back to the Agile software development movement that emerged in the early 2000s. The rise of cloud computing and the need for faster, more automated software delivery also played a significant role in the development and adoption of DevOps practices.
+ 
+12. Need & importance of Devops in IT industry
+	 
+	The need and importance of DevOps in the IT industry can be summarized as follows:
+	 
+	Faster Time to Market: DevOps practices enable organizations to deliver high-quality software with shorter development cycles, enabling faster time-to-market.
+	 
+	Improved Collaboration: DevOps fosters a culture of collaboration, transparency, and trust between development and operations teams, leading to better quality products and faster resolution of issues.
+	 
+	Continuous Feedback: DevOps provides continuous feedback to developers and operations teams, ensuring they have visibility into the impact of their changes and can make better decisions.
+	 
+	Increased Efficiency: By automating processes and reducing manual intervention, DevOps practices improve efficiency, reduce errors, and save time.
+	 
+	Agility: DevOps provides the agility to adapt to changing market conditions, customer demands, and technology trends, enabling organizations to remain competitive.
+	 
+	Better Quality: DevOps practices focus on delivering higher quality software by automating testing, monitoring, and deployment.
+	 
+	Scalability: DevOps practices enable organizations to scale their infrastructure and applications easily, based on demand.
+	 
+	Overall, DevOps has become an essential practice for organizations that want to stay ahead of the competition, improve the quality of their software, and meet customer demands in a fast-paced digital world.
+	 
+13. Master & slave components of Kubernetes & docker swarm
+	 
+	In Kubernetes, the master components are responsible for managing and orchestrating the cluster. The master components include:
+	 
+	API Server: The API Server provides a RESTful API to manage and control the cluster.
+	etcd: etcd is a distributed key-value store that stores the configuration data of the cluster.
+	Scheduler: The Scheduler schedules the workloads to the worker nodes based on the resource availability.
+	Controller Manager: The Controller Manager manages the controller processes that monitor the state of the cluster and perform tasks to maintain the desired state.
+	In Docker Swarm, the master components are responsible for managing and orchestrating the cluster. The master components include:
+	 
+	Swarm Manager: The Swarm Manager is responsible for managing the Swarm cluster, which includes scheduling tasks, maintaining the desired state, and scaling services.
+	Raft: Raft is a distributed consensus algorithm used by the Swarm Manager to manage the state of the cluster.
+	API Gateway: The API Gateway provides a RESTful API to manage and control the cluster.
+	The slave components in Kubernetes and Docker Swarm are the worker nodes, where the containers run. The worker nodes in Kubernetes are called Nodes, and the worker nodes in Docker Swarm are called Worker nodes. The slave components are responsible for executing the workloads assigned by the master components.
+ 
+14. Difference b/w Kubctl create command & Kubctl apply command
+	 
+	In Kubernetes, both kubectl create and kubectl apply commands can be used to create resources from the configuration files. However, there are some differences in how these commands work:
+	 
+	kubectl create creates a new resource every time it is run. If a resource already exists, create will return an error. This means that create cannot be used to update an existing resource, only to create new ones.
+	 
+	kubectl apply, on the other hand, creates a new resource if it does not exist, and updates an existing resource if it has been changed. When apply is run, it reads the configuration file and applies the changes to the existing resource. This makes apply a better choice for managing resources in a declarative way, where the configuration file is the source of truth.
+	 
+	In summary, create is used to create new resources, while apply is used to create or update resources based on the configuration file.
+ 
+15. Explain the different uses of yaml files in different Devops tools 
+	 
+	YAML is a human-readable data serialization language that is commonly used in DevOps tools to define configuration data for various infrastructure components. Here are some examples of how YAML files are used in different DevOps tools:
+	 
+	Docker Compose: In Docker Compose, a YAML file is used to define the different services that make up an application, along with their configurations, network connections, and other details.
+	 
+	Kubernetes: In Kubernetes, YAML files are used to define the different resources that make up a cluster, such as pods, services, volumes, and deployments. These files include the desired state of each resource, which is then used by the Kubernetes API server to manage the cluster.
+	 
+	Ansible: In Ansible, YAML files are used to define the different playbooks and roles that are used to manage infrastructure. These files include the different tasks, variables, and configurations that are needed to deploy and manage various components.
+	 
+	Terraform: In Terraform, YAML files are used to define the different resources that make up an infrastructure deployment, such as virtual machines, load balancers, and databases. These files include the desired state of each resource, which is then used by Terraform to create, update, or destroy the resources as needed.
+	 
+	Overall, YAML files are a key part of modern DevOps practices, allowing teams to define infrastructure as code and manage complex deployments with greater efficiency and control.
+ 
+16. Difference between Docker compose & docker swarm
+	 
+	Docker Compose and Docker Swarm are both tools used to manage containerized applications, but they have some key differences.
+	 
+	Docker Compose is used to define and run multi-container Docker applications. It uses a YAML file to define the services, networks, and volumes required for the application, and then uses the docker-compose command to create and manage the containers. Docker Compose is primarily designed for development environments, and it allows developers to easily define and test complex applications on their local machines.
+	 
+	Docker Swarm, on the other hand, is a native clustering tool for Docker. It allows you to create a swarm of Docker nodes and deploy containerized applications across the swarm. Docker Swarm uses the same Docker Compose YAML file format to define the application, but instead of using the docker-compose command, you use the docker stack command to deploy the application to the swarm. Docker Swarm is designed for production environments and provides features like load balancing, service discovery, and high availability.
+	 
+	In summary, Docker Compose is used for defining and running multi-container applications on a single host, while Docker Swarm is used for deploying containerized applications across multiple hosts in a cluer.
+	 
+
+

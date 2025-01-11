@@ -1,0 +1,185 @@
+Devops Questions
+-----------------------
+================GIT==========
+1.can you explain branching strategy?
+2.difference between git pull and fetch?
+3.what is git merging? and merge conflicts?
+4.what is a pull request?
+5.what is the command to delete a remote branch?
+6.how to integrate jenkins with git?
+7.what is a webhook?
+======================MAVEN=============
+8.explain maven lifecycle goals?
+9.what is m2 repository?
+10.how to integrate nexus repository in maven?
+11.what is the goal you are using for uploading the artifactory jenkins to maven?
+12.what is dependency management?
+==================================JENKINS===============
+13.how to upgrade the jenkins?
+14.what type of job you worked?
+15.what is plugin and what type of plugins you installed in jenkins?
+16.how take backup for jenkins jobs?
+17.how to migrate one server to another server?
+18.how to provide user access in jenkins?
+19.what is the purpose of jenkins role?
+20.did you return any type ci/cd pipeline scripts?
+21.what are the pipeline stages?
+22.what is continuous integration and continuous deployment?
+23.difference between ci/cd?
+24.what is agile methodology?
+===============================DOCKER==================
+25.did you write any docker file? Give me an explanation?
+26.what is the difference between copy and add?
+27.what is the difference between coma and entrypoint?
+28.can you explain docker structure ?
+29.can you explain docker image ?
+30. Can you explain the docker container?
+31.how to create an image using docker file?
+32.can you write a docker file for installing tomcat ?
+33.difference between docker and virtual machines?
+34.what is docker engine ?
+35.explain architecture docker?
+36.how to run containers?
+37.how to delete containers?
+38.how to see list of containers?
+39.how to add volume in dockers?
+=======================KUBERNETES====================
+40.difference between docker and kubernetes?
+41.what is orchestration?
+42.what are the tools you used for orchestration?
+43.explain kubernetes architecture?
+44.what is kubernetes scheduler?
+45.what is namespace?
+46.what are pods?
+47.what is the helm repository?
+48.what is a replica counteroller?
+49.what are services and deployments?
+50.difference between server and deployment?
+51.explain kubernetes networking?
+52.deployment process for jenkins?
+53.did you deploy any application in kubernetes?
+54.when some time deployment fails how to troubleshoot?
+55.if any cluster not working,how to troubleshoot?
+===================ANSIBLE=============================
+56.can you explain what purpose you require ansible ?
+57.what is ansible structure?
+58.what is the inventory file ?
+59.difference between static and dynamic inventory file?
+60.how to deploy package remote server using ansible?
+61.ansible role ?
+63.did you write any ansible playbook? explain you
+64.in your project where are used ansible"?
+65.if any knowledge in ansible tower?
+66. difference between chef and ansible?
+67.how to declare variables in ansible?
+68.what is ansible galaxy command?
+69.how to execute ansible playbook?
+====================AWS====================
+70.what is service IAM?
+71.what is policy?
+72.did you write any custom policy?
+73.what is mfa?
+74.why policy required in aws?
+====================EC2===========================
+75.what is ami?
+76.how to mount the volume?
+77.what is auto scaling ?
+78.what is load balancer?
+79.explain type of load balancer?
+80.difference between ALB,NLB and ELB?
+81.what is elastic ip address?
+82.i create one ec2 server but when i am accessing the server is not working how to
+troubleshooting?
+83.what is user data in ec2 server?
+==================s3 bucket====================
+84.what is s3 bucket?
+85.what purpose do we use s3 bucket?
+86.what are the limits of buckets for one account?
+87.what is bucket policy?
+88.why s3 bucket versioning is required?
+89.what s3 lifecycle roles?
+90.what is disaster recovery?
+==================VPC==================
+91.purpose of VPC?
+92.difference between public ip and private ip?
+93.what is NAT gate ?
+94.what is IGW?
+95.what is NACL?
+96. difference between nacl and security groups?
+97.what is VPC peering?
+98.what is CIDR?
+====================EKS================
+99.did you work on EKS?
+100. How to create a cluster?
+101.how add role in EKS cluster?
+102.purpose ECR?
+103.difference between ECR and EKS?
+============TERRAFORM====================
+104.what is terraform state file?
+105.in your project where store the state file ?
+106.how to call a state file from main.tf?
+107.what is terraform init,plan,apply ?
+108.what type of terraform command you worked?
+109.what version did you use?
+110.how to switch one terraform version to another terraform version?
+111.what are terraform modules ?
+112.did you write any terraform modules,explain to me ?
+113.did you integrate terraform with ci/cd pipeline?
+114.what is terraform required?
+115.difference between terraform and ansible?
+116.what is the use of terraform functions ?
+117.explain what type of terraform scripts you worked on?
+==================AZURE==============================
+118.what are the services you worked in azure ?
+119.what is storage account?
+120.what is blob storage?
+121.what is a container ?
+122.what is a resource group?
+123.what is subscription?
+124.how to restrict storage account?
+125.what is an access token storage account?
+126.how to mount storage log to log analytics workspace ?
+127.how to mount a storage container with databricks container?
+==============KEY volt=============================
+128.purpose of keyvault?
+129.what is key ?
+130.what is secret ?
+131.difference between secret and key?
+132.how many types of keys in azure?
+133.how to encrypt a storage account with keyvault?
+134.what are the events in keyvault?
+==================AZURE PIPELINE=====================
+135.did you return any pipeline?
+136.what is the agent in the pipeline?
+137.what is the pipeline environment?
+138.can you explain pipeline scripts with kubernetes services?
+139.how to create a pipeline,tell me steps?
+140.what is v-net ?
+141.what is application gateway?
+142.what is azure active directory?
+======================DATA BRICTS===================
+143.how to create data bricts?
+144. How to create cluster data bricts ?
+145.how to mount databricks logs to storage account?
+146.what are event logs ?
+147.explain databricks user roles?
+148.how to troubleshoot databricks cluster?
+149.how to install library databricks cluster?
+====================ARM templates=================
+150.did you write arm templates ?
+151.explain structure arm templates ?
+152.explain storage account creation with arm templates ?
+153.databricks cluster creation?
+154.arm templates for log analytics custom creation?
+155.application gateway creation?
+156.key volt creation?
+157.how to enable private end key point ?
+158.storage account encryption with key volt?
+=====================Monitoring ====================
+159.did you implement monitoring in cloud watch ?
+160.explain elk setup?
+161.difference between file beat and metric beat?
+162.explain aws cloud watch services?
+163.how to monitor ec2 instance using cloud watch?
+==================END============================
+
