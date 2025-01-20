@@ -1,0 +1,13 @@
+Git QA
+---------
+1. Explain the differences between Git clone, git fetch and git pull
+   
+   - Git is a Version controll system used to manage files and collabarate with others on software developement projects    
+   - Git clone command used to crate copy of a remote repository into local machine with  entire project history, including all branches tags 
+   
+   - Git fetch command used to download only changes from remote repository without merging them into local branch 
+   - it rerieve changes made in repositoriy and store in the local repository 
+   - And it doesn't update local repository directly, it means we have review changes and decide which one to merge into local machine or branch 
+
+   - Git pull ommand used to download latest changes and apply into local branch 
+   - it is a combination of fetch and merge 
