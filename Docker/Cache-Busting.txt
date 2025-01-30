@@ -1,33 +1,65 @@
 cache busting in docker file 17:00 min docker 9th session 
 -----------------------------
-Cache busting in a Dockerfile is a technique used to ensure that a Docker image is built using the latest version of the source code, instead of relying on a previously cached version. This can help prevent issues caused by using outdated dependencies or configurations.
 
-One way to achieve cache busting in a Dockerfile is to use a unique identifier as a build argument. This identifier can be a timestamp, a git commit hash, or any other unique value that changes whenever the source code changes.
+1. What is cache bursing 
 
-Here's an example of how to use cache busting in a Dockerfile using a timestamp as the build argument:
------------------------------------------------------------	
-ARG CACHEBUST=1
-RUN apt-get update && apt-get install -y some-package
---------------------------------------------------------------
-The ARG instruction sets a build argument called CACHEBUST with a default value of 1. When building the Docker image, you can pass a different value for CACHEBUST to force the Docker build process to download the latest version of dependencies:
-----------------------------------------------------------------
-docker build --build-arg CACHEBUST=$(date +%s) -t my-image .
------------------------------------------------------------------
-In this example, we're passing the current timestamp as the value for CACHEBUST, which will change every time the Docker image is built. This ensures that the latest version of dependencies is downloaded and installed during the Docker build process.
------------------------------------------------------------------------
-#vim dockerfile
-=========================
-FROM ubutu
-MAINTAINER intelliqit
+   - Cache busting is a technique used to ensure that Docker does not use cached layers during the build process. This is particularly useful when you want to force Docker to download the latest versions of dependencies or rebuild layers from scratch.
 
-RUN apt-get update -y
-RUN apt-get install -y tree
-RUN apt-get install -y git
-================================
 
-1.to build docker file 
-#docker biuld -t give_image_name .
-2.to build image from docker file for cache busting
-#docker build --no-cache -t give_image_name . 
-------------------------------------------------------
+2. How to implement cache bursting in Docker 
+   
+   - To implement cache bursting in Docker using flag or build arguments 
+   
+   - Using < --no-cache > flag it is a simplest way to bypass the cache this will ensures docker will ignores any cached layers and rebuilds the entire image from scrach         
 
+      # docker build --no-cache -t my_image .
+
+   - Using Build Arguments like timestamp or git commit 
+   - we can use build arguments to force docker to invalidate the cache for specific steps in the Dockerfile  
+
+   Example:
+   -----------------------
+   FROM ubuntu
+   MAINTAINER intelliqit
+
+   # Define a build argument for cache busting
+   ARG CACHEBUST=1
+
+   # Update and install packages
+   RUN apt-get update -y
+   RUN apt-get install -y tree
+   RUN apt-get install -y git
+   --------------------------------------
+
+   - Build Command
+    - pass a uniq value like current timestamp to the CACHEBUST argument to force Docker to rebuild the image 
+
+    #  docker build --build-arg CACHEBUST=$(date +%s) -t my-image .
+
+   - Here, `$(date +%s)` generates the current timestamp, which changes every second, ensuring the cache is invalidated.
+
+ Key points to Remember
+
+   1. --no-cache will forces docker to rebuild the entire image without using any cached layers 
+   2. Build arguments use usinq value like (e.g timestamp or git commit hash) to invalidate the cache for specific steps 
+
+
+
+Examples:
+------------
+1. Dockerfile
+   ----------------------------
+   FROM ubuntu
+   MAINTAINER intelliqit
+
+   ARG CACHEBUST=1
+   RUN apt-get update -y
+   RUN apt-get install -y tree
+   RUN apt-get install -y git
+   ----------------------------------
+   
+   - Build Command:
+   
+   docker build --build-arg CACHEBUST=$(date +%s) -t my-image .
+   
+   - Docker will rebuild the image, ensuring the latest versions of tree and git are installed

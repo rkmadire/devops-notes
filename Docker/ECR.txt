@@ -1,0 +1,64 @@
+ECR (elastic container registry) 18:00 min docker 12th session
+----------------------------------------------------------------
+1. What is ECR
+
+	- ECR (Elastic Container Registry) is a fully managed container registry in AWS.
+	- It allows you to store, manage, and deploy Docker images.
+	- Supports both public & private repositories.
+
+2. Steps to Upload a Docker Image to ECR
+	
+	Step 1: Create an IAM Role for EC2
+
+		- Go to AWS IAM → Roles → Create Role
+		- Select AWS Service → EC2 → Next
+		- Attach AdministratorAccess policy
+		- Name the role (e.g., ecr_role1) → Create role
+		- Attach this role to your EC2 instance
+			- Go to EC2 → Instances → Actions → Security → Modify IAM Role
+			- Select ecr_role1 and attach it.
+
+	Step 2: Create an ECR Repository
+
+		- Go to AWS ECR → Create Repository
+		- Select "Private"
+		- Enter repository name (e.g., nginx12)
+		- Click "Create Repository"
+		- after creating repository it will provide set of commands to upload local image into ECR those commands will find view push commands inside repository  
+
+	step3: Step 3: Install AWS CLI & Log in to ECR
+
+		-  First, install AWS CLI on your EC2 instance (if not already installed):
+
+			# apt install awscli -y   # For Ubuntu/Debian
+
+		- Now, log in to AWS ECR:
+
+			# aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 560221225043.dkr.ecr.ap-southeast-1.amazonaws.com
+
+		- (Replace 560221225043.dkr.ecr.ap-southeast-1.amazonaws.com with your ECR repository URL)
+
+
+	step4: Build and Push the Docker Image
+
+		- To Build image 
+
+			# docker build -t nginx12 .
+
+		- Tag the Image for ECR
+
+			# docker tag nginx12:latest 560221225043.dkr.ecr.ap-southeast-1.amazonaws.com/nginx12:latest
+
+		- Push the Image to ECR
+
+			# docker push 560221225043.dkr.ecr.ap-southeast-1.amazonaws.com/nginx12:latest
+
+	Note: Now your image is stored in AWS ECR and can be used for deployments.
+
+
+3. Some commands 
+	- apt install awscli -y (to install awscli in machine)
+	- `aws ecr get-login-password --region <region>  (To Log in to AWS ECR)
+	- docker build -t <image-name> .  (To build docker image )
+	- docker tag <image-name>:latest <ECR-URL>/<image-name>:latest  (to tag docker image )
+	- docker push <ECR-URL>/<image-name>:latest  ( To push image to ECR )

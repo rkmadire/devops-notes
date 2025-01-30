@@ -1,22 +1,44 @@
 Docker 12th session create images and upload images
 --------------------
-1.upload images into public registry and private registry
-first goto dockerhub.com sign up fo account with username and password 
--->create docker file
-#vim dockerfile
-------------------------
-FROM nginx
-MAINTAINER navathej
-EXPOSE 80
---------------------
-#docker build -t mynginx .
-	-->above command for create image
-#docker login 
-	-->above command ask user name password
-	-->enter username and password 
-#docker push navathej/mynginx
-------------------
--->here docker regitry provide to setup one image for private
+
+1. Steps to Upload Image into docker   
+
+  1. Create a Docker Hub Account
+    - Go to https://hub.docker.com/
+    - Sign up with a username & password
+    - Note down your Docker Hub username (important for pushing images)
+
+  2. Create a Dockerfile
+      --------------------
+      # Create a container using Nginx
+      FROM nginx  
+      MAINTAINER navathej  
+      EXPOSE 80  
+      ------------------------------------
+
+  3. Build the Docker Image
+
+    # docker build -t mynginx .
+
+  4. Log in to Docker Hub
+
+    # docker login
+
+  5. Tag the Image with Your Docker Hub Username
+
+    - Before uploading, tag the image with your Docker Hub username:
+
+      # docker tag mynginx yourdockerhubusername/mynginx
+
+      # docker tag mynginx navathej408/mynginx
+    - (Replace yourdockerhubusername with your actual Docker Hub username)
+
+  6. Push the Image to Docker Hub
+
+    # docker push navathej408/mynginx
+
+------------------------------------------------------------------------
+
 
 #docker-compose.yml
 =========================
