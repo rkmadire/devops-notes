@@ -14,12 +14,17 @@ Docker Networks
 
 #docker run --name c1 -it  --network network-1 busybox
 	-->above command will create busybox within network-1
+
 #docker run --name c2 -it --network-1 busybox	
 	-->above command will create busybox in network-1
+
 -->now both c1 and c2 in the will communicate with one and another 
+
+
 #docker run --name c3 -it  --network network-2 busybox
 	-->above command will create busybox container within network-2 so now it will communicate with c1 and c2
 -->here container can be available multiple networks
+
 #docker network connect network-2 c2
 	-->now c2 is available both network and c2 communicate with respectively from networks
 -------------------------------
