@@ -3,35 +3,37 @@ Deploy an Application in Fargate cluster And Access From Browser
 # step1: create eks fargate cluster as name thej-cluster in us-east-1 region  
 
 # step2: create custome fargate profile for setup game-2048 namespace
- - A fargate profile containe already default fargate profile we able to deploy our application into that also 
- - To create custome fargate profile and deploy pod inside fargate profile 
-    ```bash
-	eksctl create fargateprofile \
-    --cluster thej-cluster \
+- A fargate profile containe already default fargate profile we able to deploy our application into that also 
+- To create custome fargate profile and deploy pod inside fargate profile 
+```bash
+eksctl create fargateprofile \
+--cluster thej-cluster \
+--region us-east-1 \
+--name alb-sample-app \
+--namespace game-2048
+```
+> From above command a new fargate profile got created in "thej-cluster" as in the custome namespace "game-2048" it will take minimum 3 to 5 min time 
+
+## output
+```bash
+[ec2-user@ip-172-31-89-76 ~]$ eksctl create fargateprofile \
+    --cluster thej-cluster-1 \
     --region us-east-1 \
     --name alb-sample-app \
     --namespace game-2048
-    ```
- > From above command a new fargate profile got created in "thej-cluster" as in the custome namespace "game-2048" it will take minimum 3 to 5 min time 
-
- ## output
-    ```bash
-    [ec2-user@ip-172-31-89-76 ~]$ eksctl create fargateprofile \
-        --cluster thej-cluster-1 \
-        --region us-east-1 \
-        --name alb-sample-app \
-        --namespace game-2048
-    2024-01-30 11:34:26 [ℹ]  creating Fargate profile "alb-sample-app" on EKS cluster "thej-cluster-1"
-    2024-01-30 11:38:44 [ℹ]  created Fargate profile "alb-sample-app" on EKS cluster "thej-cluster-1"
-    ```
+2024-01-30 11:34:26 [ℹ]  creating Fargate profile "alb-sample-app" on EKS cluster "thej-cluster-1"
+2024-01-30 11:38:44 [ℹ]  created Fargate profile "alb-sample-app" on EKS cluster "thej-cluster-1"
+```
 
 # step3: Deploy pod using yaml file 
+   
    ```bash
     kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.5.4/docs/examples/2048/2048_full.yaml
     ```
  > above yaml file contain namespace,  deployment, service and Ingress To setup Application inside pod 
 
  ## Output
+   
    ```bash
     [ec2-user@ip-172-31-89-76 ~]$kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balanc r-controller/v2.5.4/docs/examples/2048/2048_full.yamll
     namespace/game-2048 created
