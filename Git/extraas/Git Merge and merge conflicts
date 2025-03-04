@@ -1,0 +1,82 @@
+Git Merge and merge conflicts 
+	
+  1. Git merge
+
+	- git merge it is a command in git 
+	- it used to combine changes from one branch to anothe branch 
+	- typically when we want to integrate features or fixes the from different branches into main or devlopement branch 
+
+		# git merge branch_name 
+
+  2. Git merge Conflicts 
+
+  	- Merge Conflicts will comes when Git is unable to resolve the differences b/w branches 
+  	- this typically happens when 
+  		- Two or more branches modify the same line in a file differently.
+  		- A file is deleted in one branch but modified in another.
+  		- A file is added to both branches with different content.
+  	- we need Require you to manually resolve the conflicts.
+
+Sample Example Git merge Conflict
+-----------------------------------
+
+	- Step-by-Step Example of a Merge Conflict
+
+	1. nitialize a Git Repository
+	   ```bash
+	   mkdir my-repo
+	   cd my-repo
+	   git init
+	   ```
+
+	2. Create a file and make an initial commit
+	   ```bash
+	   echo "Hello, world!" > file.txt
+	   git add file.txt
+	   git commit -m "Initial commit"
+	   ```
+
+	3. Create a new branch and make changes
+	   ```bash
+	   git checkout -b feature-branch
+	   echo "This is a feature." >> file.txt
+	   git add file.txt
+	   git commit -m "Add feature"
+	   ```
+
+	4. Switch back to the main branch and make conflicting changes
+	   ```bash
+	   git checkout main
+	   echo "This is a conflicting change." >> file.txt
+	   git add file.txt
+	   git commit -m "Add conflicting change"
+	   ```
+
+	5. Attempt to merge the feature branch into the main branch
+	   ```bash
+	   git merge feature-branch
+	   ```
+
+	6. Resolve the merge conflict
+	   You will see a message indicating a conflict. Open `file.txt` to find the conflict markers:
+	   ```
+	   <<<<<<< HEAD
+	   Hello, world!
+	   This is a conflicting change.
+	   =======
+	   This is a feature.
+	   >>>>>>> feature-branch
+	   ```
+
+	   Edit the file to resolve the conflict:
+	   ```txt
+	   Hello, world!
+	   This is a feature.
+	   This is a conflicting change.
+	   ```
+
+	7. Stage the resolved file and complete the merge
+	   ```bash
+	   git add file.txt
+	   git commit -m "Resolve merge conflict"
+	   ```
