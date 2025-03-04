@@ -1,5 +1,6 @@
 Deploy an Application in Fargate cluster And Access From Browser
 -----------------------------------------------------------------
+
 # step1: create eks fargate cluster as name thej-cluster in us-east-1 region  
 
 # step2: create custome fargate profile for setup game-2048 namespace
@@ -32,7 +33,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-bala
 ```
 > above yaml file contain namespace,  deployment, service and Ingress To setup Application inside pod 
 
- ## Output
+## Output
 
 ```bash
 [ec2-user@ip-172-31-89-76 ~]$kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balanc r-controller/v2.5.4/docs/examples/2048/2048_full.yamll
