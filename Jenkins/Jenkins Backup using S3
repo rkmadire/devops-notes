@@ -1,0 +1,38 @@
+Jenkins Backup using S3
+	
+	1. Create S3 Bucket 
+
+	2. Setup jenkins Machine 
+		- Attach IAM role With (S3FullAccess)
+		- install awscli
+
+	3. create jenkins Job 
+
+	4. stop Jenkins
+		systemctl stop jenkins
+
+	5. Zip the Jenkins workspace
+
+		# tar -zcvf jenkins_bak.tar.gz /var/lib/jenkins
+
+	6. Upload into S3 bucket zip file
+
+		# aws s3 cp jenkins_bak.tar.gz s3://backup_folder
+
+	7. Remove the jenkins Machine
+
+	8. Create New Machine Add IAM role with S3FullAccess 
+		- install jenkins with java,maven,git
+		- install awscli
+	9. stop jenkins 
+
+	10. delete jenkins Home_directory(like workspace)
+		# sudo rm -rf /var/lib/jenkins
+
+	11. Copy the previous S3://backup_folder/jenkins_bak.tar.gz into New machine 
+
+		# aws s3 cp s3://bakup_folder/jenkins_bak.tar.gz /home/ubuntu/
+
+	12. Unzip the jenkins_bak.tar.gz into /var/lib/
+
+	13. start jenkins   
