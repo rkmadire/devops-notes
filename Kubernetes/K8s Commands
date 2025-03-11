@@ -89,11 +89,7 @@ K8s Commands
 
 	2. kubectl set image deployment nginx-deployment nginx:2.0.0
 
-13. DESCRIBE
-	1. kubectl describe pods <nginx-deployment-576c7c49b5-q4vlb >  | grep 1.23
-		- To verify or describe pods info 
-
-14. ROLLOUT
+13. ROLLOUT
 	1. kubectl rollout status deploy nginx 
 		- above command will show status of the image
 
@@ -101,19 +97,22 @@ K8s Commands
 	1. kubectl cluster-info 
 		- above command will show information about cluster 
 
-15. CREATE
+14. CREATE
 	1. kubectl create -f /tmp/metallb.yaml
 	2. kubectl create deploy nginx --image nginx 
 
-16. Version
+15. Version
 	1. kubectl version 
 
-17. DESCRIBE
+16. DESCRIBE
 
 	1. kubectl describe pod mysql-stfst-0
 		- Verify the container readiness: Run the following command to check the readiness status of the container within the MySQL pod:
 
-18. LOGS
+	1. kubectl describe pods <nginx-deployment-576c7c49b5-q4vlb >  | grep 1.23
+		- To verify or describe pods info 
+
+17. LOGS
 
 	1. kubectl logs mysql-stfst-0
 		- Check the pod logs: Use the following command to view the logs of the MySQL pod:

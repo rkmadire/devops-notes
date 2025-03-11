@@ -1,0 +1,75 @@
+jenkins code skeltons
+
+1. Scripted pipeline
+	============================
+	node('built-in'){
+		stage("CD"){
+			# paste groovy cript
+		}
+	}
+	===========================
+2. Declarative pipline
+	============================
+	pipeline{
+		agent any
+		stages{
+			stage("CD"){
+				steps{
+					sh "# provide commands"
+				}
+			}
+		}
+	}
+
+	===============================
+3. Declarative pipeline with Exception Handling
+	===================================
+	pipeline{
+		agent any
+		stages{
+			stage("CD"){
+				steps{
+					script{
+						try{
+							sh "# provide commands"
+						}
+						catch(Exception e1){
+							sh " # provide alternate script to send Mail"
+						}
+					}
+				}
+			}
+		}
+	}
+	===============================================
+4. Scripted Pipeline with Exception Handling
+	================
+	node('built-in'){
+	    stage('CI and CD'){
+	        try{
+	            //code to excute
+	        }
+	        catch(Exception e1){
+	            //if above code is not work
+		    //excute error e1 message to mail
+	        }
+	    }
+	}
+	====================================
+5. Usage of Post Conditions
+	==========================
+	Post Conditions 
+		- it is not work scripted pipeline 
+		- it will work only scripted pipeline
+		- it can be implemented after all stages completes 
+
+		===============
+		post{
+	     success{
+		    //code
+		    }
+	      failure{
+		     //code
+		     }
+	     }
+	     ================
