@@ -1,5 +1,5 @@
 Devops Questions
------------------------
+
 ================GIT==========
 1.can you explain branching strategy?
 2.difference between git pull and fetch?
@@ -129,57 +129,3 @@ troubleshooting?
 115.difference between terraform and ansible?
 116.what is the use of terraform functions ?
 117.explain what type of terraform scripts you worked on?
-==================AZURE==============================
-118.what are the services you worked in azure ?
-119.what is storage account?
-120.what is blob storage?
-121.what is a container ?
-122.what is a resource group?
-123.what is subscription?
-124.how to restrict storage account?
-125.what is an access token storage account?
-126.how to mount storage log to log analytics workspace ?
-127.how to mount a storage container with databricks container?
-==============KEY volt=============================
-128.purpose of keyvault?
-129.what is key ?
-130.what is secret ?
-131.difference between secret and key?
-132.how many types of keys in azure?
-133.how to encrypt a storage account with keyvault?
-134.what are the events in keyvault?
-==================AZURE PIPELINE=====================
-135.did you return any pipeline?
-136.what is the agent in the pipeline?
-137.what is the pipeline environment?
-138.can you explain pipeline scripts with kubernetes services?
-139.how to create a pipeline,tell me steps?
-140.what is v-net ?
-141.what is application gateway?
-142.what is azure active directory?
-======================DATA BRICTS===================
-143.how to create data bricts?
-144. How to create cluster data bricts ?
-145.how to mount databricks logs to storage account?
-146.what are event logs ?
-147.explain databricks user roles?
-148.how to troubleshoot databricks cluster?
-149.how to install library databricks cluster?
-====================ARM templates=================
-150.did you write arm templates ?
-151.explain structure arm templates ?
-152.explain storage account creation with arm templates ?
-153.databricks cluster creation?
-154.arm templates for log analytics custom creation?
-155.application gateway creation?
-156.key volt creation?
-157.how to enable private end key point ?
-158.storage account encryption with key volt?
-=====================Monitoring ====================
-159.did you implement monitoring in cloud watch ?
-160.explain elk setup?
-161.difference between file beat and metric beat?
-162.explain aws cloud watch services?
-163.how to monitor ec2 instance using cloud watch?
-==================END============================
-
