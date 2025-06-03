@@ -1,0 +1,30 @@
+Access GCP Cluster  from CMD 
+------------------------------------------------
+1. Download gcloud CLI tool 
+		- https://cloud.google.com/sdk/docs/install
+
+
+2. Install plugin into local machine 
+		- https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl#install_plugin
+		
+3. Download Kubectl Tool and Configure Cluster  
+		- https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl
+
+
+4. Authenticate to GCP 
+	# gcloud auth login
+		- it will open browser ask to gmail to contine 
+=========================================		
+- Create cluster in GCP | From Console 
+- Paste command in local command prompt to access clsueter 
+	# gcloud container clusters get-credentials cluster-1 --region us-central1 --project glossy-premise-461511-t3
+ 
+============== Some commands ========
+ # gcloud auth login
+ # gcloud projects list
+ # gcloud config get-value project 
+ # gcloud services list --enabled 
+ # gcloud container clusters create abc-cluster
+	-> it takes upto 5 min to complete 
+ # gcloud container clusters list 
+ # gcloud container clusters delete abc-cluster

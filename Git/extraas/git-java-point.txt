@@ -40,3 +40,22 @@ speed: git is very fast, so it can complete all tasks in a while.
        most of the git operation in local repository, so it provide a huge speed 
        also , a centraolized versio control system continuosly communicates with a server 
 -----------------------------------------------------------------------------------------		
+
+- to push all branches single time 
+git push origin --all
+
+DELL@Navathej MINGW64 ~/Desktop/test (master)
+$ git push origin --all
+Enumerating objects: 38, done.
+Counting objects: 100% (38/38), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (33/33), done.
+Writing objects: 100% (38/38), 194.08 KiB | 4.98 MiB/s, done.
+Total 38 (delta 4), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (4/4), done.
+To https://github.com/thej950/Misumi-project.git
+ * [new branch]      backend -> backend
+ * [new branch]      fronted -> fronted
+ * [new branch]      master -> master
+
+DELL@Navathej MINGW64 ~/Desktop/test (master)
