@@ -11,7 +11,7 @@ NodeAffinity: 15 min to 44:00 min
 -->first identify machine take machine id provide label like "key=value" to make to perform NodeAffinity on perticular machine
  $ kubectl get nodes
 -->from above command display connected nodes in the cluster select on machine take id of that machine
- $ kubectl   label   nodes   take_slave_id    slave1=intelliit1
+ $ kubectl label node take_slave_id slave1=intelliit1
 	-->above command apply to slave key=value (slave1=intelliit1) in a label 
 -->To unlabe machine in the cluster 
 ----------------------------------------------------------

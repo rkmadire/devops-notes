@@ -1,5 +1,74 @@
 Docker 11th Session
 --------------------
+
+ - Use CMD when you want a default command that can be changed.
+ - Use ENTRYPOINT when you want a fixed command but allow additional arguments.
+
+ CMD (Command):
+ 	
+ 	- Purpose: It sets the default command that runs when the container starts.
+ 	- Flexibility: The command given in CMD can be overridden when running the 
+ 	container.
+ 	
+ 	Example
+ 	-----------------------
+ 	FROM ubuntu
+	CMD ["echo", "Hello, World!"]
+	-----------------------------
+	- If you run docker run myimage, it will print Hello, World!.
+	- If you run docker run myimage date, it will override CMD and run date instead.
+
+		# docker build -t local_image_name .
+
+		# docker run --name container_name local_image_name  
+
+	- To Override CMD
+
+		# docker run --name container_name local_image_name date
+
+
+ ENTRYPOINT:
+ 	- Purpose: It defines the main command that always runs inside the container.
+  	- Flexibility: The command given in ENTRYPOINT cannot be overridden but allows additional arguments.
+
+  	Example
+  	--------------------
+  	FROM ubuntu
+  	ENTRYPOINT ["echo", "Hello, World!"]
+  	---------------------------------------
+  	- If you run docker run myimage, it will print Hello, World!.
+  	- If you run docker run myimage Some other message, it will print Hello, World! Some other message (because ENTRYPOINT always runs).
+
+ Difference CMD and ENTRYPOINT:
+ 	- CMD and Entrypoint both are used for default command 
+ 	- CMD can be overriden using below command
+ 		# docker run imagename newcommand 
+ 	- But Entrypoint cannot be overriden But extra argument can be passed 
+ 	- CMD can be used for commonly nginx or bash
+ 	- Entrypoint can be used for commonly Running scripts, commands, or always-required excutables 
+
+ CMD vs ENTRYPOINT Example:
+ 	
+ 	CMD example:
+	 	--------------------
+	 	FROM ubuntu
+		CMD ["nginx", "-g", "daemon off;"]
+		-------------------------------
+		- If you run docker run myimage, it starts nginx.
+		- If you run docker run myimage date, it runs date instead of nginx.
+
+	Entrypoint Example:
+		-------------------------
+		FROM ubuntu
+		ENTRYPOINT ["nginx", "-g", "daemon off;"]
+		------------------------------
+		- If you run docker run myimage, it starts nginx.
+		- If you run docker run myimage date, it still runs nginx and ignores date.
+		
+
+
+
+
 1.every container trigger one perticular command that is default command for that container
 2.for ubuntu based OS related system defaults command is bash
 3.to change default process command use ENTRYPOINT 

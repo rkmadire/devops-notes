@@ -1,41 +1,135 @@
-LAMP setup usig docker containers 
-------------------------------------------------
-using docker level commands 11:00 min docker 5th session
+LAMP setup usig docker containers (using docker level commands 11:00 min docker 5th session) 
 -----------------------------
+
+1. What is LAMP?
+  - LAMP is a widely used open-source web hosting stack for dynamic websites and web applications. It consists of:
+    
+    - L = Linux (Operating System)
+    - A = Apache (Web Server)
+    - M = MySQL (Database)
+    - P = PHP (Scripting Language)
+
+  - With Docker, we can set up LAMP quickly using containers instead of manually installing each component.
+
+
+2. LAMP Setup Using Docker Commands
+  
+  - To Run MySQL Container
+  
+    # docker run --name mydb -d -e MYSQL_ROOT_PASSWORD=thej mysql
+
+  - To Run Apache (HTTPD) Container
+
+    # docker run --name apache -d -p 8080:80 --link mydb:mysql httpd
+
+  - To Run PHP Container
+
+    # docker run --name php -d --link mydb:mysql --link apache:httpd php:7.2-apache
+
+3. LAMP Setup Using Docker-Compose
+
+  - Instead of running individual docker run commands, we can define everything in a docker-compose.yml file and start all services at once.
+  
+  - Create a docker-compose.yml file
+  -------------------------------------
+    ---
+    version: '3.8'
+    services:
+      mydb:
+        image: mysql
+        environment:
+          MYSQL_ROOT_PASSWORD: intelliqit
+
+      apache:
+        image: httpd
+        ports:
+          - 9999:80
+        depends_on:
+          - mydb
+
+      php:
+        image: php:7.2-apache
+        depends_on:
+          - mydb
+          - apache
+  -----------------------------------------
+  - To start LAMP docker-compose up -d
+    - Start all services together (MySQL, Apache, PHP)
+    - Automatically link them
+    - Expose Apache on port 9999
+  
+  - Check Running Containers
+
+    # docker ps
+
+  - Access MySQL Container
+
+    # docker exec -it mydb mysql -uroot -p
+
+    - Enter the password (intelliqit) and access the MySQL database.
+
+    
 To setup LAMP architecture is widely used environment in most of the organistation it is opensource L=linux, A=apache , M=mysql, P=php 
--->first download mysql image convert them to container 
--->second download apache image covert them to container link it with mysql
--->third download programming language like php that will be link it with apache and mysql
------------------
-#docker run --name mydb -d -e MYSQL_ROOT_PASSWORD=thej mysql
-	-->from above command mysql will run  as container 
-#docker run --name apache -d -p 8080:80 --link mydb:mysql httpd
-	-->from above command will run httpd container with apache name liking with mysql
-#docker run --name php -d --link mydb:mysql --link apache:httpd php:7.2-apache
-	-->from above command will run php container from php:7.2-apache image and it linke it with mydb and apache
-=======================================================
-LAMP setup at the level docker compose file docker 7th session 1:00 min
-#vim docker-compose.yml
-=============================================
----
-version: '3.8'
-services:
-  mydb:
-    image: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: intelliqit
-  apache:
-    image: httpd
-    ports:
-      - 9999:80
-    links:
-      - mydb:mysql
-  php:
-    image: php:7.2-apache
-    links:
-      - mydb:mysql
-      - apache:httpd
+-->first do
+wnload mysql image - convert them to container 
+    -->second download apache - image covert them to container link it with mysql
+    -->third download programm- ing language like php that will be link it with apache and mys- ql
+    -----------------
+  - With Docker, we can set up LAMP quickly using containers instead of manually installing each component.
 
-...
-====================================
 
+2. LAMP Setup Using Docker Commands
+  
+  - To Run MySQL Container#docker run --name mydb -d -e MYSQL_ROOT_PASSWORD=thej mysql
+	-->f 
+    # 
+
+  - To Run Apache (HTTPD) Container
+
+    # 
+
+  - To Run PHP Container
+
+    # 
+
+3. LAMP Setup Using Docker-Compose
+
+  - Instead of running individual docker run commands, we can define everything in a docker-compose.yml file and start all services at once.
+  
+  - Create a docker-compose.yml file
+    -------------------------------------
+      ---
+    version: '3.8'
+    services:
+      mydb:
+        image: mysql
+        environment:
+          MYSQL_ROOT_PASSWORD: intelliqit
+
+      apache:
+        image: httpd
+        ports:
+          - 9999:80
+        depends_on:
+          - mydb
+
+      php:
+        image: php:7.2-apache
+        depends_on:
+          - mydb
+          - apache
+  -----------------------------------------
+  - To start LAMP 
+    - Start all services together (MySQL, Apache, PHP)
+    - Automatically link them
+    - Expose Apache on port 9999
+  rom   
+  - Check Running Containers
+
+    # docker ps
+
+  - Access MySQL Container
+
+    # 
+
+    - Enter the password (intelliqit) and access the MySQL database.

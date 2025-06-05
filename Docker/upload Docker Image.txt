@@ -1,0 +1,90 @@
+Docker 12th session create images and upload images
+--------------------
+
+1. Steps to Upload Image into docker   
+
+  1. Create a Docker Hub Account
+    - Go to https://hub.docker.com/
+    - Sign up with a username & password
+    - Note down your Docker Hub username (important for pushing images)
+
+  2. Create a Dockerfile
+      --------------------
+      # Create a container using Nginx
+      FROM nginx  
+      MAINTAINER navathej  
+      EXPOSE 80  
+      ------------------------------------
+
+  3. Build the Docker Image
+
+    # docker build -t mynginx .
+
+  4. Log in to Docker Hub
+
+    # docker login
+
+  5. Tag the Image with Your Docker Hub Username
+
+    - Before uploading, tag the image with your Docker Hub username:
+
+      # docker tag mynginx yourdockerhubusername/mynginx
+
+      # docker tag mynginx navathej408/mynginx
+    - (Replace yourdockerhubusername with your actual Docker Hub username)
+
+  6. Push the Image to Docker Hub
+
+    # docker push navathej408/mynginx
+
+------------------------------------------------------------------------
+
+
+#docker-compose.yml
+=========================
+---
+version: '3.8'
+services:
+  mydb:
+    image: postgres
+    environment: 
+      POSTGRES_PASSWORD: thej
+      POSTGRES_USER: thej
+      POSTGRES_DB: mydb
+  myadminer:
+    image: adminer
+    ports: 
+      -8888:80 
+...
+===============================
+#docker compose up -d 
+	-->above command will create container from that docker compose file
+	-->docker compose file will create own bridge network with in the compose file container it will not use default container
+-->when you give #docker compose down it will delete container and network also
+-------------------------------------------
+#docker network create --driver bridge --subnet 10.0.0.0/26 intelliq
+-->above command will create bridge network with subnet
+-->create containers with docker compose within intelliq network
+=========================
+---
+version: '3.8'
+services:
+  mydb:
+    image: postgres
+    environment: 
+      POSTGRES_PASSWORD: thej
+      POSTGRES_USER: thej
+      POSTGRES_DB: mydb
+  myadminer:
+    image: adminer
+    ports: 
+      -8888:80 
+networks:
+  default:
+    external:
+      name: intelliq
+...
+===============================
+#docker compose up -d 
+-->from above docker compose file containers will create within the intelliq network and 
+-->now when you down the docker compose file down network will not delete only containers will delete

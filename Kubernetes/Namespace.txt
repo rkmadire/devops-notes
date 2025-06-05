@@ -65,11 +65,12 @@ spec:
     - name: ghost-app
       image: ghost
       env:
-        - name: NODE_ENV
+        - name: NODE_ENV 
           value: development
 ...
 ==================================
-Note: ghost image it is content management system for designing the blogs and websites 
+Note: ghost image it is content management system for designing the blogs and websites
+Note: From above file ghost is a image value it will development only  
 ---
 Note:ghost image containe envoronment variables
 ---

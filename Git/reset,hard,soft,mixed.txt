@@ -11,7 +11,7 @@ hard reset
 --------------------
 soft reset -- Git session 4th time 00:30 sec
 --------------------
-1.to understand soft and mixed reset. firstly understand from basic poin of view files  
+1.to understand soft and mixed reset. firstly understand from basic point of view files  
 2.there are tree type files 
 	-->untracked files
 	-->index files (STG)

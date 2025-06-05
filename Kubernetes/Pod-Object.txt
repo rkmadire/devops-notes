@@ -24,7 +24,7 @@ $ kubectl run --image mysql mydb --env MYSQL_ROOT_PASSWORD=thej
 $ kubectl exec -it mydb bash
 	-->to enter into pods
 $ kubectl delete pods mydb
-	-->to deelete pods
+	-->to delete pods
 ---------------------------------
 -->in kubernetes we have kubernetes definition file (or) manifest file these file used to create yml file 
 

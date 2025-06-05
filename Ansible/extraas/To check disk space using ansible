@@ -1,0 +1,88 @@
+To check disk space using ansible 
+----------------------------------
+
+step1: create script file 
+	- check_disk_space.sh
+
+		#!/bin/bash
+
+		# Get disk space information
+		disk_space=$(df -h)
+
+		# Print disk space information
+		echo "Disk Space Information:"
+		echo "$disk_space"
+
+
+step2: create yaml file 
+
+		---
+		- name: Check Disk Space on Remote Machines
+		  hosts: all
+		  become: yes  # Run the commands with sudo
+
+		  tasks:
+		    - name: Copy Disk Space Check Script to Remote Hosts
+		      copy:
+		        src: check_disk_space.sh
+		        dest: "{{ ansible_env.HOME }}/check_disk_space.sh"
+		        mode: 0755  # Set execute permissions
+
+		    - name: Execute Disk Space Check Script
+		      shell: "{{ ansible_env.HOME }}/check_disk_space.sh"
+		      register: disk_space_output
+
+		    - name: Display Disk Space Information
+		      debug:
+		        var: disk_space_output.stdout_lines
+
+============OUTPUT====================
+ubuntu@ip-10-0-1-10:~$ ansible-playbook playbook6.yml
+
+PLAY [Check Disk Space on Remote Machines] *******************************************************************************************
+
+TASK [Gathering Facts] ***************************************************************************************************************
+ok: [10.0.1.12]
+ok: [10.0.1.11]
+
+TASK [Copy Disk Space Check Script to Remote Hosts] **********************************************************************************
+ok: [10.0.1.11]
+ok: [10.0.1.12]
+
+TASK [Execute Disk Space Check Script] ***********************************************************************************************
+changed: [10.0.1.11]
+changed: [10.0.1.12]
+
+TASK [Display Disk Space Information] ************************************************************************************************
+ok: [10.0.1.11] => {
+    "disk_space_output.stdout_lines": [
+        "Disk Space Information:",
+        "Filesystem      Size  Used Avail Use% Mounted on",
+        "/dev/root       7.6G  1.6G  6.0G  21% /",
+        "tmpfs           475M     0  475M   0% /dev/shm",
+        "tmpfs           190M  832K  190M   1% /run",
+        "tmpfs           5.0M     0  5.0M   0% /run/lock",
+        "/dev/xvda15     105M  6.1M   99M   6% /boot/efi",
+        "tmpfs            95M  4.0K   95M   1% /run/user/1000"
+    ]
+}
+ok: [10.0.1.12] => {
+    "disk_space_output.stdout_lines": [
+        "Disk Space Information:",
+        "Filesystem      Size  Used Avail Use% Mounted on",
+        "/dev/root       7.6G  1.6G  6.0G  21% /",
+        "tmpfs           475M     0  475M   0% /dev/shm",
+        "tmpfs           190M  832K  190M   1% /run",
+        "tmpfs           5.0M     0  5.0M   0% /run/lock",
+        "/dev/xvda15     105M  6.1M   99M   6% /boot/efi",
+        "tmpfs            95M  4.0K   95M   1% /run/user/1000"
+    ]
+}
+
+PLAY RECAP ***************************************************************************************************************************
+10.0.1.11                  : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+10.0.1.12                  : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+ubuntu@ip-10-0-1-10:~$
+
+===============================================================================

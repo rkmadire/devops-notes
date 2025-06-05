@@ -1,0 +1,11 @@
+Ansible-doc
+-----------
+1. Playbook syntx
+2. Playbook excution 
+3. Task execution
+4. Desired state and ‘idempotency’ 
+5. Running playbooks | running playbooks with --verbose
+6. Running playbooks in check mode | --check or -C 
+7. Ansible-Pull
+8. Verifying playbooks or validating playbooks | --check, --diff, --list-hosts, --list-tasks, and --syntax-check
+9. ansible-lint 
